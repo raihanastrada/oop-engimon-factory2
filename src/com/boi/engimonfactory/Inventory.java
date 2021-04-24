@@ -69,7 +69,10 @@ public class Inventory<T extends Storeable> {
     }
     // Mengembalikan True jika terdapat item pada inventory, False jika tidak
     public Boolean contains(T item) {
-        return this.inv.contains(item);
+        for (Item itItem : this.inv) {
+            if (itItem.getItem().equals(item)) return true;
+        }
+        return false;
     }
     // Mengembalikan indeks item pada inventory jika terdapat, jika tidak, dikembalikan -1
     public Integer containsID(T item) {
