@@ -1,5 +1,7 @@
 package com.boi.engimonfactory;
 
+import java.util.ArrayList;
+
 public class ContohSkill implements Storeable {
     /* Placeholder atribut */
     private String name; // nama skill
@@ -37,6 +39,12 @@ public class ContohSkill implements Storeable {
         ContohSkill other = (ContohSkill) o;
         return this.name.equals(other.name);
     }
+
+    public boolean isCompatible(ArrayList<Element> elements)
+    {
+        return true;
+    }
+
 
     @Override
     public Integer getSortInt() {
