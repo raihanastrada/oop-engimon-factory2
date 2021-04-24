@@ -77,4 +77,19 @@ public class Player {
     public Integer getInvCount() {
         return this.InvE.getCount() + this.InvS.getCount();
     }
+
+    // melakukan battle
+    public void battle(){
+        // cek ada active engimon atau tidak
+
+        // cari adjacent wild engimon
+
+        // output status wild engimon & power level dua engimon
+
+        // battle
+
+        // jika menang, kurangi life active engimon dengan 1
+        // jika kalah, beri player engimon & skill item, hapus wild engimon dari map
+        
+    }
 }
