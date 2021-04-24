@@ -2,10 +2,12 @@ package com.boi.engimonfactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Engidex {
 
     private static HashMap<Integer, Species> codex = new HashMap<Integer, Species>();
+    private static final Integer engimonCountPerElement = 2;
 
     public static class Species {
         /*
@@ -51,4 +53,21 @@ public class Engidex {
         Species newSpecies = new Species(id, name, specialSkill);
         codex.put(id, newSpecies);
     }
+
+    public static Engimon spawnEngimon(int engidexCode)
+    {
+        return new Engimon(codex.get(engidexCode));
+    }
+
+    public static Engimon spawnRandomEngimon()
+    {
+        Random gen = new Random();
+        int firstElement = gen.nextInt(5) + 1;
+        int secondElement = gen.nextInt(6);
+        int index = gen.nextInt(engimonCountPerElement) + 1;
+
+        int fullcode = firstElement * 1000 + secondElement * 100 + index;
+        return spawnEngimon(fullcode);
+    }
+
 }

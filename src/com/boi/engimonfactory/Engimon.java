@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Engimon implements Storeable {
     private int id, exp, level;
-    private String name;
+    private String name = "";
     private String[] parentNames;
     private boolean alive;
     private final Engidex.Species species;
@@ -13,11 +13,9 @@ public class Engimon implements Storeable {
     static final int MAX_EXP = 100 * 100;
     static int engimon_count = 0;
 
-    public Engimon(String name, Engidex.Species spec) {
+    public Engimon(Engidex.Species spec) {
         this.id = engimon_count;
         engimon_count++;
-
-        this.name = name;
         this.species = spec;
         skills.add(spec.getSpeciesSpecialSkill());
     }
@@ -30,7 +28,7 @@ public class Engimon implements Storeable {
         Engimon other = (Engimon) o;
         return this.id == other.id;
     }
-    
+
     public void setName(String n) { this.name = n; }
     public void setLevel(int new_level) { this.level = new_level; }
 
