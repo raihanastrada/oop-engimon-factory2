@@ -25,14 +25,20 @@ public class PlayerEngimon extends Engimon {
         this.lives = 3;
     }
 
-    public static PlayerEngimon breed (Engimon mom, Engimon dad)
+    // Buat ngetame wildEngimon, makenya PlayerEngimon.tame(wildEngimon)
+    public static PlayerEngimon tame(Engimon wildEngimon)
+    {
+        return new PlayerEngimon(wildEngimon);
+    }
+
+    public static PlayerEngimon breed(Engimon mom, Engimon dad)
     {
         /*  Bikin id codex engimon anaknya dari id spesies mom sama dad
         *   Cara dapetin elemen pertama ama elemen kedua dari id spesies ada di Engidex line 62
         * */
 
         // Abis itu urusin masalah skill
-        
+
         // Return playerengimon baruny
         return new PlayerEngimon(new Engidex.Species()); // placeholder
     }
