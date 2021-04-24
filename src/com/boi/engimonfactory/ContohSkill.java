@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class ContohSkill implements Storeable {
     /* Placeholder atribut */
     private String name; // nama skill
-    private String element; // elemen skill
+    private Element element; // elemen skill
     private Integer bp; // Base Power skill
     public ContohSkill(String name, String element, Integer bp) {
         this.name = name;
