@@ -7,7 +7,7 @@ import java.util.Random;
 public class Engidex {
 
     private static HashMap<Integer, Species> codex = new HashMap<Integer, Species>();
-    private static final Integer engimonCountPerElement = 2;
+    public static final Integer engimonCountPerElement = 2;
 
     public static class Species {
         /*

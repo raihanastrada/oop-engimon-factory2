@@ -3,18 +3,26 @@ package com.boi.engimonfactory;
 import java.util.ArrayList;
 
 public class Engimon implements Storeable {
-    private int id, exp, level;
-    private String name = "";
-    private String[] parentNames;
-    private boolean alive;
+    protected int id, exp, level;
+    protected String name;
+    protected String[] parentNames;
+    protected int lives = 1;
+    protected boolean alive;
     private final Engidex.Species species;
-    private ArrayList<ContohSkill> skills = new ArrayList<ContohSkill>();
+    protected ArrayList<ContohSkill> skills = new ArrayList<ContohSkill>();
 
     static final int MAX_EXP = 100 * 100;
     static int engimon_count = 0;
 
+    public Engimon()
+    {
+        this.species = new Engidex.Species();
+    }
+
+
     public Engimon(Engidex.Species spec) {
         this.id = engimon_count;
+        this.name = spec.getSpeciesName();
         engimon_count++;
         this.species = spec;
         skills.add(spec.getSpeciesSpecialSkill());
@@ -29,7 +37,6 @@ public class Engimon implements Storeable {
         return this.id == other.id;
     }
 
-    public void setName(String n) { this.name = n; }
     public void setLevel(int new_level) { this.level = new_level; }
 
     public boolean getAlive() { return alive; }
@@ -39,7 +46,7 @@ public class Engimon implements Storeable {
     public int getCumulativeExp() { return exp; }
 
     public ArrayList<Element> getElements() { return this.species.getSpeciesElements(); }
-    public Engidex.Species getspecies() { return this.species; }
+    public Engidex.Species getSpecies() { return this.species; }
     public String getSpeciesName() { return this.species.getSpeciesName(); }
 
     public void addExp(int new_exp)
