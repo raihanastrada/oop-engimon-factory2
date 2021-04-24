@@ -50,14 +50,14 @@ public class Skill implements Storeable {
     @Override
     public String toString() {
         return ("Skill " + this.name + "Element: "
-            + this.element + " BP: " + this.base_power);
+            + this.compatible_elements.get(0).type().asString() + " BP: " + this.base_power);
     }
 
     @Override
     public void print() {
         /* Kurang tau format printnya gimana jadi mungkin beginin aja udah cukup */
         System.out.println("Skill " + this.name + " Element: " 
-            + this.element + " BP: " + this.base_power);
+            + this.compatible_elements.get(0).type().asString() + " BP: " + this.base_power);
     }
 
     /* Tolong override ini berdasarkan nama skill */
