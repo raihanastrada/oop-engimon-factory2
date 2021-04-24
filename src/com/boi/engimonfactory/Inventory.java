@@ -24,9 +24,9 @@ public class Inventory<T extends Storeable> {
         public Integer getCount() { // getter jumlah item
             return this.count;
         }
-        public void setCount(Integer count) { // setter jumlah item
-            this.count = count;
-        }
+        // public void setCount(Integer count) { // setter jumlah item
+        //     this.count = count;
+        // }
         public void incrementCount() {
             this.count++;
         }
@@ -94,15 +94,28 @@ public class Inventory<T extends Storeable> {
     // Menambahkan item berdasarkan input item dan jumlahnya
     // Jika belum terdapat maka akan dibuat objek Item baru dengan count yang ada
     // Jika sudah ada jumlah item tersebut pada inventory akan ditambah sebanyak count
-    // (Digunakan untuk engimon, karena count pada item merepresentasikan nyawa engimon)
+    // (Digunakan untuk engimon saja, karena count pada item merepresentasikan nyawa engimon)
     public void insertItem(T item, Integer count) {
-        this.count += count;
+        this.count++;
         if (!this.contains(item)) {
             this.inv.add(new Item(item, count));
             this.sort();
             return;
         }
         this.inv.get(containsID(item)).incrementBy(count);
+    }
+    // Mengurangkan jumlah item untuk satu item pada inventory tanpa mengurangkan
+    // count dari inventory (untuk engimon), hanya digunakan untuk engimon
+    public Boolean minusItem(T item) {
+        int ind = containsID(item);
+        if (ind == -1) return null;
+        if (this.inv.get(ind).getCount() == 1) {
+            this.inv.remove(ind);
+            this.count--;
+            return true;
+        }
+        this.inv.get(ind).decrementCount();
+        return false;
     }
     // Mengurangkan item berdasarkan input item yang sama, untuk engimon
     public void detractItem(T item) {
@@ -145,16 +158,22 @@ public class Inventory<T extends Storeable> {
     public Integer getCount() {
         return this.count;
     }
+    // Mengembalikan size dari ArrayList inv
+    public Integer getSize() {
+        return this.inv.size();
+    }
     // Membuang item dari inventory (Release engimon)
     public void remove(int index) {
         if (index >= this.inv.size() || index < 0) return;
         this.inv.remove(index);
+        this.count--;
     }
-    // Membuang item dari inventory yang sama dengan input
+    // Membuang item dari inventory yang sama dengan input Item
     public void remove (T item) {
         int index = this.containsID(item);
         if (index == -1) return;
         this.inv.remove(index);
+        this.count--;
     }
     // Meng-outputkan isi inventory dengan counter dapat diganti
     // Untuk engimon diperlihatkan lives engimon tersebut
@@ -167,6 +186,15 @@ public class Inventory<T extends Storeable> {
             System.out.println("\t" + counter + ": " + i.getCount());
             count++;
         }
+    }
+    public String getPrintAll(String counter) {
+        String message = "";
+        Integer count = 1;
+        for (Item i : this.inv) {
+            message += (count + ".\t" + i.toString());
+            count++;
+        }
+        return message;
     }
     // Sort Inventory sesuai spesifikasi
     // Engimon dikelompokkan berdasarkan elemen, lalu berdasarkan level (tinggi ke rendah)

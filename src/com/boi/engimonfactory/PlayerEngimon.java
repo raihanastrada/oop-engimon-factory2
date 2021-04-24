@@ -1,19 +1,20 @@
 package com.boi.engimonfactory;
 
-import java.util.ArrayList;
+// import java.util.ArrayList;
 
 public class PlayerEngimon extends Engimon {
 
-    protected int id, exp, level;
-    protected String name = "";
-    protected String[] parentNames;
-    protected int lives;
-    protected boolean alive;
-    protected ArrayList<ContohSkill> skills = new ArrayList<ContohSkill>();
+    // protected int id, exp, level;
+    // protected String name = "";
+    // protected String[] parentNames;
+    // protected int lives;
+    // protected boolean alive;
+    // protected ArrayList<ContohSkill> skills = new ArrayList<ContohSkill>();
 
     public PlayerEngimon(Engidex.Species spec) {
         super(spec);
         this.lives = 3;
+        this.name = this.getSpeciesName();
     }
 
     public PlayerEngimon(Engimon wildEngimon)

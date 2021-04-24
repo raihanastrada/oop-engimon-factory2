@@ -38,6 +38,7 @@ public class Engimon implements Storeable {
     }
 
     public void setLevel(int new_level) { this.level = new_level; }
+    public void setName(String name) { this.name = name; }
 
     public boolean getAlive() { return alive; }
     public String getName() { return name; }
@@ -113,5 +114,33 @@ public class Engimon implements Storeable {
         return this.getElements().get(0).type().asString();
     };
 
-
+    public String getDetailEngimon() {
+        String detail = "Engimon " + this.getSpeciesName()
+            + " [" + this.getName() + "]" + "\n";
+        detail += "Parents\t: ";
+        if (this.parentNames.length == 0) detail += "-";
+        else detail += (parentNames[0] + ", " + parentNames[1] + "\n");
+        detail += "Skill\t:\n";
+        for (var skill : this.skills) {
+            detail += "\t" + skill.toString() + "\n";
+        }
+        detail += ("Lives\t: " + String.valueOf(this.lives));
+        detail += ("Lvl\t: " + String.valueOf(this.level));
+        detail += ("CExp\t: " + String.valueOf(this.exp));
+        detail += ("Exp\t: " + String.valueOf(getExp()));
+        return detail;
+    }
+    @Override
+    public String toString() {
+        String msg = this.name + "/" + this.getElements().get(0).type().asString();
+        if (this.getElements().size() == 2)
+        {
+            msg += "-" + this.getElements().get(1).type().asString();
+        }
+        msg += "/" + Integer.toString(this.level);
+        return msg;
+    }
+    public void decreaseLives() {
+        this.lives--;
+    }
 }
