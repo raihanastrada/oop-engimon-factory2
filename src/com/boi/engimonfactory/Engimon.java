@@ -7,18 +7,30 @@ public class Engimon implements Storeable {
     private String name;
     private String[] parentNames;
     private boolean alive;
-    private Engidex.Species species;
-    private ArrayList<ContohSkill> skills;
+    private final Engidex.Species species;
+    private ArrayList<ContohSkill> skills = new ArrayList<ContohSkill>();
 
     static final int MAX_EXP = 100 * 100;
-    static long engimon_count = 0;
+    static int engimon_count = 0;
 
     public Engimon(String name, Engidex.Species spec) {
+        this.id = engimon_count;
+        engimon_count++;
+
         this.name = name;
         this.species = spec;
         skills.add(spec.getSpeciesSpecialSkill());
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o == this) return true;
+        if (!(o instanceof Engimon)) return false;
+        Engimon other = (Engimon) o;
+        return this.id == other.id;
+    }
+    
     public void setName(String n) { this.name = n; }
     public void setLevel(int new_level) { this.level = new_level; }
 
