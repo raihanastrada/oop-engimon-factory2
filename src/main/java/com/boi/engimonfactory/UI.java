@@ -20,5 +20,17 @@ public class UI {
         }
 
         ImGui.end();
+
+        if (showText)
+        {
+            menu2();
+        }
+    }
+
+    public void menu2()
+    {
+        ImGui.begin("Menu2");
+        ImGui.text("This is menu 2");
+        ImGui.end();
     }
 }
