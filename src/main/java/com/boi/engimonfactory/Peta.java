@@ -91,16 +91,22 @@ public class Peta implements Serializable {
     // apabila terdapat banyak wild engimon, dipilih satu secara random
     // apabila tidak ada wild engimon, mengembalikan null
     public Engimon getAdjacentEnemy() {
+        Cell c = getAdjacentEnemyCell();
+        if (c == null) return null;
+        else return c.getEnemy();
+    }
+
+    public Cell getAdjacentEnemyCell() {
         List<Cell> surroundingCells = getSurroundingPlayers();
-        Engimon enemy = null;
+        Cell ret = null;
         Collections.shuffle(surroundingCells);
         for (Cell c : surroundingCells){
             if (c.getEnemy() != null){
-                enemy = c.getEnemy();
+                ret = c;
                 break;
             }
         }
-        return enemy;
+        return ret;
     }
 
     public Position getActiveEngimonPosition() {

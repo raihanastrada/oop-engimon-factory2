@@ -136,7 +136,7 @@ public class Game implements Serializable {
     // Debugging Methods
 
     public void addRandomEngimonPlayer() {
-        var e = Engidex.spawnRandomEngimon();
+        Engimon e = Engidex.spawnRandomEngimon();
         this.player.insertItem(PlayerEngimon.tame(e)); // Inserts Engimon
     }
 
@@ -182,46 +182,43 @@ public class Game implements Serializable {
         inp.close();
         return game;
     }
-    /*
-    // Battle
-    private void battle(){
-        try {
-            // get active & wild engimon
-            Engimon active_engimon = player.getActiveEngimon();
-            Engimon wild_engimon = peta.getAdjacentEnemy();
-            // print battle status
-            BattleUtil.showBattleStatus(active_engimon, wild_engimon);
-            // kasih pilihan ke user
-            System.out.println("Commence battle? (y/n)");
-            Scanner scan = new Scanner(System.in);
-            String choice = scan.nextLine();
-            if (choice.equals("Y") || choice.equals("y")){
-                boolean result = BattleUtil.comparePower(active_engimon, wild_engimon);
-                if (result){
-                    System.out.println(active_engimon.getName() + " won!");
-                    // tambah exp active engimon
-                    player.addActiveEngimonExp(100); // sementara fixed exp dulu
-                    // tambah wild engimon ke inventory player
-                    player.insertItem(PlayerEngimon.tame(wild_engimon));
-                    // tambah skill item ke inventory player
-                    player.insertItem(Skill(wild_engimon.getFirstSkill()));
-                }
-                else{
-                    System.out.println(active_engimon.getName() + " lost");
-                    // kurangi live ative engimon
-                    boolean res = player.activeLost();
-                    if (res) System.out.println(active_engimon.getName()  + " died");
-                }
-            }
-            else if (!choice.equals("N") && !choice.equals("n")){
-                throw new Exception("Invalid choice");
-            }
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-        }
+
+    // mengembalikan <active_engimon, wild_engimon_cell>
+    // wild engimon pake cell karena ngehapus engimon dari map butuh cell position
+    public Pair<Engimon, Cell> getBattleEngimon() throws Exception {
+        Engimon active_engimon = player.getActiveEngimon();
+        if (active_engimon == null) throw new Exception("No active engimon");
+        Cell wild_engimon_cell = peta.getAdjacentEnemyCell();
+        if (wild_engimon_cell == null) throw new Exception("No adjacent wild engimon");
+        return new Pair<>(active_engimon, wild_engimon_cell);
     }
-    */
+
+    // melakukan battle engimon
+    // mengembalikan ArrayList berisi message-message battle
+    // isi ArrayList message-message, print di text box aja gapapa
+    public ArrayList<String> battle(Engimon active_engimon, Cell wild_engimon_cell){
+        ArrayList<String> ret = new ArrayList<>();
+        Engimon wild_engimon = wild_engimon_cell.getEnemy();
+        boolean result = BattleUtil.comparePower(active_engimon, wild_engimon);
+        if (result){
+            ret.add(active_engimon.getName() + " won!");
+            // tambah exp active engimon
+            player.addActiveEngimonExp(100); // sementara fixed exp dulu
+            // tambah wild engimon ke inventory player
+            player.insertItem(PlayerEngimon.tame(wild_engimon));
+            // tambah skill item ke inventory player
+            player.insertItem(new Skill(wild_engimon.getFirstSkill()));
+            // hapus wild engimon dari map
+            peta.removeEnemy(new Pair<>(wild_engimon, wild_engimon_cell.getPosition()));
+        }
+        else{
+            ret.add(active_engimon.getName() + " lost");
+            // kurangi live ative engimon
+            boolean res = player.activeLost();
+            if (res) ret.add(active_engimon.getName()  + " died");
+        }
+        return ret;
+    }
 
     public void run() {
         Scanner scan = new Scanner(System.in);

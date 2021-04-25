@@ -44,6 +44,7 @@ public class Engimon implements Storeable {
     public int getLevel() { return level; }
     public int getExp() { return exp % 100; }
     public int getCumulativeExp() { return exp; }
+    public ArrayList<Skill> getSkills() { return this.skills; }
     public Skill getFirstSkill() {
         if (this.skills.size() == 0) return null;
         return this.skills.get(0);
@@ -135,7 +136,7 @@ public class Engimon implements Storeable {
         if (this.parentNames.length == 0) detail += "-";
         else detail += (parentNames[0] + ", " + parentNames[1] + "\n");
         detail += "Skill\t:\n";
-        for (var skill : this.skills) {
+        for (Skill skill : this.skills) {
             detail += "\t" + skill.toString() + "\n";
         }
         detail += ("Lives\t: " + String.valueOf(this.lives));
