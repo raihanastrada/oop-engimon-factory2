@@ -10,47 +10,56 @@ public class Inventory<T extends Storeable> {
     private class Item implements Storeable {
         private T item;
         private Integer count;
+        
         public Item(T item) {
             this.item = item;
             this.count = 1; // default count 1
         }
+
         public Item(T item, Integer count) {
             this.item = item;
             this.count = count; // user defined (count)
         }
+
         public T getItem() { // getter item
             return this.item;
         }
+
         public Integer getCount() { // getter jumlah item
             return this.count;
         }
-        // public void setCount(Integer count) { // setter jumlah item
-        //     this.count = count;
-        // }
+
         public void incrementCount() {
             this.count++;
         }
+
         public void decrementCount() {
             this.count--;
         }
+
         public void incrementBy(Integer count) {
             this.count += count;
         }
+
         public void decrementBy(Integer count) {
             this.count -= count;
         }
+
         @Override
         public void print() {
             item.print();
         }
+
         @Override
         public Integer getSortInt() {
             return item.getSortInt();
         }
+
         @Override
         public String getSortStr() {
             return item.getSortStr();
         }
+
         @Override
         public boolean equals(Object obj) {
             return this.item.equals(obj);
@@ -67,6 +76,7 @@ public class Inventory<T extends Storeable> {
         this.inv = new ArrayList<Item>();
         this.count = 0;
     }
+
     // Mengembalikan True jika terdapat item pada inventory, False jika tidak
     public Boolean contains(T item) {
         for (Item itItem : this.inv) {
@@ -74,6 +84,7 @@ public class Inventory<T extends Storeable> {
         }
         return false;
     }
+
     // Mengembalikan indeks item pada inventory jika terdapat, jika tidak, dikembalikan -1
     public Integer containsID(T item) {
         for (int i = 0; i < this.inv.size(); i++) {
@@ -81,6 +92,7 @@ public class Inventory<T extends Storeable> {
         }
         return -1;
     }
+
     // Menambahkan item baru pada inventory, default berjumlah 1
     public void insertItem(T item) {
         this.count++;
@@ -91,6 +103,7 @@ public class Inventory<T extends Storeable> {
         }
         this.inv.get(containsID(item)).incrementCount();
     }
+
     // Menambahkan item berdasarkan input item dan jumlahnya
     // Jika belum terdapat maka akan dibuat objek Item baru dengan count yang ada
     // Jika sudah ada jumlah item tersebut pada inventory akan ditambah sebanyak count
@@ -104,6 +117,7 @@ public class Inventory<T extends Storeable> {
         }
         this.inv.get(containsID(item)).incrementBy(count);
     }
+
     // Mengurangkan jumlah item untuk satu item pada inventory tanpa mengurangkan
     // count dari inventory (untuk engimon), hanya digunakan untuk engimon
     public Boolean minusItem(T item) {
@@ -117,12 +131,14 @@ public class Inventory<T extends Storeable> {
         this.inv.get(ind).decrementCount();
         return false;
     }
+
     // Mengurangkan item berdasarkan input item yang sama, untuk engimon
     public void detractItem(T item) {
         Integer index = this.containsID(item);
         if (index == -1) return;
         detractItemByIdx(index);
     }
+
     // Mengurangkan count item berdasarkan index (mengurangkan satu)
     public void detractItemByIdx(int index) {
         if (index >= this.inv.size() || index < 0) return;
@@ -130,6 +146,7 @@ public class Inventory<T extends Storeable> {
         else this.inv.get(index).decrementCount();
         this.count--;
     }
+
     // Mengurangkan jumlah item dengan input item dan jumlah yang ingin dikurangkan
     // Mengembalikan null jika item tidak terdapat
     // Mengembalikan false jika input count lebih dari jumlah yang tersedia
@@ -139,6 +156,7 @@ public class Inventory<T extends Storeable> {
         if (index == -1) return null;
         return detractItemByIdx(index, count);
     }
+
     // Mengurangkan jumlah item dengan input index dan jumlah yang ingin dikurangkan
     // Mengembalikan value seperti method detractItem
     public Boolean detractItemByIdx(int index, Integer count) {
@@ -149,11 +167,19 @@ public class Inventory<T extends Storeable> {
         this.count -= count;
         return true;
     }
+    
     // Mengembalikan item dengan index
     public T getItemByIdx(int index) {
         if (index >= this.inv.size() || index < 0) return null;
         return this.inv.get(index).getItem();
     }
+
+    // Mengembalikan jumlah item dengan parameter index
+    public Integer getCountByIdx(int index) {
+        if (index >= this.inv.size() || index < 0) return null;
+        return this.inv.get(index).getCount();
+    }
+
     // Mengembalikan jumlah item pada inventory
     public Integer getCount() {
         return this.count;
@@ -162,12 +188,14 @@ public class Inventory<T extends Storeable> {
     public Integer getSize() {
         return this.inv.size();
     }
+
     // Membuang item dari inventory (Release engimon)
     public void remove(int index) {
         if (index >= this.inv.size() || index < 0) return;
         this.inv.remove(index);
         this.count--;
     }
+
     // Membuang item dari inventory yang sama dengan input Item
     public void remove (T item) {
         int index = this.containsID(item);
@@ -175,6 +203,7 @@ public class Inventory<T extends Storeable> {
         this.inv.remove(index);
         this.count--;
     }
+
     // Meng-outputkan isi inventory dengan counter dapat diganti
     // Untuk engimon diperlihatkan lives engimon tersebut
     // Untuk skillitem diperlihatkan jumlah item tersebut
@@ -187,6 +216,8 @@ public class Inventory<T extends Storeable> {
             count++;
         }
     }
+
+    // Getter Inventory dalam bentuk string
     public String getPrintAll(String counter) {
         String message = "";
         Integer count = 1;
@@ -196,6 +227,7 @@ public class Inventory<T extends Storeable> {
         }
         return message;
     }
+
     // Sort Inventory sesuai spesifikasi
     // Engimon dikelompokkan berdasarkan elemen, lalu berdasarkan level (tinggi ke rendah)
     // Skill item berdasarkan base power

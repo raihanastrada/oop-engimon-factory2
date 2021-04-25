@@ -20,7 +20,7 @@ public class Engidex {
         private int speciesID;
         private String speciesName;
 
-        private ContohSkill speciesSpecialSkill;
+        private Skill speciesSpecialSkill;
         private ArrayList<Element> speciesElements = new ArrayList<Element>();
 
         public Species()
@@ -29,7 +29,7 @@ public class Engidex {
             this.speciesID = 0;
         }
 
-        public Species(int id, String name, ContohSkill specialSkill)
+        public Species(int id, String name, Skill specialSkill)
         {
             this.speciesName = name;
             this.speciesID = id;
@@ -44,11 +44,11 @@ public class Engidex {
 
         public int getSpeciesID() { return this.speciesID; }
         public String getSpeciesName() { return this.speciesName; }
-        public ContohSkill getSpeciesSpecialSkill() { return speciesSpecialSkill; }
+        public Skill getSpeciesSpecialSkill() { return speciesSpecialSkill; }
         public ArrayList<Element> getSpeciesElements() { return this.speciesElements; }
     }
 
-    public static void addSpecies(int id, String name, ContohSkill specialSkill)
+    public static void addSpecies(int id, String name, Skill specialSkill)
     {
         Species newSpecies = new Species(id, name, specialSkill);
         codex.put(id, newSpecies);
