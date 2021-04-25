@@ -6,19 +6,27 @@ public class Skill implements Storeable {
     // nama skill
     private String name;
     // base power skill
-    private Integer base_power;
+    private int base_power;
     // mastery level
-    private Integer mastery_level;
+    private int mastery_level;
     // elemen-elemen yang kompatibel dengan skill ini
     private ArrayList<Element> compatible_elements; 
 
     // constructor
-    public Skill(String name, ArrayList<Element> compatible_elements, Integer base_power) {
+    public Skill(String name, ArrayList<Element> compatible_elements, int base_power) {
         this.name = name;
-        this.compatible_elements = compatible_elements; // ragu bisa assign apa nggak
+        this.compatible_elements = compatible_elements;
         this.base_power = base_power;
+        this.mastery_level = 1;
     }
-
+    // copy constructor
+    // mastery level hasil copy adalah 1
+    public Skill(Skill other){
+        this.name = other.name;
+        this.compatible_elements = other.compatible_elements;
+        this.base_power = other.base_power;
+        this.mastery_level = 1;
+    }
     // getter
     public int getBasePower(){
         return this.base_power;
@@ -62,7 +70,7 @@ public class Skill implements Storeable {
 
     /* Tolong override ini berdasarkan nama skill */
 //    @Override
-    public boolean equals(Object o) {
+    public boolean equals(Skill o) {
         if (o == this) return true;
         if (!(o instanceof Skill)) return false;
         Skill other = (Skill) o;
@@ -82,7 +90,7 @@ public class Skill implements Storeable {
     }
 
 //    @Override
-    public Integer getSortInt() {
+    public int getSortInt() {
         return this.base_power * -1; // Ini kopas aja sama persis
     }
 
