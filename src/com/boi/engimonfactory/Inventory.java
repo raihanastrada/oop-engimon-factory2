@@ -1,11 +1,12 @@
 package com.boi.engimonfactory;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
-public class Inventory<T extends Storeable> {
+public class Inventory<T extends Storeable> implements Serializable {
     /* Private class Item (Tuple T dengan Integer) */
     private class Item implements Storeable {
         private T item;

@@ -1,6 +1,7 @@
 package com.boi.engimonfactory;
 
 import javax.lang.model.type.NullType;
+import java.io.Serializable;
 
 enum CellType {
     MOUNTAINS,  // Fire Engimon
@@ -9,7 +10,7 @@ enum CellType {
     TUNDRA      // Ice Engimon
 }
 
-public class Cell {
+public class Cell implements Serializable {
     private CellType type;
     private Position position;
     private Engimon enemy;

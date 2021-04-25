@@ -1,7 +1,5 @@
 package com.boi.engimonfactory;
 
-// import java.util.ArrayList;
-
 public class PlayerEngimon extends Engimon {
 
     // protected int id, exp, level;

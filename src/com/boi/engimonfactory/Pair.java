@@ -1,6 +1,8 @@
 package com.boi.engimonfactory;
 
-public class Pair<T, U> {
+import java.io.Serializable;
+
+public class Pair<T, U> implements Serializable {
     private T item1;
     private U item2;
 

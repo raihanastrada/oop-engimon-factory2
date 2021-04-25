@@ -1,10 +1,11 @@
 package com.boi.engimonfactory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Engidex {
+public class Engidex implements Serializable {
 
     private static HashMap<Integer, Species> codex = new HashMap<Integer, Species>();
     public static final Integer engimonCountPerElement = 2;

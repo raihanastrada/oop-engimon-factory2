@@ -1,6 +1,8 @@
 package com.boi.engimonfactory;
 
-public interface Storeable {
+import java.io.Serializable;
+
+public interface Storeable extends Serializable {
     public void print();
     public Integer getSortInt();
     public String getSortStr();

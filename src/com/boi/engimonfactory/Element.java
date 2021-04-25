@@ -1,5 +1,6 @@
 package com.boi.engimonfactory;
 
+import java.io.Serializable;
 import java.util.List;
 
 enum ElementType {
@@ -21,7 +22,7 @@ enum ElementType {
     String asString() { return name; }
 }
 
-public class Element {
+public class Element implements Serializable {
 
     //   usage: advantageIndex[user][target]
     private static final double advantageIndex[][] = {

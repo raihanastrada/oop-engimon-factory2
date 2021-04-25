@@ -1,10 +1,8 @@
 package com.boi.engimonfactory;
 
-// @TODO
-// replace Engimon ke Engimon nanti
-// replace Skill ke Skill nanti
+import java.io.Serializable;
 
-public class Player {
+public class Player implements Serializable {
     private Engimon activeEngimon; // Reference ke Active Engimon, jika tidak ada, null
     private String name; // Nama Player
     private Integer maxCap; // Maksimum kapasitas inventory

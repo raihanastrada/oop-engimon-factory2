@@ -3,11 +3,12 @@ package com.boi.engimonfactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
+import java.io.Serializable;
 import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Peta {
+public class Peta implements Serializable {
     private Position playerPosition;                         // player location in map
     private Position activeEngimonPosition;                  // active engimon location in map
     private Cell[][] map;                                    // matrix storing map
