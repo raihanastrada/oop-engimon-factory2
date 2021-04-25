@@ -6,19 +6,27 @@ public class Skill implements Storeable {
     // nama skill
     private String name;
     // base power skill
-    private Integer base_power;
+    private int base_power;
     // mastery level
-    private Integer mastery_level;
+    private int mastery_level;
     // elemen-elemen yang kompatibel dengan skill ini
-    private ArrayList<Element> compatible_elements; 
+    private ArrayList<Element> compatible_elements;
 
     // constructor
-    public Skill(String name, ArrayList<Element> compatible_elements, Integer base_power) {
+    public Skill(String name, ArrayList<Element> compatible_elements, int base_power) {
         this.name = name;
-        this.compatible_elements = compatible_elements; // ragu bisa assign apa nggak
+        this.compatible_elements = compatible_elements;
         this.base_power = base_power;
+        this.mastery_level = 1;
     }
-
+    // copy constructor
+    // mastery level hasil copy adalah 1
+    public Skill(Skill other){
+        this.name = other.name;
+        this.compatible_elements = other.compatible_elements;
+        this.base_power = other.base_power;
+        this.mastery_level = 1;
+    }
     // getter
     public int getBasePower(){
         return this.base_power;
@@ -47,22 +55,22 @@ public class Skill implements Storeable {
     /* Ini di copy-paste, disesuaikan */
     /* Tolong override ini semua */
 
-    @Override
+    //    @Override
     public String toString() {
         return ("Skill " + this.name + "Element: "
-            + this.compatible_elements.get(0).type().asString() + " BP: " + this.base_power);
+                + this.compatible_elements.get(0).type().asString() + " BP: " + this.base_power);
     }
 
-    @Override
+    //    @Override
     public void print() {
         /* Kurang tau format printnya gimana jadi mungkin beginin aja udah cukup */
-        System.out.println("Skill " + this.name + " Element: " 
-            + this.compatible_elements.get(0).type().asString() + " BP: " + this.base_power);
+        System.out.println("Skill " + this.name + " Element: "
+                + this.compatible_elements.get(0).type().asString() + " BP: " + this.base_power);
     }
 
     /* Tolong override ini berdasarkan nama skill */
-    @Override
-    public boolean equals(Object o) {
+//    @Override
+    public boolean equals(Skill o) {
         if (o == this) return true;
         if (!(o instanceof Skill)) return false;
         Skill other = (Skill) o;
@@ -81,12 +89,12 @@ public class Skill implements Storeable {
         return false;
     }
 
-    @Override
-    public Integer getSortInt() {
+    //    @Override
+    public int getSortInt() {
         return this.base_power * -1; // Ini kopas aja sama persis
     }
 
-    @Override
+    //    @Override
     public String getSortStr() {
         return ""; // Ini kopas aja sama persis
     }
