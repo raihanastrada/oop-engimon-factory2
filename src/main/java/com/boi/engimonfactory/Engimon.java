@@ -126,7 +126,9 @@ public class Engimon implements Storeable {
 
     public String getSortStr()
     {
-        return this.getElements().get(0).type().asString();
+        String sort = this.getElements().get(0).type().asString();
+        if (this.getElements().size() > 1) { sort += ("-" + this.getElements().get(1).type().asString()); }
+        return sort;
     };
 
     public String getDetailEngimon() {

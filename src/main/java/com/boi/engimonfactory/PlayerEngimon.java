@@ -33,6 +33,7 @@ public class PlayerEngimon extends Engimon {
         parentNames = new String[2];
         parentNames[0] = momName;
         parentNames[1] = dadName;
+        level = 1;
         lives = 3;
     }
 
@@ -61,6 +62,7 @@ public class PlayerEngimon extends Engimon {
             Engimon anak = new Engimon(); // placeholder engimon anak
             anak = PlayerEngimon.determineEngimon(mom, dad);
             String newName = anak.getSpeciesName(); // nama anak
+            if (newName == null) { newName = "placeholder"; }
             PlayerEngimon toReturn = new PlayerEngimon(anak, newName, momName, dadName);
 
             // inherit skill

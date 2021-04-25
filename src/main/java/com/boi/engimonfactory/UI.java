@@ -229,4 +229,15 @@ public class UI {
         }
         ImGui.end();
     }
+    /*
+        @TODO UI Inventory belom selese (image skill)
+            @TODO UI Inventory menampilkan list skill item (base power dan elemen yang bisa learn skill tersebut)
+        @TODO UI replace skill/learn skill player engimon
+        @TODO UI breed (add nama)
+        @TODO UI buang X item / Release Engimon dari inventory
+        @TODO UI memperlihatkan command?
+        @TODO UI detail engimon (image skill)
+        @TODO UI save game
+        @TODO UI load game
+     */
 }
