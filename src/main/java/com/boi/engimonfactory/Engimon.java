@@ -96,14 +96,14 @@ public class Engimon implements Storeable {
             msg = "Skill slots full";
             throw new SkillSlotsFullException(msg);
         } else {
-            skills.add(newSkill);
+            skills.add(new Skill(newSkill));
         }
     }
 
     // index starts at 0
     public void replaceSkill(Skill newSkill, int index)
     {
-        skills.set(index, newSkill);
+        skills.set(index, new Skill(newSkill));
     }
 
     // Format print: Engimon<Spesies><Nama>/Element/Lvl
