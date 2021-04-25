@@ -11,7 +11,7 @@ public class PlayerEngimon extends Engimon {
     // protected String[] parentNames;
     // protected int lives;
     // protected boolean alive;
-    // protected ArrayList<ContohSkill> skills = new ArrayList<ContohSkill>();
+    // protected ArrayList<Skill> skills = new ArrayList<Skill>();
 
     public PlayerEngimon(Engidex.Species spec) {
         super(spec);
@@ -52,6 +52,7 @@ public class PlayerEngimon extends Engimon {
             throw new InsufficientLevelException(msg);
         }
         else {
+            // determine id, name, parents
             System.out.println("Tolong anaknya dikasih nama yaa");
             String newName = "namaAnakHere"; // nama anak
             String momName = mom.getName(); // nama ibu
@@ -60,11 +61,82 @@ public class PlayerEngimon extends Engimon {
             anak = PlayerEngimon.determineEngimon(mom, dad);
             PlayerEngimon toReturn = new PlayerEngimon(anak, newName, momName, dadName);
 
+            // inherit skill
+            if (mom.getSkills().size() < dad.getSkills().size()) {
+                for (int i = 0; i < mom.getSkills().size(); i++) {
+                    toReturn.inheritSkill(mom.getSkills().get(i));
+                    toReturn.inheritSkill(dad.getSkills().get(i));
+                }
+                for (int i = mom.getSkills().size(); i < dad.getSkills().size(); i++) {
+                    toReturn.inheritSkill(dad.getSkills().get(i));
+                }
+            }
+            else if (dad.getSkills().size() < mom.getSkills().size()) {
+                for (int i = 0; i < dad.getSkills().size(); i++) {
+                    toReturn.inheritSkill(mom.getSkills().get(i));
+                    toReturn.inheritSkill(dad.getSkills().get(i));
+                }
+                for (int i = dad.getSkills().size(); i < mom.getSkills().size(); i++) {
+                    toReturn.inheritSkill(mom.getSkills().get(i));
+                }
+            }
+            else {
+                for (int i = 0; i < mom.getSkills().size(); i++) {
+                    toReturn.inheritSkill(mom.getSkills().get(i));
+                    toReturn.inheritSkill(dad.getSkills().get(i));
+                }
+            }
+            return toReturn;
         }
-        // Abis itu urusin masalah skill
+    }
 
-        // Return playerengimon barunya
-        return new PlayerEngimon(new Engidex.Species()); // placeholder
+    public void inheritSkill(Skill newSkill) {
+        Integer newSkillMasteryLevel = newSkill.getMasteryLevel();
+        if (skills.size()<4 && !skills.contains(newSkill)) {
+            skills.add(newSkill);
+        }
+        else {
+            if (skills.contains(newSkill)) {
+                int index = 0;
+                for (int i=0;i<skills.size();i++) {
+                    if (skills.get(i).equals(newSkill)) {
+                        index = i;
+                    }
+                }
+                Integer currentMasteryLevel = skills.get(index).getMasteryLevel();
+                if (currentMasteryLevel.equals(newSkillMasteryLevel) && currentMasteryLevel<3) {
+                    skills.get(index).setMasteryLevel(currentMasteryLevel+1);
+                }
+                else if (currentMasteryLevel < newSkillMasteryLevel) {
+                    skills.get(index).setMasteryLevel(newSkillMasteryLevel);
+                }
+            }
+            else if (skills.size()==4) {
+                ArrayList<Skill> temp = new ArrayList<Skill>();
+                for (int i=1;i<skills.size();i++) {
+                    Integer currentMasteryLevel = skills.get(i).getMasteryLevel();
+                    if (currentMasteryLevel < newSkillMasteryLevel) {
+                        temp.add(skills.get(i));
+                        skills.remove(i);
+                        skills.add(newSkill);
+                        break;
+                    }
+                }
+                // cek seluruh skillnya lagi, agar skill final memiliki mastery level tinggi
+                while (temp.size()>0) {
+                    for (int i=1;i<skills.size();i++) {
+                        Integer currentMasteryLevel = skills.get(i).getMasteryLevel();
+                        if (currentMasteryLevel < temp.get(0).getMasteryLevel()) {
+                            temp.add(skills.get(i));
+                            skills.remove(i);
+                            skills.add(temp.get(0));
+                            break;
+                        }
+                    }
+                    temp.remove(0);
+                }
+            }
+        }
     }
 
     public static Engimon determineEngimon(Engimon mom, Engimon dad) {
