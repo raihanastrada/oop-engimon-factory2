@@ -19,7 +19,6 @@ public class Engimon implements Storeable {
         this.species = new Engidex.Species();
     }
 
-
     public Engimon(Engidex.Species spec) {
         this.id = engimon_count;
         this.name = spec.getSpeciesName();

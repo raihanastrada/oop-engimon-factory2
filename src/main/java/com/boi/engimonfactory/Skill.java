@@ -90,7 +90,7 @@ public class Skill implements Storeable {
     }
 
     //    @Override
-    public int getSortInt() {
+    public Integer getSortInt() {
         return this.base_power * -1; // Ini kopas aja sama persis
     }
 

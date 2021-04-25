@@ -36,10 +36,13 @@ public class Engidex implements Serializable {
             this.speciesID = id;
             this.speciesSpecialSkill = specialSkill;
 
-            this.speciesElements.add(Element.getElement(id/1000));
+            this.speciesElements.add(Element.getElement((id/1000)));
+            System.out.println("Added element " + speciesElements.get(0).type().asString() + " to " + name + " as type 1");
             if ((id/100) % 10 != 0)
             {
                 this.speciesElements.add(Element.getElement((id/100) % 10));
+                System.out.println("Added element " + speciesElements.get(1).type().asString() + " to " + name + " as type 2 " + (id/100) % 10);
+
             }
         }
 
@@ -78,7 +81,7 @@ public class Engidex implements Serializable {
                 secondElement = 0;
             }
         }
-        
+
         int index = gen.nextInt(engimonCountPerElement) + 1;
 
         int fullcode = firstElement * 1000 + secondElement * 100 + index;

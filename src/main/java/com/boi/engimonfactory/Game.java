@@ -96,6 +96,10 @@ public class Game implements Serializable {
 
         Engidex.addSpecies(5401, "Amatsuka Uto", new Skill("Angle Supreme Freeze",comp6,gen.nextInt(100)+1));
         Engidex.addSpecies(5402, "Kageyama Shien", new Skill("Shien Freeze",comp2,gen.nextInt(100)+1));
+
+
+        Engimon test = Engidex.spawnEngimon(1202);
+        test.print();
     }
 
     public Peta getPeta() {

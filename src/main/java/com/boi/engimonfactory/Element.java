@@ -43,7 +43,7 @@ public class Element implements Serializable {
 
     public Element(int code)
     {
-        this.type = ElementType.values()[code-1];
+        this.type = ElementType.values()[code];
     }
 
     public static Element getElement(int code)
