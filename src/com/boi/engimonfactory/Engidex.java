@@ -71,4 +71,24 @@ public class Engidex implements Serializable {
         return spawnEngimon(fullcode);
     }
 
+    public static Engimon generateEngimon(int firstElement, int secondElement) {
+        Random gen = new Random();
+        int index = gen.nextInt(engimonCountPerElement) + 1;
+        int fullcode = 0;
+        if (firstElement == 5 || secondElement == 5) {
+            if (firstElement > secondElement) {
+                fullcode = firstElement * 1000 + secondElement * 100 + index;
+            }
+            else {
+                fullcode = secondElement * 1000 + firstElement * 100 + index;
+            }
+        }
+        if (firstElement < secondElement) {
+            fullcode = firstElement * 1000 + secondElement * 100 + index;
+        }
+        else {
+            fullcode = secondElement * 1000 + firstElement * 100 + index;
+        }
+        return spawnEngimon(fullcode);
+    }
 }

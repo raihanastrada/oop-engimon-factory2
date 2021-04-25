@@ -1,5 +1,9 @@
 package com.boi.engimonfactory;
 
+// import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.Random;
+
 public class PlayerEngimon extends Engimon {
 
     // protected int id, exp, level;
@@ -20,8 +24,15 @@ public class PlayerEngimon extends Engimon {
         super(wildEngimon.getSpecies());
         this.exp = wildEngimon.getCumulativeExp();
         this.level = wildEngimon.getLevel();
-
         this.lives = 3;
+    }
+
+    public PlayerEngimon(Engimon breedEngimon, String newName, String momName, String dadName) {
+        super(breedEngimon.getSpecies());
+        name = newName;
+        parentNames[0] = momName;
+        parentNames[1] = dadName;
+        lives = 3;
     }
 
     // Buat ngetame wildEngimon, makenya PlayerEngimon.tame(wildEngimon)
@@ -40,16 +51,55 @@ public class PlayerEngimon extends Engimon {
             String msg = "Lemah kok mau bikin Anak Bro";
             throw new InsufficientLevelException(msg);
         }
-        /*  Bikin id codex engimon anaknya dari id spesies mom sama dad
-        *   Cara dapetin elemen pertama ama elemen kedua dari id spesies ada di Engidex line 62
-        * */
         else {
+            System.out.println("Tolong anaknya dikasih nama yaa");
+            String newName = "namaAnakHere"; // nama anak
+            String momName = mom.getName(); // nama ibu
+            String dadName = dad.getName(); // nama bapak
+            Engimon anak = new Engimon(); // placeholder engimon anak
+            anak = PlayerEngimon.determineEngimon(mom, dad);
+            PlayerEngimon toReturn = new PlayerEngimon(anak, newName, momName, dadName);
 
         }
         // Abis itu urusin masalah skill
 
         // Return playerengimon barunya
         return new PlayerEngimon(new Engidex.Species()); // placeholder
+    }
+
+    public static Engimon determineEngimon(Engimon mom, Engimon dad) {
+        Random index = new Random();
+        ArrayList<Element> listElemenIbu = mom.getElements();
+        ArrayList<Element> listElemenBapak = dad.getElements();
+        // case 1, elemen sama
+        if (listElemenBapak.equals(listElemenIbu)) {
+            return new Engimon(mom.getSpecies());
+        }
+
+        // sisa case, elemen beda
+        Element elemenIbu = listElemenIbu.get(0);
+        Element elemenBapak = listElemenBapak.get(0);
+        // handle case dual element
+        if (listElemenBapak.size() == 2) {
+            elemenBapak = listElemenBapak.get(index.nextInt(2));
+        }
+        if (listElemenIbu.size() == 2) {
+            elemenIbu = listElemenIbu.get(index.nextInt(2));
+        }
+        double advantageIbu = Element.getAdvantage(elemenIbu, elemenBapak);
+        double advantageBapak = Element.getAdvantage(elemenBapak, elemenIbu);
+        if (advantageIbu > advantageBapak) {
+            return new Engimon(mom.getSpecies());
+        }
+        else if (advantageIbu < advantageBapak) {
+            return new Engimon(dad.getSpecies());
+        }
+        else { // advantage sama, anak jadi dual elemen
+            int codeIbu = elemenIbu.type().getCode();
+            int codeBapak = elemenBapak.type().getCode();
+            Engimon toReturn = Engidex.generateEngimon(codeIbu,codeBapak);
+            return new Engimon(toReturn.getSpecies());
+        }
     }
 
     public String interact()
