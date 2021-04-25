@@ -18,6 +18,7 @@ public class Game implements Serializable {
 
     public Game() {
         this.peta = new Peta(new Position(5,8),new Position(5,9),"Peta.txt", 15);
+        getClass().getResource("Peta.txt");
         this.player = new Player(null, 100);
         this.engidex = new Engidex();
         // this.init();
@@ -238,7 +239,7 @@ public class Game implements Serializable {
         boolean running = true;
         while (running) {
             String command = scan.nextLine();
-            if (command == "w" || command == "a" || command == "s" || command == "d") {
+            if (command.equals("w") || command.equals("a") || command.equals("s") || command.equals("d")) {
                 try {
                     peta.movePlayer(command.charAt(0));
                     peta.increaseTurn();
