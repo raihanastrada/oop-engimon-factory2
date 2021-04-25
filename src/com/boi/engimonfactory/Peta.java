@@ -35,11 +35,20 @@ public class Peta implements Serializable {
                     c = line.charAt(j);
                     // Seharusnya not accessable
                     switch (c) {
-                        case 'm' -> this.map[i][j] = new Cell(CellType.MOUNTAINS, new Position(j, i));
-                        case 's' -> this.map[i][j] = new Cell(CellType.SEA, new Position(j, i));
-                        case 't' -> this.map[i][j] = new Cell(CellType.TUNDRA, new Position(j, i));
-                        case 'g' -> this.map[i][j] = new Cell(CellType.GRASSLAND, new Position(j, i));
-                        default -> System.out.println("An error occurred while loading file from external file.");
+                        case 'm':
+                            this.map[i][j] = new Cell(CellType.MOUNTAINS, new Position(j, i));
+                            break;
+                        case 's' :
+                            this.map[i][j] = new Cell(CellType.SEA, new Position(j, i));
+                            break;
+                        case 't' :
+                            this.map[i][j] = new Cell(CellType.TUNDRA, new Position(j, i));
+                            break;
+                        case 'g' :
+                            this.map[i][j] = new Cell(CellType.GRASSLAND, new Position(j, i));
+                            break;
+                        default :
+                            System.out.println("An error occurred while loading file from external file.");
                     }
                 }
             }
@@ -153,26 +162,25 @@ public class Peta implements Serializable {
         int newx;
         int newy;
         switch (key) {
-            case 'w' -> {
+            case 'w':
                 newx = this.getPlayerPosition().getY() - 1;
                 newy = this.getPlayerPosition().getX();
-            }
-            case 'a' -> {
+                break;
+            case 'a':
                 newx = this.getPlayerPosition().getY();
                 newy = this.getPlayerPosition().getX() - 1;
-            }
-            case 's' -> {
+                break;
+            case 's':
                 newx = this.getPlayerPosition().getY() + 1;
                 newy = this.getPlayerPosition().getX();
-            }
-            case 'd' -> {
+                break;
+            case 'd':
                 newx = this.getPlayerPosition().getY();
                 newy = this.getPlayerPosition().getX() + 1;
-            }
-            default -> {
+                break;
+            default:
                 newx = -1;
                 newy = -1;
-            }
         }
         try {
             isValidIdx(newx, newy);
