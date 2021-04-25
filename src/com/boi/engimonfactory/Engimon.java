@@ -9,7 +9,7 @@ public class Engimon implements Storeable {
     protected int lives = 1;
     protected boolean alive;
     private final Engidex.Species species;
-    protected ArrayList<ContohSkill> skills = new ArrayList<ContohSkill>();
+    protected ArrayList<Skill> skills = new ArrayList<Skill>();
 
     static final int MAX_EXP = 100 * 100;
     static int engimon_count = 0;
@@ -66,14 +66,14 @@ public class Engimon implements Storeable {
         }
     }
 
-    public void addSkill(ContohSkill newSkill) throws SkillAlreadyLearnedException, SkillNotCompatibleException, SkillSlotsFullException
+    public void addSkill(Skill newSkill) throws SkillAlreadyLearnedException, SkillNotCompatibleException, SkillSlotsFullException
     {
         String msg;
         if (skills.contains(newSkill))
         {
             msg = "Skill already learned";
             throw new SkillAlreadyLearnedException(msg);
-        } else if (!newSkill.isCompatible(this.getElements()))
+        } else if (!newSkill.isCompatibleWith(this.getElements()))
         {
             msg = "Skill not compatible";
             throw new SkillNotCompatibleException(msg);
@@ -86,7 +86,7 @@ public class Engimon implements Storeable {
     }
 
     // index starts at 0
-    public void replaceSkill(ContohSkill newSkill, int index)
+    public void replaceSkill(Skill newSkill, int index)
     {
         skills.set(index, newSkill);
     }

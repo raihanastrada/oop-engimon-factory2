@@ -2,14 +2,14 @@ package com.boi.engimonfactory;
 
 // @TODO
 // replace Engimon ke Engimon nanti
-// replace ContohSkill ke Skill nanti
+// replace Skill ke Skill nanti
 
 public class Player {
     private Engimon activeEngimon; // Reference ke Active Engimon, jika tidak ada, null
     private String name; // Nama Player
     private Integer maxCap; // Maksimum kapasitas inventory
     private Inventory<Engimon> invE; // Inventory Engimon
-    private Inventory<ContohSkill> invS; // Inventory SkillItem
+    private Inventory<Skill> invS; // Inventory SkillItem
     public Player() { // Default Constructor
         this(null, 10);
     }
@@ -18,7 +18,7 @@ public class Player {
         this.name = name;
         this.maxCap = maxCap;
         this.invE = new Inventory<Engimon>();
-        this.invS = new Inventory<ContohSkill>();
+        this.invS = new Inventory<Skill>();
     }
 
     // Getter String nama player
@@ -36,7 +36,7 @@ public class Player {
 
     // Asumsi memasukkan skill item hanya satu
     // Jika berhasil memasukkan skill item, return true, jika tidak, false
-    public Boolean insertItem(ContohSkill s) {
+    public Boolean insertItem(Skill s) {
         if (this.getInvCount() == maxCap) return false;
         this.invS.insertItem(s);
         return true;
@@ -57,7 +57,7 @@ public class Player {
     // Jika tidak terdapat mengembalikan null
     // Jika count > jumlah yang dimiliki return false
     // Jika berhasil dibuang, return true
-    public Boolean buangItemSkill(ContohSkill skill, Integer count) {
+    public Boolean buangItemSkill(Skill skill, Integer count) {
         return this.invS.detractItem(skill, count);
     }
 
@@ -181,6 +181,16 @@ public class Player {
             message += this.activeEngimon.getSpeciesName().charAt(i % 4);
         }
         return message;
+    }
+
+    // Mengembalikan inventory engimon player untuk keperluan GUI
+    public Inventory<Engimon> getInvE() {
+        return this.invE;
+    }
+
+    // Mengembalikan inventory skill item player untuk keperluan GUI
+    public Inventory<Skill> getInvS() {
+        return this.invS;
     }
 
     // Boolean menentukan jika player mati atau tidak
