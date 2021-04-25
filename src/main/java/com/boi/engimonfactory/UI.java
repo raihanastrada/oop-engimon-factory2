@@ -9,6 +9,7 @@ public class UI {
 
         if (ImGui.button("I am a button")) {
             showText = true;
+            System.out.println("This Works");
         }
 
         if (showText) {
@@ -27,6 +28,7 @@ public class UI {
         }
     }
 
+    // Bisa bikin di kelas beda
     public void menu2()
     {
         ImGui.begin("Menu2");
