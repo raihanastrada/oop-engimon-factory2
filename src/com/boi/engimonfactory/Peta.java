@@ -13,7 +13,7 @@ public class Peta {
     private Cell[][] map;                                    // matrix storing map
     private ArrayList<Pair<Engimon, Position>> enemyEngimon; // list of enemy engimon & position in map
     private int maxEnemyCount;                               // max count of engimon in map
-    private static int turn;                                 // game turn
+    private static int turn = 0;                                 // game turn
 
     public Peta(Position playerPosition, Position activeEngimonPosition, String filename, int maxEnemyCount) {
         this.playerPosition = playerPosition;
@@ -136,6 +136,7 @@ public class Peta {
             while (euclideanDistance(getPlayerPosition().getX(),getPlayerPosition().getY(),newx,newy) > 1 || reroll) {
                 newx = gen.nextInt(1) - 1;
                 newy = gen.nextInt(1) - 1;
+                reroll = handleException(enemy.getItem1(),newx,newy);
             }
             getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(null);
             enemy.setItem2(new Position(newx,newy));
@@ -273,5 +274,18 @@ public class Peta {
             e.printStackTrace();
             return true;
         }
+    }
+
+    public Position spawnRandomPosition(Engimon enemy) {
+        Random gen = new Random();
+        int newx = gen.nextInt(12);
+        int newy = gen.nextInt(10);
+        boolean reroll = handleException(enemy,newx,newy);
+        while (reroll) {
+            newx = gen.nextInt(12);
+            newy = gen.nextInt(10);
+            reroll = handleException(enemy,newx,newy);
+        }
+        return new Position(newx,newy);
     }
 }
