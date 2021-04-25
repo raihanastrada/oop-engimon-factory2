@@ -32,15 +32,25 @@ public class PlayerEngimon extends Engimon {
         return new PlayerEngimon(wildEngimon);
     }
 
-    public static PlayerEngimon breed(Engimon mom, Engimon dad)
+    public static PlayerEngimon breed(Engimon mom, Engimon dad) throws OneEngimonBreedException, InsufficientLevelException
     {
+        if (mom.equals(dad)) {
+            String msg = "Tolong Jangan Membelah Diri ya Bro";
+            throw new OneEngimonBreedException(msg);
+        }
+        else if (mom.getLevel()<4 || dad.getLevel()<4) {
+            String msg = "Lemah kok mau bikin Anak Bro";
+            throw new InsufficientLevelException(msg);
+        }
         /*  Bikin id codex engimon anaknya dari id spesies mom sama dad
         *   Cara dapetin elemen pertama ama elemen kedua dari id spesies ada di Engidex line 62
         * */
+        else {
 
+        }
         // Abis itu urusin masalah skill
 
-        // Return playerengimon baruny
+        // Return playerengimon barunya
         return new PlayerEngimon(new Engidex.Species()); // placeholder
     }
 
