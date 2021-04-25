@@ -47,13 +47,13 @@ public class Skill implements Storeable {
     /* Ini di copy-paste, disesuaikan */
     /* Tolong override ini semua */
 
-//    @Override
+    @Override
     public String toString() {
         return ("Skill " + this.name + "Element: "
             + this.compatible_elements.get(0).type().asString() + " BP: " + this.base_power);
     }
 
-//    @Override
+    @Override
     public void print() {
         /* Kurang tau format printnya gimana jadi mungkin beginin aja udah cukup */
         System.out.println("Skill " + this.name + " Element: " 
@@ -61,7 +61,7 @@ public class Skill implements Storeable {
     }
 
     /* Tolong override ini berdasarkan nama skill */
-//    @Override
+    @Override
     public boolean equals(Object o) {
         if (o == this) return true;
         if (!(o instanceof Skill)) return false;
@@ -81,12 +81,12 @@ public class Skill implements Storeable {
         return false;
     }
 
-//    @Override
+    @Override
     public Integer getSortInt() {
         return this.base_power * -1; // Ini kopas aja sama persis
     }
 
-//    @Override
+    @Override
     public String getSortStr() {
         return ""; // Ini kopas aja sama persis
     }
