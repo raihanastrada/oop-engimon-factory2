@@ -37,11 +37,11 @@ public class Engidex implements Serializable {
             this.speciesSpecialSkill = specialSkill;
 
             this.speciesElements.add(Element.getElement((id/1000)));
-            System.out.println("Added element " + speciesElements.get(0).type().asString() + " to " + name + " as type 1");
+            // System.out.println("Added element " + speciesElements.get(0).type().asString() + " to " + name + " as type 1");
             if ((id/100) % 10 != 0)
             {
                 this.speciesElements.add(Element.getElement((id/100) % 10));
-                System.out.println("Added element " + speciesElements.get(1).type().asString() + " to " + name + " as type 2 " + (id/100) % 10);
+                // System.out.println("Added element " + speciesElements.get(1).type().asString() + " to " + name + " as type 2 " + (id/100) % 10);
 
             }
         }
@@ -60,7 +60,11 @@ public class Engidex implements Serializable {
 
     public static Engimon spawnEngimon(int engidexCode)
     {
-        return new Engimon(codex.get(engidexCode));
+        Engimon ret = new Engimon(codex.get(engidexCode)); // random level engimon (spawn Engimon)
+        Random rand = new Random();
+        ret.setLevel(rand.nextInt(100) + 1);
+        return ret;
+        // @TODO random level
     }
 
     public static Engimon spawnRandomEngimon()

@@ -18,7 +18,8 @@ public class Game implements Serializable {
 
     public Game() {
         this.peta = new Peta(new Position(5,8),new Position(5,9),"Peta.txt", 15);
-        this.player = new Player();
+        getClass().getResource("Peta.txt");
+        this.player = new Player(null, 100);
         this.engidex = new Engidex();
         // ini belom selese
     }
@@ -66,40 +67,44 @@ public class Game implements Serializable {
             comp11.add(water);
             comp11.add(ice);
             comp11.add(ground);
-        ArrayList<Element> comp12 = new ArrayList<Element>(); // Fire, Electric, & Ground
+        ArrayList<Element> comp12 = new ArrayList<Element>(); // Fire, Electric, & Ground ***
             comp12.add(fire);
             comp12.add(electric);
             comp12.add(ground);
 
         Random gen = new Random();
-        // inisialisasi engidex
+        // Inisialisasi Engidex
+        // Electric
         Engidex.addSpecies(1001, "Pikamee", new Skill("Shock",comp7 ,gen.nextInt(100)+1));
         Engidex.addSpecies(1002, "Tokino Sora", new Skill("Awe",comp1 ,gen.nextInt(100)+1));
 
+        // Fire
         Engidex.addSpecies(2001, "Takanasahi Kiara", new Skill("Fireball",comp9 ,gen.nextInt(100)+1));
         Engidex.addSpecies(2002, "Aki Rosenthal", new Skill("Rosenthal",comp4 ,gen.nextInt(100)+1));
 
+        // Ground
         Engidex.addSpecies(3001, "Amelia Watson", new Skill("Ground Pound",comp8 ,gen.nextInt(100)+1));
         Engidex.addSpecies(3002, "Yubi, Inugami Korone", new Skill("Yubi",comp3 ,gen.nextInt(100)+1));
 
+        // Ice
         Engidex.addSpecies(4001, "Amane Kanata", new Skill("Icicle",comp6 ,gen.nextInt(100)+1));
         Engidex.addSpecies(4002, "Tokoyami Towa", new Skill("Devil's Snare",comp5 ,gen.nextInt(100)+1));
 
+        // Water
         Engidex.addSpecies(5001, "Gawr Gura", new Skill("Splash",comp10 ,gen.nextInt(100)+1));
         Engidex.addSpecies(5002, "Spade Echo", new Skill("Wave",comp11 ,gen.nextInt(100)+1));
 
+        // Electric-Fire
         Engidex.addSpecies(1201, "Mori Calliope", new Skill("Magnetize",comp1,gen.nextInt(100)+1));
         Engidex.addSpecies(1202, "Moona Hoshinova", new Skill("Gravitate",comp12,gen.nextInt(100)+1));
 
+        // Water-Ground
         Engidex.addSpecies(5301, "Suba, Oozora Subaru", new Skill("Shuba",comp10,gen.nextInt(100)+1));
         Engidex.addSpecies(5302, "Minato Aqua", new Skill("Onionize",comp11,gen.nextInt(100)+1));
 
+        // Water-Ice
         Engidex.addSpecies(5401, "Amatsuka Uto", new Skill("Angle Supreme Freeze",comp6,gen.nextInt(100)+1));
         Engidex.addSpecies(5402, "Kageyama Shien", new Skill("Shien Freeze",comp2,gen.nextInt(100)+1));
-
-
-        Engimon test = Engidex.spawnEngimon(1202);
-        test.print();
     }
 
     public Peta getPeta() {
@@ -163,16 +168,16 @@ public class Game implements Serializable {
 
     // Write save
     private void writeSave() throws IOException {
-        ObjectOutputStream out = 
-            new ObjectOutputStream(new FileOutputStream("Save.bin"));
+        ObjectOutputStream out =
+                new ObjectOutputStream(new FileOutputStream("Save.bin"));
         out.writeObject(this);
         out.close();
     }
 
     // Read save
     private static Game readSave() throws IOException, ClassNotFoundException {
-        ObjectInputStream inp = 
-            new ObjectInputStream(new FileInputStream("Save.bin"));
+        ObjectInputStream inp =
+                new ObjectInputStream(new FileInputStream("Save.bin"));
         Game game = (Game) inp.readObject();
         inp.close();
         return game;
@@ -198,13 +203,17 @@ public class Game implements Serializable {
             }
             else if (command.equals("inventory")) {
                 // TODO
-                // player.
+                System.out.println("INI BUAT MILIH INVENTORY");
+                player.printInventoryEngimon();
+                player.printInventorySkill();
             }
             else if (command.equals("switch")) {
                 // TODO
+
             }
             else if (command.equals("interact")) {
                 // TODO
+                player.interact();
             }
             else if (command.equals("use")) {
                 // TODO
@@ -238,4 +247,5 @@ public class Game implements Serializable {
         System.out.println("INI PESAN EXIT");
         scan.close();
     }
+
 }
