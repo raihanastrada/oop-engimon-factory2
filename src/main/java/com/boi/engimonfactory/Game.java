@@ -119,6 +119,11 @@ public class Game implements Serializable {
         return this.engidex;
     }
 
+    // Mengembalikan null jika tidak ada musuh di dekatnya
+    public Engimon getNearestEngimon() {
+        return this.peta.getAdjacentEnemy();
+    }
+
     public void movePlayer(char d) {
         try {
             this.peta.movePlayer(d);
@@ -136,7 +141,7 @@ public class Game implements Serializable {
     // Debugging Methods
 
     public void addRandomEngimonPlayer() {
-        var e = Engidex.spawnRandomEngimon();
+        Engimon e = Engidex.spawnRandomEngimon();
         this.player.insertItem(PlayerEngimon.tame(e)); // Inserts Engimon
     }
 
@@ -182,6 +187,7 @@ public class Game implements Serializable {
         inp.close();
         return game;
     }
+
     /*
     // Battle
     private void battle(){

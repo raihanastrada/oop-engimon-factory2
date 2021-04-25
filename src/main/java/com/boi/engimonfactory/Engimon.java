@@ -135,7 +135,7 @@ public class Engimon implements Storeable {
         if (this.parentNames.length == 0) detail += "-";
         else detail += (parentNames[0] + ", " + parentNames[1] + "\n");
         detail += "Skill\t:\n";
-        for (var skill : this.skills) {
+        for (Skill skill : this.skills) {
             detail += "\t" + skill.toString() + "\n";
         }
         detail += ("Lives\t: " + String.valueOf(this.lives));

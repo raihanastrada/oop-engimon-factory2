@@ -5,6 +5,7 @@ public class UI {
     private boolean showText = false;
     private boolean showInv = false;
     private Player player;
+    private Game game;
 
     /*
         - Checkbox
@@ -21,8 +22,10 @@ public class UI {
         ImGui.ListBox("ListBox", &selectedItem, inventory, IM_ARRAYSIZE(inventory))
 
      */
-    public void insertPlayer(Player p) {
-        this.player = p;
+
+    public void insertGame(Game g) {
+        this.game = g;
+        this.player = g.getPlayer();
     }
     public void ui() {
         ImGui.begin("Engimon Factory");
@@ -53,6 +56,12 @@ public class UI {
             }
         }
 
+        // @TODO hapus ini
+        if (ImGui.button("Add Random Engimon")) {
+            this.game.addRandomEngimonPlayer();
+            System.out.println("Added Engimon");
+        }
+
         ImGui.end();
 
         if (showText)
@@ -72,10 +81,20 @@ public class UI {
         ImGui.end();
     }
 
+    // @TODO inventory menu not done
     public void menuInventory() {
+        String message = "This is your inventory, " + this.player.getName() + "\n"
+                + "Engimon:\n" + this.player.getPrintInventoryE()
+                + "SkillItem:\n";
         ImGui.begin("Menu Inventory");
-        ImGui.text("This is your inventory, " + this.player.getName() + "\n"
-            + this.player.getPrintInventoryE() + this.player.getPrintInventoryS());
+        ImGui.text("");
         ImGui.end();
+    }
+
+    public void menuSwitchActive() {
+        ImGui.begin("Switch Active Engimon");
+        String[] comboitems;
+        // for (int i = 0; i < this.player.getacti)
+        // ImGui.combo();
     }
 }
