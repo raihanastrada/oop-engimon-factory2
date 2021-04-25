@@ -183,6 +183,45 @@ public class Game implements Serializable {
         return game;
     }
 
+    // Battle
+    private void battle(){
+        try {
+            // get active & wild engimon
+            Engimon active_engimon = player.getActiveEngimon();
+            Engimon wild_engimon = peta.getAdjacentEnemy();
+            // print battle status
+            BattleUtil.showBattleStatus(active_engimon, wild_engimon);
+            // kasih pilihan ke user
+            System.out.println("Commence battle? (y/n)");
+            Scanner scan = new Scanner(System.in);
+            String choice = scan.nextLine();
+            if (choice.equals("Y") || choice.equals("y")){
+                boolean result = BattleUtil.comparePower(active_engimon, wild_engimon);
+                if (result){
+                    System.out.println(active_engimon.getName() + " won!");
+                    // tambah exp active engimon
+                    player.addActiveEngimonExp(100); // sementara fixed exp dulu
+                    // tambah wild engimon ke inventory player
+                    player.insertItem(PlayerEngimon.tame(wild_engimon));
+                    // tambah skill item ke inventory player
+                    player.insertItem(Skill(wild_engimon.getFirstSkill()));
+                }
+                else{
+                    System.out.println(active_engimon.getName() + " lost");
+                    // kurangi live ative engimon
+                    boolean res = player.activeLost();
+                    if (res) System.out.println(active_engimon.getName()  + " died");
+                }
+            }
+            else if (!choice.equals("N") && !choice.equals("n")){
+                throw new Exception("Invalid choice");
+            }
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void run() {
         Scanner scan = new Scanner(System.in);
         boolean running = true;
@@ -229,6 +268,7 @@ public class Game implements Serializable {
             }
             else if (command.equals("battle")) {
                 // TODO
+                battle();
             }
             else if (command.equals("save")) {
                 if (!save()) {

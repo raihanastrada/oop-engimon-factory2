@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Collections;
 
 public class Peta implements Serializable {
     private Position playerPosition;                         // player location in map
@@ -84,6 +85,22 @@ public class Peta implements Serializable {
             }
         }
         return cells;
+    }
+
+    // mengembalikan satu wild engimon di sekitar player
+    // apabila terdapat banyak wild engimon, dipilih satu secara random
+    // apabila tidak ada wild engimon, mengembalikan null
+    public Engimon getAdjacentEnemy() {
+        List<Cell> surroundingCells = getSurroundingPlayers();
+        Engimon enemy = null;
+        Collections.shuffle(surroundingCells);
+        for (Cell c : surroundingCells){
+            if (c.getEnemy() != null){
+                enemy = c.getEnemy();
+                break;
+            }
+        }
+        return enemy;
     }
 
     public Position getActiveEngimonPosition() {

@@ -23,6 +23,8 @@ public class Player implements Serializable {
     public String getName() {
         return this.name;
     }
+    // Getter active engimon
+    public Engimon getActiveEngimon() { return this.activeEngimon; }
 
     // Asumsi engimon yang masuk ke inventory selalu memiliki 3 nyawa
     // Jika berhasil memasukkan engimon, return true, jika tidak, false
@@ -147,6 +149,11 @@ public class Player implements Serializable {
         return false;
     }
 
+    // menambahkan exp ke active engimon
+    public void addActiveEngimonExp(int exp){
+        this.activeEngimon.addExp(exp);
+    }
+
     // Mengganti nama engimon pada inventory
     // Mengembalikan false jika idx tidak valid
     // Mengembalikan true jika terganti
@@ -195,22 +202,6 @@ public class Player implements Serializable {
     // Jika mati mengembalikan true, jika tidak mengembalikan false
     public Boolean isDead() {
         return this.invE.getCount() <= 0;
-    }
-
-    // melakukan battle
-    public void battle(){
-        // cek ada active engimon atau tidak
-
-        // cari adjacent wild engimon
-
-        // output status wild engimon & power level dua engimon
-
-        // battle
-
-        // jika menang, kurangi life active engimon dengan 1
-        // jika kalah, beri player engimon & skill item, hapus wild engimon dari map
-        // menggunakan activeLost() (mengurangkan nyawa activeEngimon)
-        //      sekaligus menghilangkan dari inventory jika mati
     }
 
     public void breed(int idxE1, int idxE2) { // placeholder breed
