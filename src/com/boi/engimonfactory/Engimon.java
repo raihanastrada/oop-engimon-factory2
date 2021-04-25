@@ -47,6 +47,7 @@ public class Engimon implements Storeable {
     public int getCumulativeExp() { return exp; }
 
     public ArrayList<Element> getElements() { return this.species.getSpeciesElements(); }
+    public ArrayList<Skill> getSkills() { return this.skills; }
     public Engidex.Species getSpecies() { return this.species; }
     public String getSpeciesName() { return this.species.getSpeciesName(); }
 
