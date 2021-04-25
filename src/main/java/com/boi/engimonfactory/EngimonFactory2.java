@@ -8,11 +8,15 @@ public class EngimonFactory2 {
         System.out.println("FUCK YOU AND THE GUI");
 
 //        new Renderer().run();
+
+        */
+
         Window window = new Window(new UI());
         window.init();
         window.run();
         window.destroy();
-        */
+
+//        System.out.println("END OF WIN");
 
         Game g = new Game();
 

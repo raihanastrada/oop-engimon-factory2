@@ -234,5 +234,4 @@ public class Game implements Serializable {
         System.out.println("INI PESAN EXIT");
         scan.close();
     }
-
 }

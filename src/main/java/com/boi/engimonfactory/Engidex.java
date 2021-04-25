@@ -64,7 +64,21 @@ public class Engidex implements Serializable {
     {
         Random gen = new Random();
         int firstElement = gen.nextInt(5) + 1;
-        int secondElement = gen.nextInt(6);
+
+        int secondElement = gen.nextInt(3);
+        if (secondElement != 0)
+        {
+            if (firstElement == 1)
+            {
+                secondElement = 2;
+            } else if (firstElement == 5)
+            {
+                secondElement = gen.nextInt(2) + 3;
+            } else {
+                secondElement = 0;
+            }
+        }
+        
         int index = gen.nextInt(engimonCountPerElement) + 1;
 
         int fullcode = firstElement * 1000 + secondElement * 100 + index;
