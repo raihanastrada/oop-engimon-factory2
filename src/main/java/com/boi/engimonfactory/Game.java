@@ -18,9 +18,17 @@ public class Game implements Serializable {
 
     public Game() {
         this.peta = new Peta(new Position(5,8),new Position(5,9),"Peta.txt", 15);
-        getClass().getResource("Peta.txt");
         this.player = new Player(null, 100);
         this.engidex = new Engidex();
+        // this.init();
+        // ini belom selese
+    }
+
+    public Game(String name, Integer maxCap, Integer maxEnemeyCount) {
+        this.peta = new Peta(new Position(5, 8), new Position(5, 9), "Peta.txt", maxEnemeyCount);
+        this.player = new Player(name, maxCap);
+        this.engidex = new Engidex();
+        // this.init();
         // ini belom selese
     }
 

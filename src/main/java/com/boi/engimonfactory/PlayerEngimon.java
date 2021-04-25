@@ -30,6 +30,7 @@ public class PlayerEngimon extends Engimon {
     public PlayerEngimon(Engimon breedEngimon, String newName, String momName, String dadName) {
         super(breedEngimon.getSpecies());
         name = newName;
+        parentNames = new String[2];
         parentNames[0] = momName;
         parentNames[1] = dadName;
         lives = 3;
@@ -53,12 +54,13 @@ public class PlayerEngimon extends Engimon {
         }
         else {
             // determine id, name, parents
-            System.out.println("Tolong anaknya dikasih nama yaa");
-            String newName = "namaAnakHere"; // nama anak
+            mom.setLevel(mom.getLevel()-3);
+            dad.setLevel(dad.getLevel()-3);
             String momName = mom.getName(); // nama ibu
             String dadName = dad.getName(); // nama bapak
             Engimon anak = new Engimon(); // placeholder engimon anak
             anak = PlayerEngimon.determineEngimon(mom, dad);
+            String newName = anak.getSpeciesName(); // nama anak
             PlayerEngimon toReturn = new PlayerEngimon(anak, newName, momName, dadName);
 
             // inherit skill

@@ -48,6 +48,11 @@ public class Player implements Serializable {
         if (this.activeEngimon.equals(e)) this.activeEngimon = null;
     }
 
+    // Getter status inventory Player
+    public Boolean isInventoryFull() {
+        return (this.getInvCount() >= maxCap);
+    }
+
     // Release Engimon dengan input index
     public void releaseEngimon(int index) {
         this.invE.remove(index);
@@ -204,7 +209,16 @@ public class Player implements Serializable {
         return this.invE.getCount() <= 0;
     }
 
-    public void breed(int idxE1, int idxE2) { // placeholder breed
+    public String breed(int idxE1, int idxE2) { // placeholder breed
+        if (idxE1 >= this.invE.getSize() || idxE1 < 0) return null;
+        if (idxE2 >= this.invE.getSize() || idxE2 < 0) return null;
         // return type placeholder mungkin diganti Boolean
+        try {
+            PlayerEngimon hasil = PlayerEngimon.breed(this.invE.getItemByIdx(idxE1), this.invE.getItemByIdx(idxE2));
+            this.insertItem(hasil);
+            return "Breeding berhasil";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 }

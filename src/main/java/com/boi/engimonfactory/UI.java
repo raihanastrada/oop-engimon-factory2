@@ -1,18 +1,23 @@
 package com.boi.engimonfactory;
 import imgui.ImGui;
 import imgui.type.ImInt;
-
 import java.util.ArrayList;
 
 public class UI {
     private boolean showText = false;
     private boolean showInv = false;
-    private boolean showMenuBattle = false;
     private boolean showSwitch = false;
     private boolean showInteract = false;
+    private boolean showBreed = false;
+    private boolean isInventoryFull = false;
+    private boolean breedClicked = false;
+    private boolean showMenuBattle = false;
     private Player player;
     private Game game;
     private ImInt selectedActive = new ImInt();
+    private ImInt selectedMom = new ImInt();
+    private ImInt selectedDad = new ImInt();
+    private String messageBreed = "";
 
     /*
         - Checkbox
@@ -36,7 +41,7 @@ public class UI {
     }
     public void ui() {
         ImGui.begin("Engimon Factory");
-
+        this.isInventoryFull = this.player.isInventoryFull();
         if (ImGui.button("I am a button")) {
             showText = true;
             System.out.println("This Works");
@@ -53,13 +58,6 @@ public class UI {
         if (ImGui.button("Show Inventory")) {
             showInv = true;
             System.out.println("Inventory clicked");
-        }
-
-        if (ImGui.button("Battle")) {
-            showMenuBattle = true;
-            if (ImGui.button("Close battle")){
-                showMenuBattle = false;
-            }
         }
 
         if (showInv) {
@@ -83,10 +81,26 @@ public class UI {
             if (ImGui.button("Close interact")) showInteract = false;
         }
 
-        // @TODO hapus ini
-        if (ImGui.button("Add Random Engimon")) {
-            this.game.addRandomEngimonPlayer();
-            System.out.println("Added Engimon");
+        if (ImGui.button("Breed")) {
+            showBreed = true;
+            this.messageBreed = "";
+            System.out.println("Breed clicked");
+        }
+
+        if (showBreed && isInventoryFull) {
+            ImGui.text("Inventory Full");
+            ImGui.sameLine();
+        }
+
+        if (showBreed && !isInventoryFull) {
+            if (this.player.isInventoryFull()) {
+                ImGui.text("Inventory full, cannot breed");
+                this.showBreed = false;
+            } else {
+                ImGui.text("Showing breed menu");
+                ImGui.sameLine();;
+                if (ImGui.button("Close breed menu")) showBreed = false;
+            }
         }
 
         if (ImGui.button("Show Switch Engimon")) {
@@ -100,19 +114,33 @@ public class UI {
             if (ImGui.button("Close switch")) showSwitch = false;
         }
 
+        if (ImGui.button("Battle")) {
+            showMenuBattle = true;
+            if (ImGui.button("Close battle")){
+                showMenuBattle = false;
+            }
+        }
+
+        // @TODO hapus ini
+        if (ImGui.button("Add Random Engimon")) {
+            this.game.addRandomEngimonPlayer();
+            System.out.println("Added Engimon");
+        }
+
         ImGui.end();
 
         if (showText)
             menu2();
         if (showInv)
             menuInventory();
-        }
-
-        if (showMenuBattle){
-            menuBattlePrep();
-        }
         if (showSwitch)
             menuSwitchActive();
+        if (showBreed && !isInventoryFull) {
+            menuBreed();
+        }
+        if (showMenuBattle) {
+            menuBattlePrep();
+        }
     }
 
     // Bisa bikin di kelas beda
@@ -145,6 +173,24 @@ public class UI {
         this.player.switchActive(this.selectedActive.getData()[0]);
     }
 
+    public void menuBreed() {
+        ImGui.begin("Breed Menu AWOOOGA");
+        String[] comboitemsMom = new String[this.player.getInvE().getSize()];
+        String[] comboitemsDad = new String[this.player.getInvE().getSize()];
+        for (int i = 0; i < this.player.getInvE().getSize(); i++) {
+            comboitemsMom[i] = this.player.getInvE().getItemByIdx(i).getPrint();
+            comboitemsDad[i] = this.player.getInvE().getItemByIdx(i).getPrint();
+        }
+        ImGui.text("Mom");
+        ImGui.combo("ChooseMom", selectedMom, comboitemsMom);
+        ImGui.text("Dad");
+        ImGui.combo("ChooseDad", selectedDad, comboitemsDad);
+        if (ImGui.button("Breeeed"))
+            this.messageBreed = this.player.breed(selectedMom.getData()[0], selectedDad.getData()[0]);
+        ImGui.text(this.messageBreed);
+        ImGui.end();
+        // String message = this.player.breed()
+    }
 
     public void menuBattlePrep(){
         ImGui.begin("Battle");

@@ -52,7 +52,7 @@ public class Engimon implements Storeable {
 
     @Override
     public String getPrint() {
-        String msg = this.name + "/" + this.getElements().get(0).type().asString();
+        String msg = getSpeciesName() + "<" + this.name + ">/" + this.getElements().get(0).type().asString();
         if (this.getElements().size() == 2)
         {
             msg += "-" + this.getElements().get(1).type().asString();
