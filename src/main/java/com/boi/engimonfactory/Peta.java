@@ -101,7 +101,7 @@ public class Peta implements Serializable {
         Cell ret = null;
         Collections.shuffle(surroundingCells);
         for (Cell c : surroundingCells){
-            if (c.getEnemy() != null){
+            if (c != null && c.getEnemy() != null){
                 ret = c;
                 break;
             }
