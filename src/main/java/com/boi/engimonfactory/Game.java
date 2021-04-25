@@ -119,6 +119,11 @@ public class Game implements Serializable {
         return this.engidex;
     }
 
+    // Mengembalikan null jika tidak ada musuh di dekatnya
+    public Engimon getNearestEngimon() {
+        return this.peta.getAdjacentEnemy();
+    }
+
     public void movePlayer(char d) {
         try {
             this.peta.movePlayer(d);

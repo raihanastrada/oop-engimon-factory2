@@ -56,7 +56,7 @@ public class EngimonFactory2 {
 
         g.getPlayer().printInventoryEngimon();
         UI a = new UI();
-        a.insertPlayer(g.getPlayer());
+        a.insertGame(g);
         Window window = new Window(a);
         window.init();
         window.run();
