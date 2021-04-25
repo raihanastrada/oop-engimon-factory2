@@ -1,9 +1,20 @@
 package com.boi.engimonfactory;
 import imgui.ImGui;
+import imgui.flag.ImGuiInputTextFlags;
 import imgui.type.ImInt;
+import imgui.type.ImString;
 import java.util.ArrayList;
 
 public class UI {
+    private Player player;
+    private Game game;
+    private boolean running = false;
+    /* Buat Menu Start */
+    private boolean showNewGame = false;
+    private boolean showLoadGame = false;
+    private boolean showInputName = false;
+    private ImString name = new ImString(8);
+    //
     private boolean showText = false;
     private boolean showInv = false;
     private boolean showSwitch = false;
@@ -12,8 +23,6 @@ public class UI {
     private boolean isInventoryFull = false;
     private boolean breedClicked = false;
     private boolean showMenuBattle = false;
-    private Player player;
-    private Game game;
     private ImInt selectedActive = new ImInt();
     private ImInt selectedMom = new ImInt();
     private ImInt selectedDad = new ImInt();
@@ -40,95 +49,105 @@ public class UI {
         this.player = g.getPlayer();
     }
     public void ui() {
-        ImGui.begin("Engimon Factory");
-        this.isInventoryFull = this.player.isInventoryFull();
-        if (ImGui.button("I am a button")) {
-            showText = true;
-            System.out.println("This Works");
+        if (!running) {
+            ImGui.begin("Start");
+            showNewGame = true;
+            showLoadGame = true;
         }
-
-        if (showText) {
-            ImGui.text("You clicked a button");
-            ImGui.sameLine();
-            if (ImGui.button("Stop showing text")) {
-                showText = false;
+        else {
+            ImGui.begin("Engimon Factory");
+            this.isInventoryFull = this.player.isInventoryFull();
+            if (ImGui.button("I am a button")) {
+                showText = true;
+                System.out.println("This Works");
             }
-        }
 
-        if (ImGui.button("Show Inventory")) {
-            showInv = true;
-            System.out.println("Inventory clicked");
-        }
-
-        if (showInv) {
-            ImGui.text("Showing inventory");
-            ImGui.sameLine();
-            if (ImGui.button("Close inventory")) showInv = false;
-        }
-
-        if (ImGui.button("Interact")) {
-            showInteract = true;
-            System.out.println("Interact clicked");
-        }
-
-        if (showInteract) {
-            if (this.player.getActiveEngimon() == null) {
-                ImGui.text("Tidak ada engimon aktif");
-            } else {
-                ImGui.text(this.player.interact());
+            if (showText) {
+                ImGui.text("You clicked a button");
+                ImGui.sameLine();
+                if (ImGui.button("Stop showing text")) {
+                    showText = false;
+                }
             }
-            ImGui.sameLine();
-            if (ImGui.button("Close interact")) showInteract = false;
-        }
 
-        if (ImGui.button("Breed")) {
-            showBreed = true;
-            this.messageBreed = "";
-            System.out.println("Breed clicked");
-        }
-
-        if (showBreed && isInventoryFull) {
-            ImGui.text("Inventory Full");
-            ImGui.sameLine();
-        }
-
-        if (showBreed && !isInventoryFull) {
-            if (this.player.isInventoryFull()) {
-                ImGui.text("Inventory full, cannot breed");
-                this.showBreed = false;
-            } else {
-                ImGui.text("Showing breed menu");
-                ImGui.sameLine();;
-                if (ImGui.button("Close breed menu")) showBreed = false;
+            if (ImGui.button("Show Inventory")) {
+                showInv = true;
+                System.out.println("Inventory clicked");
             }
-        }
 
-        if (ImGui.button("Show Switch Engimon")) {
-            showSwitch = true;
-            System.out.println("Switch clicked");
-        }
-
-        if (showSwitch) {
-            ImGui.text("Switch Active engimon");
-            ImGui.sameLine();
-            if (ImGui.button("Close switch")) showSwitch = false;
-        }
-
-        if (ImGui.button("Battle")) {
-            showMenuBattle = true;
-            if (ImGui.button("Close battle")){
-                showMenuBattle = false;
+            if (showInv) {
+                ImGui.text("Showing inventory");
+                ImGui.sameLine();
+                if (ImGui.button("Close inventory")) showInv = false;
             }
-        }
 
-        // @TODO hapus ini
-        if (ImGui.button("Add Random Engimon")) {
-            this.game.addRandomEngimonPlayer();
-            System.out.println("Added Engimon");
+            if (ImGui.button("Interact")) {
+                showInteract = true;
+                System.out.println("Interact clicked");
+            }
+
+            if (showInteract) {
+                if (this.player.getActiveEngimon() == null) {
+                    ImGui.text("Tidak ada engimon aktif");
+                } else {
+                    ImGui.text(this.player.interact());
+                }
+                ImGui.sameLine();
+                if (ImGui.button("Close interact")) showInteract = false;
+            }
+
+            if (ImGui.button("Breed")) {
+                showBreed = true;
+                this.messageBreed = "";
+                System.out.println("Breed clicked");
+            }
+
+            if (showBreed && isInventoryFull) {
+                ImGui.text("Inventory Full");
+                ImGui.sameLine();
+            }
+
+            if (showBreed && !isInventoryFull) {
+                if (this.player.isInventoryFull()) {
+                    ImGui.text("Inventory full, cannot breed");
+                    this.showBreed = false;
+                } else {
+                    ImGui.text("Showing breed menu");
+                    ImGui.sameLine();;
+                    if (ImGui.button("Close breed menu")) showBreed = false;
+                }
+            }
+
+            if (ImGui.button("Show Switch Engimon")) {
+                showSwitch = true;
+                System.out.println("Switch clicked");
+            }
+
+            if (showSwitch) {
+                ImGui.text("Switch Active engimon");
+                ImGui.sameLine();
+                if (ImGui.button("Close switch")) showSwitch = false;
+            }
+
+            if (ImGui.button("Battle")) {
+                showMenuBattle = true;
+                if (ImGui.button("Close battle")){
+                    showMenuBattle = false;
+                }
+            }
+
+            // @TODO hapus ini
+            if (ImGui.button("Add Random Engimon")) {
+                this.game.addRandomEngimonPlayer();
+                System.out.println("Added Engimon");
+            }
         }
 
         ImGui.end();
 
+        if (showNewGame && showLoadGame) {
+            menuStart();
+        }
         if (showText)
             menu2();
         if (showInv)
@@ -148,6 +167,46 @@ public class UI {
     {
         ImGui.begin("Menu2");
         ImGui.text("This is menu 2");
+        ImGui.end();
+    }
+
+    public void menuStart()
+    {
+        ImGui.begin("Start");
+        if (showNewGame) {
+            if (ImGui.button("NEW GAME")) {
+                System.out.println("ini dari new game");
+                showInputName = true;
+            }
+            if (showInputName) {
+                inputName();
+            }
+        }
+
+        if (showLoadGame) {
+            if (ImGui.button("LOAD GAME")) {
+                System.out.println("ini dari load game");
+                game.load();
+                showLoadGame = false;
+                showNewGame = false;
+                running = true;
+            }
+        }
+        ImGui.end();
+    }
+
+    public void inputName() {
+        ImGui.begin("Input Name");
+        ImGui.text("What's your name?");
+        ImGui.inputText("", name, ImGuiInputTextFlags.CallbackResize);
+        if (ImGui.button("OK")) {
+            System.out.print("Masukan namanya: ");
+            System.out.println(name);
+            showInputName = false;
+            showLoadGame = false;
+            showNewGame = false;
+            running = true;
+        }
         ImGui.end();
     }
 
