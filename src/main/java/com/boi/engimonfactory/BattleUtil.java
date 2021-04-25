@@ -1,6 +1,7 @@
 package com.boi.engimonfactory;
 
 public class BattleUtil{
+	/*
 	// mengembalikan power engimon a terhadap engimon b
 	private static double getPowerAgainst(Engimon a, Engimon b){
 		double ret = a.getLevel()*Element.getAdvantage(a.getElements(), b.getElements());
@@ -19,5 +20,5 @@ public class BattleUtil{
 	public static boolean comparePower(Engimon player_engimon, Engimon wild_engimon){
 		return getPowerAgainst(player_engimon, wild_engimon) >= getPowerAgainst(wild_engimon, player_engimon);
 	}
-
+	*/
 }

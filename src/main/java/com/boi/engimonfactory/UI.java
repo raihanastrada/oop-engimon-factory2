@@ -3,6 +3,8 @@ import imgui.ImGui;
 
 public class UI {
     private boolean showText = false;
+    private boolean showInv = false;
+    private Player player;
 
     /*
         - Checkbox
@@ -19,7 +21,9 @@ public class UI {
         ImGui.ListBox("ListBox", &selectedItem, inventory, IM_ARRAYSIZE(inventory))
 
      */
-
+    public void insertPlayer(Player p) {
+        this.player = p;
+    }
     public void ui() {
         ImGui.begin("Engimon Factory");
 
@@ -36,11 +40,27 @@ public class UI {
             }
         }
 
+        if (ImGui.button("Show Inventory")) {
+            showInv = true;
+            System.out.println("Inventory clicked");
+        }
+
+        if (showInv) {
+            ImGui.text("Showing inventory");
+            ImGui.sameLine();
+            if (ImGui.button("Close inventory")) {
+                showInv = false;
+            }
+        }
+
         ImGui.end();
 
         if (showText)
         {
             menu2();
+        }
+        if (showInv) {
+            menuInventory();
         }
     }
 
@@ -49,6 +69,13 @@ public class UI {
     {
         ImGui.begin("Menu2");
         ImGui.text("This is menu 2");
+        ImGui.end();
+    }
+
+    public void menuInventory() {
+        ImGui.begin("Menu Inventory");
+        ImGui.text("This is your inventory, " + this.player.getName() + "\n"
+            + this.player.getPrintInventoryE() + this.player.getPrintInventoryS());
         ImGui.end();
     }
 }

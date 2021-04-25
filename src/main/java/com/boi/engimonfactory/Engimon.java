@@ -44,6 +44,21 @@ public class Engimon implements Storeable {
     public int getLevel() { return level; }
     public int getExp() { return exp % 100; }
     public int getCumulativeExp() { return exp; }
+    public Skill getFirstSkill() {
+        if (this.skills.size() == 0) return null;
+        return this.skills.get(0);
+    }
+
+    @Override
+    public String getPrint() {
+        String msg = this.name + "/" + this.getElements().get(0).type().asString();
+        if (this.getElements().size() == 2)
+        {
+            msg += "-" + this.getElements().get(1).type().asString();
+        }
+        msg += "/" + this.level;
+        return msg;
+    }
 
     public ArrayList<Element> getElements() { return this.species.getSpeciesElements(); }
     public Engidex.Species getSpecies() { return this.species; }
@@ -129,16 +144,7 @@ public class Engimon implements Storeable {
         detail += ("Exp\t: " + String.valueOf(getExp()));
         return detail;
     }
-    @Override
-    public String toString() {
-        String msg = this.name + "/" + this.getElements().get(0).type().asString();
-        if (this.getElements().size() == 2)
-        {
-            msg += "-" + this.getElements().get(1).type().asString();
-        }
-        msg += "/" + Integer.toString(this.level);
-        return msg;
-    }
+
     public void decreaseLives() {
         this.lives--;
     }

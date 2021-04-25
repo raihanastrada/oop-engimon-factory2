@@ -65,6 +65,11 @@ public class Inventory<T extends Storeable> implements Serializable {
         public boolean equals(Object obj) {
             return this.item.equals(obj);
         }
+
+        @Override
+        public String getPrint() {
+            return this.item.getPrint();
+        }
     }
 
     /* Atribut Inventory */
@@ -223,7 +228,8 @@ public class Inventory<T extends Storeable> implements Serializable {
         String message = "";
         Integer count = 1;
         for (Item i : this.inv) {
-            message += (count + ".\t" + i.toString());
+            message += (count + ".\t" + i.getItem().getPrint() + "\n");
+            message += ("\t\t" + counter + ": " + i.getCount() + "\n\n");
             count++;
         }
         return message;

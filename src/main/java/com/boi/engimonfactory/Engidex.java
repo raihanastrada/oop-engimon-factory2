@@ -10,7 +10,7 @@ public class Engidex implements Serializable {
     private static HashMap<Integer, Species> codex = new HashMap<Integer, Species>();
     public static final Integer engimonCountPerElement = 2;
 
-    public static class Species {
+    public static class Species implements Serializable {
         /*
         * SpeciesID format:
         *       XYZZ

@@ -182,7 +182,7 @@ public class Game implements Serializable {
         inp.close();
         return game;
     }
-
+    /*
     // Battle
     private void battle(){
         try {
@@ -221,6 +221,7 @@ public class Game implements Serializable {
             System.out.println(e.getMessage());
         }
     }
+    */
 
     public void run() {
         Scanner scan = new Scanner(System.in);
@@ -268,7 +269,7 @@ public class Game implements Serializable {
             }
             else if (command.equals("battle")) {
                 // TODO
-                battle();
+                // battle();
             }
             else if (command.equals("save")) {
                 if (!save()) {

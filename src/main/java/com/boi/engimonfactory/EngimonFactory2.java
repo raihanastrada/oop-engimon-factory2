@@ -1,20 +1,17 @@
 package com.boi.engimonfactory;
 
-import java.io.File;
-
 public class EngimonFactory2 {
 
     public static void main(String[] args) {
 
         System.out.println("FUCK YOU AND YOUR FRIENDS");
         System.out.println("FUCK YOU AND THE GUI");
-        /*
+
 //        new Renderer().run();
-        Window window = new Window(new UI());
-        window.init();
-        window.run();
-        window.destroy();
-        */
+
+
+        // Window window = new Window(new InventoryUI());
+
         /*
         // try-catch block to handle exceptions
         try {
@@ -47,17 +44,22 @@ public class EngimonFactory2 {
         g.addRandomEngimonPlayer();
         g.addRandomEngimonPlayer();
         g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
         g.getPlayer().printInventoryEngimon();
         g.getPlayer().switchActive(0);
         System.out.println(g.getPlayer().getInvCount());
 
+        g.save();
+
+
+        // Game g;
+        // g = Game.load();
+
+        g.getPlayer().printInventoryEngimon();
+        UI a = new UI();
+        a.insertPlayer(g.getPlayer());
+        Window window = new Window(a);
+        window.init();
+        window.run();
+        window.destroy();
     }
 }
