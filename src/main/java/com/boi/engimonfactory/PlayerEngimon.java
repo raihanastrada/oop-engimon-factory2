@@ -62,7 +62,6 @@ public class PlayerEngimon extends Engimon {
             Engimon anak = new Engimon(); // placeholder engimon anak
             anak = PlayerEngimon.determineEngimon(mom, dad);
             String newName = anak.getSpeciesName(); // nama anak
-            if (newName == null) { newName = "placeholder"; }
             PlayerEngimon toReturn = new PlayerEngimon(anak, newName, momName, dadName);
 
             // inherit skill
