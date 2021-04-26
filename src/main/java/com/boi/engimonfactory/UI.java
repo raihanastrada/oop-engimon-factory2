@@ -27,10 +27,12 @@ public class UI {
     private boolean showMenuBattle = false;
     private boolean showRelease = false;
     private boolean showBuang = false;
+    private boolean showDetail = false;
     private ImInt selectedRelease = new ImInt();
     private ImInt selectedBuang = new ImInt();
     private ImInt selectedBuangCount = new ImInt();
     private ImInt selectedActive = new ImInt();
+    private ImInt selectedDetail = new ImInt();
     private ImInt selectedMom = new ImInt();
     private ImInt selectedDad = new ImInt();
     private String messageBreed = "";
@@ -134,6 +136,17 @@ public class UI {
                 if (ImGui.button("Close interact")) showInteract = false;
             }
 
+            if (ImGui.button("Detail Engimon")) {
+                showDetail = true;
+                System.out.println("Detail clicked");
+            }
+
+            if (showDetail) {
+                ImGui.text("Showing Engimon detail");
+                ImGui.sameLine();
+                if (ImGui.button("Close Detail")) showDetail = false;
+            }
+
             if (ImGui.button("Breed")) {
                 showBreed = true;
                 this.messageBreed = "";
@@ -204,6 +217,8 @@ public class UI {
             menuSwitchActive();
         if (showBreed && !isInventoryFull)
             menuBreed();
+        if (showDetail)
+            menuDetail();
         if (showMenuBattle) {
             menuBattlePrep();
         }
@@ -341,6 +356,40 @@ public class UI {
         this.player.switchActive(this.selectedActive.getData()[0]);
     }
 
+    public void menuDetail() {
+        ImGui.begin("Detail Engimon");
+        Integer size = this.player.getInvE().getSize();
+        String[] comboEngimon = new String[size];
+        for (int i = 0; i < size; i++) {
+            comboEngimon[i] = this.player.getInvE().getItemByIdx(i).getPrint();
+        }
+        ImGui.combo("Detail", selectedDetail, comboEngimon);
+        int selected = selectedDetail.get();
+        Engimon e = this.player.getInvE().getItemByIdx(selected);
+        String message1 = e.getPrint() + "\nParents: ";
+        if (e.getParentNames() == null) message1 += "None";
+        else message1 += (e.getParentNames()[0] + ", " + e.getParentNames()[1]);
+        message1 += "\nSkills:\n";
+        ImGui.text(message1);
+        for (Skill s: e.getSkills()) {
+            try {
+                Texture tex = new Texture(resolveSkillMasteryLevel(s));
+                ImGui.imageButton(tex.getId(), 50.0f, 50.0f);
+                ImGui.sameLine();
+                ImGui.text(s.getPrint());
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        String message2 = ("Lives\t: " + e.getLives() + "\n");
+        message2 += ("LVL\t: " + e.getLevel() + "\n");
+        message2 += ("CExp\t: " + e.getCumulativeExp() + "\n");
+        message2 += ("Exp\t: " + e.getExp() + "\n");
+        ImGui.text(message2);
+
+        ImGui.end();
+    }
+
     public void menuBreed() {
         ImGui.begin("Breed Menu AWOOOGA");
         String[] comboitemsMom = new String[this.player.getInvE().getSize()];
@@ -434,11 +483,10 @@ public class UI {
         return toret;
     }
     /*
-        @TODO UI Inventory belom selese (image skill)
-        @TODO UI Inventory menampilkan list skill item (base power dan elemen yang bisa learn skill tersebut)
+        @TODO UI Inventory belom selese (image skill) gapake
+            @TODO UI Inventory menampilkan list skill item (base power dan elemen yang bisa learn skill tersebut)
         @TODO UI replace skill/learn skill player engimon
 
-        @TODO UI detail engimon (image skill)
         @TODO UI load game belom selese (error)
      */
 }
