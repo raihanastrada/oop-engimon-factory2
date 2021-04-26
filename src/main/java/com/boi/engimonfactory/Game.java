@@ -133,7 +133,12 @@ public class Game implements Serializable {
 
     public int getActiveID() {
         if (this.player.getActiveEngimon() == null) return 0;
-        return this.player.getActiveEngimon().getID();
+        return this.player.getActiveEngimon().getSpecies().getSpeciesID();
+    }
+
+    public int getActiveLevel() {
+        if (this.player.getActiveEngimon() == null) return 0;
+        return this.player.getActiveEngimon().getLevel();
     }
 
     public Peta getPeta() {

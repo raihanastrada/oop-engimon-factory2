@@ -162,11 +162,17 @@ public class Window {
     }
 
     public void update() {
-        wildEngimon = new ArrayList<>();
-
-        for(Pair<Engimon, Position> p: imguiLayer.getMap().getEnemyEngimon())
+//        if (imguiLayer.isUpdated()) // perubahan blom dibaca
+        if (1==1)
         {
-            addWildEngimon(p.getItem1(), p.getItem2());
+            wildEngimon = new ArrayList<>();
+
+            for(Pair<Engimon, Position> p: imguiLayer.getMap().getEnemyEngimon())
+            {
+                addWildEngimon(p.getItem1(), p.getItem2());
+            }
+
+//            imguiLayer.updateRead(); // uperubahan udah dibaca
         }
     }
 
@@ -197,6 +203,8 @@ public class Window {
             activeEngimon.setPosition(imguiLayer.getMap().getActiveEngimonPosition().getX(), 1, imguiLayer.getMap().getActiveEngimonPosition().getY());
             shaderProgram.setUniform("worldMatrix", activeEngimon.getWorldMatrix());
             activeEngimon.getMesh().render();
+            shaderProgram.setUniform("worldMatrix", activeEngimon.getMarkerWorldMatrix());
+            activeEngimon.getLove().getMesh().render();
 
             for(GLObjectCell c: mapCells)
             {
@@ -208,6 +216,12 @@ public class Window {
             {
                 shaderProgram.setUniform("worldMatrix", e.getWorldMatrix());
                 e.getMesh().render();
+
+                if (e.isDanger())
+                {
+                    shaderProgram.setUniform("worldMatrix", e.getMarkerWorldMatrix());
+                    e.getDanger().getMesh().render();
+                }
             }
 
             shaderProgram.unbind();
@@ -235,6 +249,10 @@ public class Window {
     private void addWildEngimon(Engimon e, Position p)
     {
         GLObjectEngimon wildE = new GLObjectEngimon(e.getSpecies().getSpeciesID());
+        if (e.getLevel() > imguiLayer.getActiveEngimonLevel())
+        {
+            wildE.setDanger(true);
+        }
         wildE.setPosition(p.getX(), 0, p.getY());
         wildEngimon.add(wildE);
     }

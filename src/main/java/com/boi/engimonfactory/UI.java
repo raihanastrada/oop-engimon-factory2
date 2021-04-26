@@ -74,6 +74,8 @@ public class UI {
     {
         return game.getPeta();
     }
+    public int getActiveEngimonLevel() { return game.getActiveLevel(); }
+    public int getActiveEngimonSpeciesID() { return game.getActiveID(); }
 
     public void insertGame(Game g) {
         this.game = g;
