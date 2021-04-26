@@ -50,16 +50,16 @@ public class EngimonFactory2 {
 
         g.save();
 
-        Window window = new Window(new UI());
-        try {
-            window.init();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        window.run();
-        window.destroy();
+//        Window window = new Window(new UI());
+//        try {
+//            window.init();
+//        } catch (Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//
+//        window.run();
+//        window.destroy();
 
 //        System.out.println("END OF WIN");
 //
@@ -73,7 +73,12 @@ public class EngimonFactory2 {
         UI a = new UI();
         a.insertGame(g);
         Window window = new Window(a);
-        window.init();
+        try {
+            window.init();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         window.run();
         window.destroy();
     }

@@ -1,6 +1,6 @@
 package com.boi.engimonfactory;
-
 import java.util.ArrayList;
+
 
 public class Engimon implements Storeable {
     protected int id, exp, level;

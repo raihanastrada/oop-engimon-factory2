@@ -5,5 +5,4 @@ public class SkillAlreadyLearnedException extends Exception {
     {
         super(msg);
     }
-
 }
