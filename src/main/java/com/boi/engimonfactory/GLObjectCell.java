@@ -110,12 +110,10 @@ public class GLObjectCell extends GLObject {
         };
 
         try {
-            Texture green = new Texture("textures/grassblock.png");
-
-            mapMeshes.put(CellType.GRASSLAND, new Mesh(positions, textCoords, indices, green));
-            mapMeshes.put(CellType.TUNDRA, new Mesh(positions, textCoords, indices, green));
-            mapMeshes.put(CellType.MOUNTAINS, new Mesh(positions, textCoords, indices, green));
-            mapMeshes.put(CellType.SEA, new Mesh(positions, textCoords, indices, green));
+            mapMeshes.put(CellType.GRASSLAND, new Mesh(positions, textCoords, indices, Texture.getTexture("GRASS")));
+            mapMeshes.put(CellType.TUNDRA, new Mesh(positions, textCoords, indices, Texture.getTexture("GRASS")));
+            mapMeshes.put(CellType.MOUNTAINS, new Mesh(positions, textCoords, indices, Texture.getTexture("GRASS")));
+            mapMeshes.put(CellType.SEA, new Mesh(positions, textCoords, indices, Texture.getTexture("GRASS")));
         } catch (Exception e)
         {
 
@@ -127,7 +125,6 @@ public class GLObjectCell extends GLObject {
     public GLObjectCell(CellType t, float x, float y)
     {
         super(mapMeshes.get(t));
-        this.mesh = mapMeshes.get(CellType.GRASSLAND);
         switch(t){
             case SEA:
                 position = new Vector3f(x, -0.3f, y);

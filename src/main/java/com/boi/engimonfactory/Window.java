@@ -60,8 +60,10 @@ public class Window {
     }
 
     public void init() throws Exception {
+
         initWindow();
         initImGui();
+        Texture.initTextureLibrary();
         initMap();
 
 
@@ -135,7 +137,7 @@ public class Window {
     }
 
     public void initMap() {
-//        gameMap = imguiLayer.getMap();
+        gameMap = imguiLayer.getMap();
         GLObjectCell.init();
         GLObjectCell temp;
 
@@ -143,8 +145,7 @@ public class Window {
         {
             for(int y = 0; y < 10; y++)
             {
-//                temp = new GLObjectCell(gameMap.getCell(x, y).getType(), x, y);
-                temp = new GLObjectCell(CellType.GRASSLAND, x, y);
+                temp = new GLObjectCell(gameMap.getCell(x, y).getType(), x, y);
                 mapCells.add(temp);
             }
         }

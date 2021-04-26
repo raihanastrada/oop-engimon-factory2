@@ -2,6 +2,9 @@ package com.boi.engimonfactory;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.util.Map;
+import java.util.HashMap;
+
 import org.lwjgl.system.MemoryStack;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -11,6 +14,8 @@ import static org.lwjgl.stb.STBImage.*;
 public class Texture {
 
     private final int id;
+
+    private static Map<String, Texture> textureLibrary = new HashMap<>();
 
     public Texture(String fileName) throws Exception {
         this(loadTexture(fileName));
@@ -73,4 +78,28 @@ public class Texture {
     public void cleanup() {
         glDeleteTextures(id);
     }
+
+    public static Texture getTexture(String textureName)
+    {
+        return textureLibrary.get(textureName);
+    }
+
+    public static void initTextureLibrary()
+    {
+        addToLibrary("GRASS", "textures/grassblock.png");
+    }
+
+    private static void addToLibrary(String textureName, String texturePath)
+    {
+        try {
+            Texture newTex = new Texture(texturePath);
+            textureLibrary.put(textureName, newTex);
+        } catch (Exception e)
+        {
+            System.out.println("ERROR ADDING TO LIBRARY" + textureName + texturePath);
+        }
+    }
+
+
+
 }
