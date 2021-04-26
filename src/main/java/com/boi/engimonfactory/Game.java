@@ -122,6 +122,10 @@ public class Game implements Serializable {
         Engidex.addSpecies(5402, "Kageyama Shien", new Skill("Shien Freeze",comp2,gen.nextInt(100)+1));
     }
 
+    public int getActiveID() {
+        if (this.player.getActiveEngimon() == null) return 0;
+        return this.player.getActiveEngimon().getID();
+    }
 
     public Peta getPeta() {
         return this.peta;

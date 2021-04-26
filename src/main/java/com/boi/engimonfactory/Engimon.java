@@ -45,6 +45,7 @@ public class Engimon implements Storeable {
     public int getExp() { return exp % 100; }
     public int getCumulativeExp() { return exp; }
     public int getLives() { return this.lives; }
+    public int getID() { return this.id; }
     public ArrayList<Skill> getSkills() { return this.skills; }
     public Skill getFirstSkill() {
         if (this.skills.size() == 0) return null;
