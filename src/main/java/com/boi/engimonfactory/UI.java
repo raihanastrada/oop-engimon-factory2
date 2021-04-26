@@ -486,6 +486,10 @@ public class UI {
             showReplace = false;
             messageLearn = "";
         }
+
+        if (ImGui.button("aDD RANDOM") {
+            this.addRandom();
+        }
         ImGui.end();
     }
 
@@ -505,6 +509,12 @@ public class UI {
         this.player.switchActive(this.selectedActive.getData()[0]);
     }
 
+    public void addRandom() {
+        Engimon e = this.game.getEngidex().spawnRandomEngimon();
+        Position p = this.game.getPeta().spawnEngimonPosition(e);
+        this.game.getPeta().addEnemy(new Pair <Engimon,Position>(e,p));
+
+    }
     public void menuDetail() {
         ImGui.begin("Detail Engimon");
         Integer size = this.player.getInvE().getSize();
