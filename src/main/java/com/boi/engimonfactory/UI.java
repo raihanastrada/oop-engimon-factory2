@@ -292,13 +292,8 @@ public class UI {
             }
         }
 
-//        Texture tex;
-//        try {
-//            tex = new Texture("textures/grassblock.png");
-//            ImGui.imageButton(tex.getId(), 256.0f, 256.0f);
-//        } catch (Exception e)
-//        {
-//        }
+
+        ImGui.imageButton(Texture.getTexture("GRASS").getId(), 256.0f, 256.0f);
         ImGui.end();
     }
 
