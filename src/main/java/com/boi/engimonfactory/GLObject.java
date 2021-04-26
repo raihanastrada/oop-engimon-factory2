@@ -6,14 +6,14 @@ import org.joml.Matrix4f;
 public class GLObject {
     protected Mesh mesh;
     protected Vector3f position;
-    protected float scale;
+    protected Vector3f scale;
     protected Vector3f rotation;
 
     public GLObject(Mesh mesh)
     {
         this.mesh = mesh;
         position = new Vector3f(0, 0, 0);
-        scale = 1;
+        scale = new Vector3f(1, 1, 1);
         rotation = new Vector3f(0, 0, 0);
     }
 
@@ -23,11 +23,11 @@ public class GLObject {
         this.position.z = z;
     }
 
-    public float getScale() {
+    public Vector3f getScale() {
         return scale;
     }
 
-    public void setScale(float scale) {
+    public void setScale(Vector3f scale) {
         this.scale = scale;
     }
 

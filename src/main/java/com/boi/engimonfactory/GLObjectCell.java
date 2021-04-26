@@ -109,11 +109,83 @@ public class GLObjectCell extends GLObject {
                 4, 6, 7, 5, 4, 7
         };
 
+        float[] normals = new float[] {
+                0
+                ,-1
+                ,0
+                ,0
+                ,-1
+                ,0
+                ,0
+                ,-1
+                ,0
+                ,0
+                ,1
+                ,0
+                ,0
+                ,1
+                ,0
+                ,0
+                ,1
+                ,0
+                ,1
+                ,0
+                ,0
+                ,1
+                ,0
+                ,0
+                ,1
+                ,0
+                ,0
+                ,0
+                ,0
+                ,1
+                ,0
+                ,0
+                ,1
+                ,0
+                ,0
+                ,1
+                ,-1
+                ,0
+                ,0
+                ,-1
+                ,0
+                ,0
+                ,-1
+                ,0
+                ,0
+                ,0
+                ,0
+                ,-1
+                ,0
+                ,0
+                ,-1
+                ,0
+                ,0
+                ,-1
+                ,0
+                ,-1
+                ,0
+                ,0
+                ,1
+                ,0
+                ,1
+                ,0
+                ,0
+                ,0
+                ,0
+                ,1
+                ,-1
+                ,0
+                ,0
+        };
+
         try {
-            mapMeshes.put(CellType.GRASSLAND, new Mesh(positions, textCoords, indices, Texture.getTexture("GRASS")));
-            mapMeshes.put(CellType.TUNDRA, new Mesh(positions, textCoords, indices, Texture.getTexture("TUNDRA")));
-            mapMeshes.put(CellType.MOUNTAINS, new Mesh(positions, textCoords, indices, Texture.getTexture("MOUNTAIN")));
-            mapMeshes.put(CellType.SEA, new Mesh(positions, textCoords, indices, Texture.getTexture("WATER")));
+            mapMeshes.put(CellType.GRASSLAND, new Mesh(positions, textCoords, normals, indices, Texture.getTexture("GRASS")));
+            mapMeshes.put(CellType.TUNDRA, new Mesh(positions, textCoords, normals, indices, Texture.getTexture("TUNDRA")));
+            mapMeshes.put(CellType.MOUNTAINS, new Mesh(positions, textCoords, normals, indices, Texture.getTexture("MOUNTAIN")));
+            mapMeshes.put(CellType.SEA, new Mesh(positions, textCoords, normals, indices, Texture.getTexture("WATER")));
         } catch (Exception e)
         {
 
@@ -141,7 +213,7 @@ public class GLObjectCell extends GLObject {
             default:
                 position = new Vector3f(x, -0.4f, y);
         }
-        scale = 1;
+        scale = new Vector3f(1, 1, 1);
         rotation = new Vector3f(0, 0, 0);
     }
 }

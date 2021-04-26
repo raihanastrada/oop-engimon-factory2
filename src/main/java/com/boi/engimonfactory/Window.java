@@ -51,7 +51,8 @@ public class Window {
     /*
     * VIEW VARIABLES
     * */
-    private final Vector3f cameraPos  = new Vector3f(5.5f, 6, -6.f);
+//    private final Vector3f cameraPos  = new Vector3f(5.5f, 6, -6.f);
+    private final Vector3f cameraPos  = new Vector3f(5.5f, 6, 12+6.f);
     private final Vector3f cameraTarget = new Vector3f(5.5f, 0, 5);
     private final Vector3f cameraUp = new Vector3f(0, 1, 0);
 
@@ -182,7 +183,7 @@ public class Window {
             shaderProgram.setUniform("sampler", 0);
             glBindVertexArray(0);
 
-            player.setPosition(imguiLayer.getMap().getPlayerPosition().getX(), 0, imguiLayer.getMap().getPlayerPosition().getY());
+            player.setPosition(imguiLayer.getMap().getPlayerPosition().getX(), 1, imguiLayer.getMap().getPlayerPosition().getY());
 //            player.setPosition(0, 0, 0);
 
 //            System.out.println(imguiLayer.getMap().getPlayerPosition().getX() + " is X, " + imguiLayer.getMap().getPlayerPosition().getY() + " is Y");
@@ -193,7 +194,7 @@ public class Window {
 //            System.out.println("PLAYER " + imguiLayer.getMap().getPlayerPosition().getX() + " " + imguiLayer.getMap().getPlayerPosition().getY() + " ENGIMON "+ imguiLayer.getMap().getActiveEngimonPosition().getX() + " " + imguiLayer.getMap().getActiveEngimonPosition().getY());
 //            System.out.println();
 
-            activeEngimon.setPosition(imguiLayer.getMap().getActiveEngimonPosition().getX(), 0, imguiLayer.getMap().getActiveEngimonPosition().getY());
+            activeEngimon.setPosition(imguiLayer.getMap().getActiveEngimonPosition().getX(), 1, imguiLayer.getMap().getActiveEngimonPosition().getY());
             shaderProgram.setUniform("worldMatrix", activeEngimon.getWorldMatrix());
             activeEngimon.getMesh().render();
 

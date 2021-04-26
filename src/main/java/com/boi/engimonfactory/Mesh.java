@@ -32,14 +32,17 @@ public class Mesh {
 
     private final int texVboId;
 
+    private final int norVboId;
+
     private final int vertexCount;
 
     private final Texture texture;
 
-    public Mesh(float[] positions, float[] texCoords, int[] indices, Texture t) {
+    public Mesh(float[] positions, float[] texCoords, float[] normals, int[] indices, Texture t) {
         FloatBuffer posBuffer = null;
         FloatBuffer texBuffer = null;
         IntBuffer indicesBuffer = null;
+        FloatBuffer normalsBuffer = null;
 
         texture = t;
 
@@ -58,14 +61,23 @@ public class Mesh {
             glEnableVertexAttribArray(0);
             glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 
-
+            // Texture VBO
             texVboId = glGenBuffers();
             texBuffer = MemoryUtil.memAllocFloat(texCoords.length);
             texBuffer.put(texCoords).flip();
             glBindBuffer(GL_ARRAY_BUFFER, texVboId);
             glBufferData(GL_ARRAY_BUFFER, texBuffer, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(0);
+            glEnableVertexAttribArray(1);
             glVertexAttribPointer(1, 2, GL_FLOAT, false, 0, 0);
+
+            // Normals VBO
+            norVboId = glGenBuffers();
+            normalsBuffer = MemoryUtil.memAllocFloat(normals.length);
+            normalsBuffer.put(normals).flip();
+            glBindBuffer(GL_ARRAY_BUFFER, norVboId);
+            glBufferData(GL_ARRAY_BUFFER, normalsBuffer, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(2);
+            glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, 0);
 
             // Index VBO
             idxVboId = glGenBuffers();
@@ -87,6 +99,10 @@ public class Mesh {
             {
                 MemoryUtil.memFree(texBuffer);
             }
+            if (normalsBuffer != null)
+            {
+                MemoryUtil.memFree(normalsBuffer);
+            }
         }
     }
 
@@ -105,6 +121,7 @@ public class Mesh {
         glBindVertexArray(getVaoId());
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
         glDrawElements(GL_TRIANGLES, getVertexCount(), GL_UNSIGNED_INT, 0);
     }
 
