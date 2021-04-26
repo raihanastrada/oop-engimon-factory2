@@ -14,6 +14,8 @@ public class UI {
     private boolean showLoadGame = false;
     private boolean showInputName = false;
     private ImString name = new ImString(8);
+    private int[] maxCapInv = new int[1];
+    private int[] maxCapEng = new int[1];
     //
     private boolean showText = false;
     private boolean showInv = false;
@@ -34,6 +36,8 @@ public class UI {
     private String messageBreed = "";
     private ImString breedName = new ImString();
 
+    private boolean showSave = false;
+    private boolean showNotification = false;
     /*
         - Checkbox
         static boolean checkBox = false;
@@ -167,6 +171,11 @@ public class UI {
                     showMenuBattle = false;
                 }
             }
+
+            if (ImGui.button("Save")) {
+                showSave = true;
+            }
+
             ImGui.text("CHEATS:");
             // @TODO hapus ini
             if (ImGui.button("Add Random Engimon")) {
@@ -180,8 +189,6 @@ public class UI {
         if (showNewGame && showLoadGame) {
             menuStart();
         }
-        if (showText)
-            menu2();
         if (showInv)
             menuInventory();
         if (showRelease)
@@ -195,14 +202,10 @@ public class UI {
         if (showMenuBattle) {
             menuBattlePrep();
         }
-    }
-
-    // Bisa bikin di kelas beda
-    public void menu2()
-    {
-        ImGui.begin("Menu2");
-        ImGui.text("This is menu 2");
-        ImGui.end();
+        if (showSave) {
+            showNotification = game.save();
+            menuSave(showNotification);
+        }
     }
 
     public void menuStart()
@@ -221,7 +224,8 @@ public class UI {
         if (showLoadGame) {
             if (ImGui.button("LOAD GAME")) {
                 System.out.println("ini dari load game");
-                game.load();
+                Game g = new Game();
+                insertGame(g.load()); // FIXME; engimon yang udah ada levelnya kedobel kalo addRandom
                 showLoadGame = false;
                 showNewGame = false;
                 running = true;
@@ -230,13 +234,35 @@ public class UI {
         ImGui.end();
     }
 
+    public void notification(String title, String message) {
+        ImGui.begin(title);
+        ImGui.text(message);
+        if(ImGui.button("Ok")){
+            if (showSave) showSave = false;
+        }
+        ImGui.end();
+    }
+
     public void inputName() {
         ImGui.begin("Input Name");
         ImGui.text("What's your name?");
         ImGui.inputText("", name, ImGuiInputTextFlags.CallbackResize);
+        ImGui.text("Choose inventory maximum capacity");
+        ImGui.sliderInt(" ", maxCapInv, 5, 30);
+        ImGui.text("Choose wild engimon maximum capacity");
+        ImGui.sliderInt("  ", maxCapEng, 5, 30);
         if (ImGui.button("OK")) {
             System.out.print("Masukan namanya: ");
             System.out.println(name);
+            System.out.print("Max cap inv: ");
+            System.out.println(maxCapInv);
+            System.out.print("Max cap eng: ");
+            System.out.println(maxCapEng);
+            insertGame(new Game(name.toString(), maxCapInv[0], maxCapEng[0]));
+            game.addRandomEngimonPlayer();
+            game.addRandomEngimonPlayer();
+            game.addRandomEngimonPlayer();
+
             showInputName = false;
             showLoadGame = false;
             showNewGame = false;
@@ -359,15 +385,19 @@ public class UI {
         }
         ImGui.end();
     }
+
+    public void menuSave(boolean saved) {
+        if (saved) notification("Notification","Game is Saved");
+        else notification("Notification","Failed to save game");
+    }
     /*
         @TODO UI Inventory belom selese (image skill)
-            @TODO UI Inventory menampilkan list skill item (base power dan elemen yang bisa learn skill tersebut)
+        @TODO UI Inventory menampilkan list skill item (base power dan elemen yang bisa learn skill tersebut)
         @TODO UI replace skill/learn skill player engimon
 
         @TODO UI buang X item (belom full) / Release Engimon dari inventory (done)
 
         @TODO UI detail engimon (image skill)
-        @TODO UI save game
-        @TODO UI load game
+        @TODO UI load game belom selese (error)
      */
 }
