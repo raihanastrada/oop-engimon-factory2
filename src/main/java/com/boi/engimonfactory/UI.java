@@ -251,7 +251,7 @@ public class UI {
             menuRelease();
         if (showBuang && !isInventorySkillEmpty)
             menuBuang();
-        if (showLearn)
+        if (showLearn && !isInventorySkillEmpty)
             menuLearn();
         if (showSwitch)
             menuSwitchActive();
@@ -293,7 +293,7 @@ public class UI {
         }
 
 
-        ImGui.imageButton(Texture.getTexture("GRASS").getId(), 256.0f, 256.0f);
+//        ImGui.imageButton(Texture.getTexture("GRASS").getId(), 256.0f, 256.0f);
         ImGui.end();
     }
 
@@ -318,9 +318,9 @@ public class UI {
             System.out.print("Masukan namanya: ");
             System.out.println(name);
             System.out.print("Max cap inv: ");
-            System.out.println(maxCapInv);
+            System.out.println(maxCapInv[0]);
             System.out.print("Max cap eng: ");
-            System.out.println(maxCapEng);
+            System.out.println(maxCapEng[0]);
             insertGame(new Game(name.toString(), maxCapInv[0], maxCapEng[0]));
             game.addRandomEngimonPlayer();
             game.addRandomEngimonPlayer();
@@ -503,7 +503,7 @@ public class UI {
                 Texture tex = new Texture(resolveSkillImage(s, true));
                 ImGui.imageButton(tex.getId(), 50.0f, 50.0f);
                 ImGui.sameLine();
-                ImGui.text(s.getPrint());
+                ImGui.text(s.getPrint() + " MLevel: " + s.getMasteryLevel());
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }

@@ -81,5 +81,13 @@ public class Element implements Serializable {
         return max;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof Element)) return false;
+        Element other = (Element) o;
+        return this.type.asString().equals(other.type.asString());
+    }
+
 
 }
