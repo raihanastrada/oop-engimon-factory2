@@ -33,6 +33,7 @@ public class PlayerEngimon extends Engimon {
         parentNames = new String[2];
         parentNames[0] = momName;
         parentNames[1] = dadName;
+        level = 1;
         lives = 3;
     }
 

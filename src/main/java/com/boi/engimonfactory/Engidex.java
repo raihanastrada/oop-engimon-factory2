@@ -100,15 +100,19 @@ public class Engidex implements Serializable {
             if (firstElement > secondElement) {
                 fullcode = firstElement * 1000 + secondElement * 100 + index;
             }
-            else {
+            else if (firstElement < secondElement) {
                 fullcode = secondElement * 1000 + firstElement * 100 + index;
             }
-        }
-        if (firstElement < secondElement) {
-            fullcode = firstElement * 1000 + secondElement * 100 + index;
+            else { fullcode = firstElement * 1000 + index; }
         }
         else {
-            fullcode = secondElement * 1000 + firstElement * 100 + index;
+            if (firstElement < secondElement) {
+                fullcode = firstElement * 1000 + secondElement * 100 + index;
+            }
+            else if (firstElement > secondElement) {
+                fullcode = secondElement * 1000 + firstElement * 100 + index;
+            }
+            else { fullcode = firstElement * 1000 + index; }
         }
         return spawnEngimon(fullcode);
     }
