@@ -5,6 +5,7 @@ import imgui.ImGuiIO;
 import imgui.flag.ImGuiConfigFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -17,6 +18,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import org.joml.Matrix4f;
 
+import java.util.ArrayList;
+
 public class Window {
     private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
     private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
@@ -25,19 +28,32 @@ public class Window {
     private long windowPtr;
     private UI imguiLayer;
     private ShaderProgram shaderProgram;
-    private Mesh test;
-    private GLObject testO;
+//    private Mesh test;
+//    private GLObject testO;
 
-    private int windowWidth = 1600;
-    private int windowHeight = 900;
+    private ArrayList<GLObjectCell> mapCells = new ArrayList<>();
+    private ArrayList<Engimon> wildEngimon = new ArrayList<>();
+    private GLObjectPlayer player;
+    private GLObjectEngimon activeEngimon;
+
+    private Peta gameMap;
+
+    private final int windowWidth = 1600;
+    private final int windowHeight = 900;
     /*
-    * CAMERA VARIABLES
+    * PROJECTION VARIABLES
     * */
-
     private static final float FOV = (float) Math.toRadians(60.0f);
-    private static float Z_NEAR = 0.01f;
-    private static float Z_FAR = 1000.0f;
+    private static final float Z_NEAR = 0.01f;
+    private static final float Z_FAR = 1000.0f;
     private Matrix4f projectionMatrix;
+    private Matrix4f viewMatrix;
+    /*
+    * VIEW VARIABLES
+    * */
+    private final Vector3f cameraPos  = new Vector3f(5.5f, 5, -4.f);
+    private final Vector3f cameraTarget = new Vector3f(5.5f, 0, 5);
+    private final Vector3f cameraUp = new Vector3f(0, 1, 0);
 
     public Window(UI layer) {
         imguiLayer = layer;
@@ -46,9 +62,12 @@ public class Window {
     public void init() throws Exception {
         initWindow();
         initImGui();
+        initMap();
+
+
         imGuiGlfw.init(windowPtr, true);
         imGuiGl3.init(glslVersion);
-
+        viewMatrix = new Matrix4f().identity().lookAt(cameraPos, cameraTarget, cameraUp);
 
         shaderProgram = new ShaderProgram();
         shaderProgram.createVertexShader(Utils.loadResource("vertexShader.vs"));
@@ -56,114 +75,9 @@ public class Window {
         shaderProgram.link();
 
         shaderProgram.createUniform("projectionMatrix");
+        shaderProgram.createUniform("viewMatrix");
         shaderProgram.createUniform("worldMatrix");
         shaderProgram.createUniform("sampler");
-
-        float[] positions = new float[] {
-                // V0
-                -0.5f, 0.5f, 0.5f,
-                // V1
-                -0.5f, -0.5f, 0.5f,
-                // V2
-                0.5f, -0.5f, 0.5f,
-                // V3
-                0.5f, 0.5f, 0.5f,
-                // V4
-                -0.5f, 0.5f, -0.5f,
-                // V5
-                0.5f, 0.5f, -0.5f,
-                // V6
-                -0.5f, -0.5f, -0.5f,
-                // V7
-                0.5f, -0.5f, -0.5f,
-
-                // For text coords in top face
-                // V8: V4 repeated
-                -0.5f, 0.5f, -0.5f,
-                // V9: V5 repeated
-                0.5f, 0.5f, -0.5f,
-                // V10: V0 repeated
-                -0.5f, 0.5f, 0.5f,
-                // V11: V3 repeated
-                0.5f, 0.5f, 0.5f,
-
-                // For text coords in right face
-                // V12: V3 repeated
-                0.5f, 0.5f, 0.5f,
-                // V13: V2 repeated
-                0.5f, -0.5f, 0.5f,
-
-                // For text coords in left face
-                // V14: V0 repeated
-                -0.5f, 0.5f, 0.5f,
-                // V15: V1 repeated
-                -0.5f, -0.5f, 0.5f,
-
-                // For text coords in bottom face
-                // V16: V6 repeated
-                -0.5f, -0.5f, -0.5f,
-                // V17: V7 repeated
-                0.5f, -0.5f, -0.5f,
-                // V18: V1 repeated
-                -0.5f, -0.5f, 0.5f,
-                // V19: V2 repeated
-                0.5f, -0.5f, 0.5f,
-        };
-
-        float[] textCoords = new float[]{
-                0.0f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.5f, 0.0f,
-
-                0.0f, 0.0f,
-                0.5f, 0.0f,
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-
-                // For text coords in top face
-                0.0f, 0.5f,
-                0.5f, 0.5f,
-                0.0f, 1.0f,
-                0.5f, 1.0f,
-
-                // For text coords in right face
-                0.0f, 0.0f,
-                0.0f, 0.5f,
-
-                // For text coords in left face
-                0.5f, 0.0f,
-                0.5f, 0.5f,
-
-                // For text coords in bottom face
-                0.5f, 0.0f,
-                1.0f, 0.0f,
-                0.5f, 0.5f,
-                1.0f, 0.5f,
-        };
-
-        int[] indices = new int[] {
-                // Front face
-                0, 1, 3, 3, 1, 2,
-                // Top Face
-                8, 10, 11, 9, 8, 11,
-                // Right face
-                12, 13, 7, 5, 12, 7,
-                // Left face
-                14, 15, 6, 4, 14, 6,
-                // Bottom face
-                16, 18, 19, 17, 16, 19,
-                // Back face
-                4, 6, 7, 5, 4, 7
-        };
-
-        Texture texture = new Texture("textures/grassblock.png");
-        test = new Mesh(positions, textCoords, indices, texture);
-
-        testO = new GLObject(test);
-        testO.setPosition(0, 0, -4);
-
-        System.out.println(testO);
 
         float aspectRatio = (float) windowWidth / windowHeight;
         projectionMatrix = new Matrix4f().perspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
@@ -220,26 +134,50 @@ public class Window {
         io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);
     }
 
+    public void initMap() {
+//        gameMap = imguiLayer.getMap();
+        GLObjectCell.init();
+        GLObjectCell temp;
+
+        for(int x = 0; x < 12; x++)
+        {
+            for(int y = 0; y < 10; y++)
+            {
+//                temp = new GLObjectCell(gameMap.getCell(x, y).getType(), x, y);
+                temp = new GLObjectCell(CellType.GRASSLAND, x, y);
+                mapCells.add(temp);
+            }
+        }
+    }
+
+    public void update() {
+
+    }
+
     public void run() {
         while (!glfwWindowShouldClose(windowPtr)) {
-            glClearColor(0.1f, 0.09f, 0.1f, 1.0f);
+//            glClearColor(0.1f, 0.09f, 0.1f, 1.0f);
+            glClearColor(0.52f, 0.81f, 0.921f, 1.0f);
+
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             shaderProgram.bind();
             shaderProgram.setUniform("projectionMatrix", projectionMatrix);
-
-
-            float rotation = testO.getRotation().x + 1.5f;
-            if ( rotation > 360 ) {
-                rotation = 0;
-            }
-            testO.setRotation(rotation, rotation, 0);
-
-            shaderProgram.setUniform("worldMatrix", testO.getWorldMatrix());
+            shaderProgram.setUniform("viewMatrix", viewMatrix);
             shaderProgram.setUniform("sampler", 0);
+            glBindVertexArray(0);
+
+            for(GLObjectCell c: mapCells)
+            {
+                shaderProgram.setUniform("worldMatrix", c.getWorldMatrix());
+                c.getMesh().render();
+            }
+
+            shaderProgram.unbind();
+
 
             // Draw the mesh
-            testO.getMesh().render();
+//            testO.getMesh().render();
 //            glActiveTexture(GL_TEXTURE0);
 //            glBindTexture(GL_TEXTURE_2D, texture.getId());
 //
@@ -248,9 +186,7 @@ public class Window {
 //            glEnableVertexAttribArray(1);
 //            glDrawElements(GL_TRIANGLES, testO.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
             // Restore state
-            glBindVertexArray(0);
 
-            shaderProgram.unbind();
 
             imGuiGlfw.newFrame();
             ImGui.newFrame();

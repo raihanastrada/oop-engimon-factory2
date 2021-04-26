@@ -43,11 +43,16 @@ public class UI {
         ImGui.ListBox("ListBox", &selectedItem, inventory, IM_ARRAYSIZE(inventory))
 
      */
+    public Peta getMap()
+    {
+        return game.getPeta();
+    }
 
     public void insertGame(Game g) {
         this.game = g;
         this.player = g.getPlayer();
     }
+
     public void ui() {
         if (!running) {
             ImGui.begin("Start");
@@ -191,6 +196,14 @@ public class UI {
                 showNewGame = false;
                 running = true;
             }
+        }
+
+        Texture tex;
+        try {
+            tex = new Texture("textures/grassblock.png");
+            ImGui.imageButton(tex.getId(), 256.0f, 256.0f);
+        } catch (Exception e)
+        {
         }
         ImGui.end();
     }
