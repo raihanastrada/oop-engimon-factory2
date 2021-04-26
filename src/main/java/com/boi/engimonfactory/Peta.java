@@ -139,9 +139,10 @@ public class Peta implements Serializable {
         /*
             Menambahkan enemy engimon pada list enemyEngimon
          */
-        if (this.getEnemyCount() < maxEnemyCount && ((System.currentTimeMillis()-time) % 45000 == 0)) {
+        if (this.getEnemyCount() < maxEnemyCount && ((System.currentTimeMillis()-this.time) > 30000)) {
             enemyEngimon.add(enemy);
             getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(enemy.getItem1());
+            this.time = System.currentTimeMillis();
         }
     }
 
@@ -159,7 +160,7 @@ public class Peta implements Serializable {
             yang tidak valid, posisi yang sudah ditempati Player, Active,Engimon dan enemyEngimon lain,
             serta type cell yang bukan habitatnya.
          */
-        if ((System.currentTimeMillis()-time) % 45000 == 0) {
+        if ((System.currentTimeMillis()-this.time) > 45000) {
             for (Pair<Engimon, Position> enemy: enemyEngimon) {
                 Random gen = new Random();
                 int newx = gen.nextInt(1) - 1;
@@ -174,6 +175,7 @@ public class Peta implements Serializable {
                 enemy.setItem2(new Position(newx,newy));
                 getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(enemy.getItem1());
             }
+            this.time = System.currentTimeMillis();
         }
     }
 
