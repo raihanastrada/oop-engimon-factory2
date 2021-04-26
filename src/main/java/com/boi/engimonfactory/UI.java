@@ -229,7 +229,12 @@ public class UI {
 
             if (ImGui.button("Battle")) {
                 showMenuBattle1 = true;
-                if (ImGui.button("Close battle")){
+            }
+
+            if (showMenuBattle1 || showMenuBattle2) {
+                ImGui.text("Showing battle window");
+                ImGui.sameLine();
+                if (ImGui.button("Close battle window")){
                     showMenuBattle1 = false;
                     showMenuBattle2 = false;
                 }
