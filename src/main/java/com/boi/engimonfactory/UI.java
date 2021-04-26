@@ -39,6 +39,14 @@ public class UI {
     private ImString breedName = new ImString();
     private int[] buangCount = new int[1];
 
+    // Replace Engimon Skill
+    private boolean showLearn = false;
+    private ImInt selectedEngimon = new ImInt();
+    private ImInt selectedSkillItem = new ImInt();
+    private boolean showReplace = false;
+    private ImInt selectedReplaced = new ImInt();
+    private String messageLearn = "";
+
     private boolean showSave = false;
     private boolean showNotification = false;
     /*
@@ -124,6 +132,31 @@ public class UI {
                 ImGui.text("Close buang item");
                 ImGui.sameLine();;
                 if (ImGui.button("Close buang item menu")) showBuang = false;
+            }
+
+            if (showBuang && !isInventorySkillEmpty) {
+                ImGui.text("Close buang item");
+                ImGui.sameLine();
+                if (ImGui.button("Close buang item menu")) showBuang = false;
+            }
+
+            if (ImGui.button("Use SkillItem")) {
+                showReplace = false;
+                showLearn = true;
+                System.out.println("Use SkillItem clicked");
+            }
+
+            if (showLearn && isInventorySkillEmpty) {
+                ImGui.text("\tInventory Skill Item Empty, cannot learn skill");
+            }
+
+            if (showLearn && !isInventorySkillEmpty) {
+                ImGui.text("Close Learn Menu");
+                ImGui.sameLine();
+                if (ImGui.button("Close Learn Skill menu")) {
+                    showLearn = false;
+                    showReplace = false;
+                }
             }
 
             if (ImGui.button("Interact")) {
@@ -218,6 +251,8 @@ public class UI {
             menuRelease();
         if (showBuang && !isInventorySkillEmpty)
             menuBuang();
+        if (showLearn)
+            menuLearn();
         if (showSwitch)
             menuSwitchActive();
         if (showBreed && !isInventoryFull)
@@ -249,8 +284,8 @@ public class UI {
         if (showLoadGame) {
             if (ImGui.button("LOAD GAME")) {
                 System.out.println("ini dari load game");
-                Game g = new Game();
-                insertGame(g.load()); // FIXME; engimon yang udah ada levelnya kedobel kalo addRandom
+                Game g = Game.load();
+                insertGame(g); // FIXME; engimon yang udah ada levelnya kedobel kalo addRandom
                 showLoadGame = false;
                 showNewGame = false;
                 running = true;
@@ -306,12 +341,25 @@ public class UI {
 
     // @TODO inventory menu not done
     public void menuInventory() {
+        ImGui.begin("Menu Inventory");
         String message = "This is your inventory, " + this.player.getName() + "\n"
                 + "Engimon:\n" + this.player.getPrintInventoryE()
-                + "SkillItem:\n" + this.player.getPrintInventoryS();
-        message += "\n" + "Item in inventory: " + this.player.getInvCount() + "/" + this.player.getMaxCap();
-        ImGui.begin("Menu Inventory");
+                + "SkillItem:\n";
         ImGui.text(message);
+        for (int i = 0; i < this.player.getInvS().getSize(); i++) {
+            try {
+                Skill s = this.player.getInvS().getItemByIdx(i);
+                Texture tex = new Texture(resolveSkillImage(s, true));
+                ImGui.imageButton(tex.getId(), 50.0f, 50.0f);
+                ImGui.sameLine();
+                ImGui.text(s.getPrint());
+                ImGui.sameLine();
+                ImGui.text("Count\t: "+this.player.getInvS().getCountByIdx(i));
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+        ImGui.text("Item in inventory: " + this.player.getInvCount() + "/" + this.player.getMaxCap());
         ImGui.end();
     }
 
@@ -354,6 +402,77 @@ public class UI {
         }
         if (ImGui.button("Buang Item"))
             this.player.buangItemSkill(selectedBuang.get(), buangCount[0]);
+        ImGui.end();
+    }
+
+    public void menuLearn() {
+        ImGui.begin("Menu Learn SkillItem");
+        Integer sizeE = this.player.getInvE().getSize();
+        Integer sizeS = this.player.getInvS().getSize();
+        String[] comboLearnE = new String[sizeE];
+        String[] comboLearnS = new String[sizeS];
+        for (int i = 0; i < sizeE; i++) {
+            comboLearnE[i] = this.player.getInvE().getItemByIdx(i).getPrint();
+        }
+        for (int i = 0; i < sizeS; i++) {
+            String message = this.player.getInvS().getItemByIdx(i).getPrint();
+            message += "\tCount: " + this.player.getInvS().getCountByIdx(i);
+            comboLearnS[i] = message;
+        }
+        ImGui.combo("EngimonLearn", selectedEngimon, comboLearnE);
+        ImGui.combo("SkillItem", selectedSkillItem, comboLearnS);
+        String hasil;
+        if (ImGui.button("Learn")) {
+            hasil = this.player.learnSkill(selectedEngimon.get(), selectedSkillItem.get());
+            if (hasil == null) {
+                showReplace = false;
+                showLearn = false;
+            }
+            else {
+                if (hasil.equals("Skill already learned")) messageLearn = hasil;
+                else if (hasil.equals("Skill not compatible")) messageLearn = hasil;
+                else if (hasil.equals("Skill slots full")) messageLearn = hasil;
+                else if (hasil.equals("berhasil")) messageLearn = "Engimon berhasil learn skill";
+                else {
+                    showReplace = false;
+                    showLearn = false;
+                }
+            }
+        }
+        ImGui.text(messageLearn);
+        if (messageLearn.equals("Skill slots full")
+                && player.getInvE().getItemByIdx(selectedEngimon.get()).getSkills().size() == 4
+                && player.getInvS().getItemByIdx(selectedSkillItem.get())
+                .isCompatibleWith(player.getInvE().getItemByIdx(selectedEngimon.get()).getElements())) {
+            ImGui.text("Do you want to replace the skill of the Engimon?");
+            if (ImGui.button("Yes")) {
+                showReplace = true;
+            }
+        }
+
+        ImGui.end();
+        if (showReplace)
+            menuReplace(
+                    this.player.getInvE().getItemByIdx(selectedEngimon.get()),
+                    this.player.getInvS().getItemByIdx(selectedSkillItem.get()));
+    }
+
+    public void menuReplace(Engimon e, Skill s) {
+        ImGui.begin("Menu Replace Skill");
+        String[] comboSkills = new String[4];
+        int i = 0;
+        for (Skill skill: e.getSkills()) {
+            String message = skill.getPrint();
+            message += "MLevel: " + skill.getMasteryLevel();
+            comboSkills[i] = message;
+            i++;
+        }
+        ImGui.combo("Replace Skill", selectedReplaced, comboSkills);
+        if (ImGui.button("Replace")) {
+            showLearn = false;
+            showReplace = false;
+            e.replaceSkill(s, selectedReplaced.get());
+        }
         ImGui.end();
     }
 
@@ -495,11 +614,8 @@ public class UI {
         toret += ("_" + s.getMasteryLevel() + ".png");
         return toret;
     }
-    /*
-        @TODO UI Inventory belom selese (image skill) gapake
-            @TODO UI Inventory menampilkan list skill item (base power dan elemen yang bisa learn skill tersebut)
+   /*
         @TODO UI replace skill/learn skill player engimon
-
         @TODO UI load game belom selese (error)
      */
 }
