@@ -53,6 +53,9 @@ public class UI {
     // Battle result message container
     private ArrayList<String> battleResultMessages = new ArrayList<>();
 
+    // atribut buat testing battle
+    private boolean testBattle = false;
+
     private boolean showSave = false;
     private boolean showNotification = false;
     /*
@@ -231,6 +234,13 @@ public class UI {
                 this.game.addRandomSkillItem();
 //                System.out.println("Added SkillItem");
             }
+//            if (ImGui.button("Battle random engimons")) {
+//                showMenuBattle2 = true;
+//                Cell c = new Cell(CellType.SEA, new Position(1, 1));
+//                c.setEnemy(Engidex.spawnRandomEngimon());
+//                this.battleResultMessages = game.battle(Engidex.spawnRandomEngimon(), c);
+//                menuBattleResults();
+//            }
         }
 
         ImGui.end();
@@ -256,7 +266,7 @@ public class UI {
             menuBattlePrep();
         }
         if (showMenuBattle2) {
-            menuBattleResults(battleResultMessages);
+            menuBattleResults();
         }
         if (showSave) {
             game.setEngCount(Engimon.getCount());
@@ -615,10 +625,11 @@ public class UI {
         ImGui.end();
     }
 
-    public void menuBattleResults(ArrayList<String> messages){
+    public void menuBattleResults(){
         ImGui.begin("Battle results");
-        for (String s : messages){
+        for (String s : this.battleResultMessages){
             ImGui.text(s);
+            System.out.println(s);
         }
         ImGui.end();
     }
