@@ -1,8 +1,9 @@
 package com.boi.engimonfactory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BattleUtil{
+public class BattleUtil implements Serializable {
 	// mengembalikan power engimon a terhadap engimon b
 	private static double getPowerAgainst(Engimon a, Engimon b){
 		double ret = a.getLevel()*Element.getAdvantage(a.getElements(), b.getElements());

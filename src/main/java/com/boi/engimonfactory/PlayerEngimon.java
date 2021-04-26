@@ -1,10 +1,11 @@
 package com.boi.engimonfactory;
 
 // import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class PlayerEngimon extends Engimon {
+public class PlayerEngimon extends Engimon implements Serializable {
 
     // protected int id, exp, level;
     // protected String name = "";

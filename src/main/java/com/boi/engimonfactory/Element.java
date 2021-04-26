@@ -3,7 +3,7 @@ package com.boi.engimonfactory;
 import java.io.Serializable;
 import java.util.List;
 
-enum ElementType {
+enum ElementType implements Serializable {
     NONE(0, "None"),
     ELECTRIC(1, "Electric"),
     FIRE(2, "Fire"),

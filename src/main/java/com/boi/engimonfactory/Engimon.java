@@ -1,8 +1,9 @@
 package com.boi.engimonfactory;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Engimon implements Storeable {
+public class Engimon implements Storeable, Serializable {
     protected int id, exp, level;
     protected String name;
     protected String[] parentNames;
@@ -12,11 +13,19 @@ public class Engimon implements Storeable {
     protected ArrayList<Skill> skills = new ArrayList<Skill>();
 
     static final int MAX_EXP = 100 * 100;
-    static int engimon_count = 0;
+    public static int engimon_count = 0;
 
     public Engimon()
     {
         this.species = new Engidex.Species();
+    }
+
+    public static int getCount() {
+        return engimon_count;
+    }
+
+    public static void setCount(int set) {
+        engimon_count = set;
     }
 
     public Engimon(Engidex.Species spec) {
