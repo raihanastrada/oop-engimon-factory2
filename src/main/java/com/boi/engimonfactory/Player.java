@@ -26,6 +26,8 @@ public class Player implements Serializable {
     // Getter active engimon
     public Engimon getActiveEngimon() { return this.activeEngimon; }
 
+    public Integer getMaxCap() { return this.maxCap; }
+
     // Asumsi engimon yang masuk ke inventory selalu memiliki 3 nyawa
     // Jika berhasil memasukkan engimon, return true, jika tidak, false
     public Boolean insertItem(Engimon e) {
@@ -209,12 +211,13 @@ public class Player implements Serializable {
         return this.invE.getCount() <= 0;
     }
 
-    public String breed(int idxE1, int idxE2) { // placeholder breed
+    public String breed(int idxE1, int idxE2, String input) { // placeholder breed
         if (idxE1 >= this.invE.getSize() || idxE1 < 0) return null;
         if (idxE2 >= this.invE.getSize() || idxE2 < 0) return null;
         // return type placeholder mungkin diganti Boolean
         try {
             PlayerEngimon hasil = PlayerEngimon.breed(this.invE.getItemByIdx(idxE1), this.invE.getItemByIdx(idxE2));
+            if (!input.isBlank()) hasil.setName(input);
             this.insertItem(hasil);
             return "Breeding berhasil";
         } catch (Exception e) {
