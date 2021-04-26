@@ -159,20 +159,23 @@ public class Window {
         }
 
         update();
+
     }
 
     public void update() {
-//        if (imguiLayer.isUpdated()) // perubahan blom dibaca
-        if (1==1)
+        if (imguiLayer.getGame().isUpdated()) // perubahan blom dibaca
         {
             wildEngimon = new ArrayList<>();
+            addWildEngimon(Engidex.spawnRandomEngimon(), new Position(0, 0));
 
             for(Pair<Engimon, Position> p: imguiLayer.getMap().getEnemyEngimon())
             {
                 addWildEngimon(p.getItem1(), p.getItem2());
             }
 
-//            imguiLayer.updateRead(); // uperubahan udah dibaca
+            imguiLayer.getGame().setReadUpdate();
+        } else {
+
         }
     }
 
@@ -199,6 +202,8 @@ public class Window {
 
 //            System.out.println("PLAYER " + imguiLayer.getMap().getPlayerPosition().getX() + " " + imguiLayer.getMap().getPlayerPosition().getY() + " ENGIMON "+ imguiLayer.getMap().getActiveEngimonPosition().getX() + " " + imguiLayer.getMap().getActiveEngimonPosition().getY());
 //            System.out.println();
+
+            System.out.println("WILD ENGIMON " + wildEngimon.size() + " ARRAY RETURNED " + imguiLayer.getMap().getEnemyEngimon().size());
 
             activeEngimon.setPosition(imguiLayer.getMap().getActiveEngimonPosition().getX(), 1, imguiLayer.getMap().getActiveEngimonPosition().getY());
             shaderProgram.setUniform("worldMatrix", activeEngimon.getWorldMatrix());

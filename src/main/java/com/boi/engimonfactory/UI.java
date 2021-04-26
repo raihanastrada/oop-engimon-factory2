@@ -85,6 +85,11 @@ public class UI {
         this.player = g.getPlayer();
     }
 
+    public Game getGame()
+    {
+        return game;
+    }
+
     public void ui() {
         if (!running) {
             ImGui.begin("Start");
@@ -497,7 +502,7 @@ public class UI {
             messageLearn = "";
         }
 
-        if (ImGui.button("aDD RANDOM") {
+        if (ImGui.button("aDD RANDOM")) {
             this.addRandom();
         }
         ImGui.end();

@@ -18,6 +18,8 @@ public class Game implements Serializable {
     Engidex engidex;
     private int engCount;
 
+    private boolean updateRead = true;
+
     public Game() {
         this.peta = new Peta(new Position(5,8),new Position(5,9),"Peta.txt", 15);
         getClass().getResource("Peta.txt");
@@ -167,16 +169,29 @@ public class Game implements Serializable {
         }
     }
 
-    public boolean Update() {
+    public boolean isUpdated()
+    {
+        return updateRead;
+    }
+
+    public void setReadUpdate()
+    {
+        this.updateRead = true;
+    }
+
+    public void Update() {
+//        Engimon wild = Engidex.spawnRandomEngimon();
+//        Position wildPosition = peta.spawnEngimonPosition(wild);
+//        peta.addEnemy(new Pair<>(wild, wildPosition));
+
         try {
             Engimon wild = Engidex.spawnRandomEngimon();
             Position wildPosition = peta.spawnEngimonPosition(wild);
             peta.addEnemy(new Pair<>(wild, wildPosition));
-            System.out.println(peta.getEnemyEngimon().size());
+//            System.out.println(peta.getEnemyEngimon().size());
             peta.moveEnemy();
-            return true;
+            updateRead = false;
         } catch (Exception e) {
-            return false;
         }
     }
     // Debugging Methods
