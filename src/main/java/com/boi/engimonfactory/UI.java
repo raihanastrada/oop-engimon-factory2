@@ -134,12 +134,6 @@ public class UI {
                 if (ImGui.button("Close buang item menu")) showBuang = false;
             }
 
-            if (showBuang && !isInventorySkillEmpty) {
-                ImGui.text("Close buang item");
-                ImGui.sameLine();
-                if (ImGui.button("Close buang item menu")) showBuang = false;
-            }
-
             if (ImGui.button("Use SkillItem")) {
                 showReplace = false;
                 showLearn = true;
