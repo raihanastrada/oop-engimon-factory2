@@ -313,9 +313,17 @@ public class UI {
         }
         ImGui.combo("Buang", selectedBuang, comboBuang);
         int count = this.player.getInvS().getCountByIdx(selectedBuang.get());
-        ImGui.sliderInt(" ", buangCount, 1, count);
         if (buangCount[0] > count)
             buangCount[0] = 1;
+        ImGui.sliderInt(" ", buangCount, 1, count);
+        Skill s = this.player.getInvS().getItemByIdx(selectedBuang.get());
+        Texture tex;
+        try {
+            tex = new Texture(resolveSkillImage(s, true));
+            ImGui.imageButton(tex.getId(), 50.0f, 50.0f);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         if (ImGui.button("Buang Item"))
             this.player.buangItemSkill(selectedBuang.get(), buangCount[0]);
         ImGui.end();
@@ -396,12 +404,39 @@ public class UI {
         if (saved) notification("Notification","Game is Saved");
         else notification("Notification","Failed to save game");
     }
+
+    public String resolveSkillImage(Skill s, boolean png) {
+        String toret = "textures/";
+        if (s.getName().equals("Shock")) toret += 12;
+        else if (s.getName().equals("Awe")) toret += 4;
+        else if (s.getName().equals("Fireball")) toret += 3;
+        else if (s.getName().equals("Rosenthal")) toret += 5;
+        else if (s.getName().equals("Ground Pound")) toret += 15;
+        else if (s.getName().equals("Yubi")) toret += 6;
+        else if (s.getName().equals("Icicle")) toret += 13;
+        else if (s.getName().equals("Devil's Snare")) toret += 1;
+        else if (s.getName().equals("Splash")) toret += 9;
+        else if (s.getName().equals("Wave")) toret += 14;
+        else if (s.getName().equals("Magnetize")) toret += 8;
+        else if (s.getName().equals("Gravitate")) toret += 16;
+        else if (s.getName().equals("Shuba")) toret += 10;
+        else if (s.getName().equals("Onionize")) toret += 11;
+        else if (s.getName().equals("Angle Supreme Freeze")) toret += 7;
+        else if (s.getName().equals("Shien Freeze")) toret += 2;
+        else return null;
+        if (png) toret += ".png";
+        return toret;
+    }
+
+    public String resolveSkillMasteryLevel(Skill s) {
+        String toret = resolveSkillImage(s, false);
+        toret += ("_" + s.getMasteryLevel() + ".png");
+        return toret;
+    }
     /*
         @TODO UI Inventory belom selese (image skill)
         @TODO UI Inventory menampilkan list skill item (base power dan elemen yang bisa learn skill tersebut)
         @TODO UI replace skill/learn skill player engimon
-
-        @TODO UI buang X item (belom full) / Release Engimon dari inventory (done)
 
         @TODO UI detail engimon (image skill)
         @TODO UI load game belom selese (error)
