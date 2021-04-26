@@ -95,11 +95,12 @@ public class UI {
             this.isInventorySkillEmpty = (this.player.getInvS().getSize() == 0);
 
             time+=1;
-//            System.out.println(time);
+            if (time % 45000 == 0) {
+                this.game.Update();
+            }
 
             if (ImGui.button("Show Inventory")) {
                 showInv = true;
-//                System.out.println("Inventory clicked");
             }
 
             if (showInv) {
@@ -108,7 +109,6 @@ public class UI {
 
             if (ImGui.button("Release Engimon")) {
                 showRelease = true;
-//                System.out.println("Release clicked");
             }
 
             if (showRelease) {
@@ -117,7 +117,6 @@ public class UI {
 
             if (ImGui.button("Buang Item")) {
                 showBuang = true;
-//                System.out.println("Buang clicked");
             }
             if (showBuang && isInventorySkillEmpty) {
                 ImGui.text("\tInventory Skill Item Empty");
@@ -130,7 +129,6 @@ public class UI {
             if (ImGui.button("Use SkillItem")) {
                 showReplace = false;
                 showLearn = true;
-//                System.out.println("Use SkillItem clicked");
             }
 
             if (showLearn && isInventorySkillEmpty) {
@@ -143,7 +141,6 @@ public class UI {
 
             if (ImGui.button("Interact")) {
                 showInteract = true;
-//                System.out.println("Interact clicked");
             }
 
             if (showInteract) {
@@ -186,7 +183,6 @@ public class UI {
 
             if (ImGui.button("Show Switch Engimon")) {
                 showSwitch = true;
-//                System.out.println("Switch clicked");
             }
 
             if (showSwitch) {
@@ -232,6 +228,9 @@ public class UI {
             if (ImGui.button("Add Random Skill Item")) {
                 this.game.addRandomSkillItem();
 //                System.out.println("Added SkillItem");
+            }
+            if (ImGui.button("Update")) {
+                this.game.Update();
             }
         }
 
