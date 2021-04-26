@@ -497,7 +497,7 @@ public class UI {
             messageLearn = "";
         }
 
-        if (ImGui.button("aDD RANDOM") {
+        if (ImGui.button("aDD RANDOM")) {
             this.addRandom();
         }
         ImGui.end();
