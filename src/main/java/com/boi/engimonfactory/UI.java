@@ -349,7 +349,7 @@ public class UI {
                 ImGui.sameLine();
                 ImGui.text(s.getPrint());
                 ImGui.sameLine();
-                ImGui.text("Count\t: "+this.player.getInvS().getCountByIdx(i));
+                ImGui.text("Count: "+this.player.getInvS().getCountByIdx(i));
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
@@ -448,13 +448,14 @@ public class UI {
         ImGui.end();
         if (showReplace)
             menuReplace(
-                    this.player.getInvE().getItemByIdx(selectedEngimon.get()),
-                    this.player.getInvS().getItemByIdx(selectedSkillItem.get()));
+                    selectedEngimon.get(),
+                    selectedSkillItem.get());
     }
 
-    public void menuReplace(Engimon e, Skill s) {
+    public void menuReplace(int idxE, int idxS) {
         ImGui.begin("Menu Replace Skill");
         String[] comboSkills = new String[4];
+        Engimon e = this.player.getInvE().getItemByIdx(idxE);
         int i = 0;
         for (Skill skill: e.getSkills()) {
             String message = skill.getPrint();
@@ -464,9 +465,10 @@ public class UI {
         }
         ImGui.combo("Replace Skill", selectedReplaced, comboSkills);
         if (ImGui.button("Replace")) {
+            this.player.replaceSkill(idxE, idxS, selectedReplaced.get());
             showLearn = false;
             showReplace = false;
-            e.replaceSkill(s, selectedReplaced.get());
+            messageLearn = "";
         }
         ImGui.end();
     }
@@ -603,8 +605,4 @@ public class UI {
             toret += ("_" + s.getMasteryLevel());
         return Texture.getTexture(toret).getId();
     }
-
-    /*
-        @TODO UI replace skill/learn skill player engimon (belom selese)
-    */
 }
