@@ -344,7 +344,7 @@ public class UI {
         for (int i = 0; i < this.player.getInvS().getSize(); i++) {
             try {
                 Skill s = this.player.getInvS().getItemByIdx(i);
-                Texture tex = new Texture(resolveSkillImage(s, true));
+                Texture tex = new Texture(resolveSkillImage(s, false));
                 ImGui.imageButton(tex.getId(), 50.0f, 50.0f);
                 ImGui.sameLine();
                 ImGui.text(s.getPrint());
@@ -357,7 +357,7 @@ public class UI {
         ImGui.text("Item in inventory: " + this.player.getInvCount() + "/" + this.player.getMaxCap());
         ImGui.end();
     }
-
+    
     public void menuRelease() {
         ImGui.begin("Menu Release Engimon");
         ImGui.text("Pilih engimon untuk di release");
@@ -390,7 +390,7 @@ public class UI {
         Skill s = this.player.getInvS().getItemByIdx(selectedBuang.get());
         Texture tex;
         try {
-            tex = new Texture(resolveSkillImage(s, true));
+            tex = new Texture(resolveSkillImage(s, false));
             ImGui.imageButton(tex.getId(), 50.0f, 50.0f);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -411,7 +411,7 @@ public class UI {
         }
         for (int i = 0; i < sizeS; i++) {
             String message = this.player.getInvS().getItemByIdx(i).getPrint();
-            message += "\tCount: " + this.player.getInvS().getCountByIdx(i);
+            message += " Count: " + this.player.getInvS().getCountByIdx(i);
             comboLearnS[i] = message;
         }
         ImGui.combo("EngimonLearn", selectedEngimon, comboLearnE);
@@ -500,7 +500,7 @@ public class UI {
         ImGui.text(message1);
         for (Skill s: e.getSkills()) {
             try {
-                Texture tex = new Texture(resolveSkillMasteryLevel(s));
+                Texture tex = new Texture(resolveSkillImage(s, true));
                 ImGui.imageButton(tex.getId(), 50.0f, 50.0f);
                 ImGui.sameLine();
                 ImGui.text(s.getPrint());
@@ -581,36 +581,37 @@ public class UI {
         else notification("Notification","Failed to save game");
     }
 
-    public String resolveSkillImage(Skill s, boolean png) {
-        String toret = "textures/";
-        if (s.getName().equals("Shock")) toret += 12;
-        else if (s.getName().equals("Awe")) toret += 4;
-        else if (s.getName().equals("Fireball")) toret += 3;
-        else if (s.getName().equals("Rosenthal")) toret += 5;
-        else if (s.getName().equals("Ground Pound")) toret += 15;
-        else if (s.getName().equals("Yubi")) toret += 6;
-        else if (s.getName().equals("Icicle")) toret += 13;
-        else if (s.getName().equals("Devil's Snare")) toret += 1;
-        else if (s.getName().equals("Splash")) toret += 9;
-        else if (s.getName().equals("Wave")) toret += 14;
-        else if (s.getName().equals("Magnetize")) toret += 8;
-        else if (s.getName().equals("Gravitate")) toret += 16;
-        else if (s.getName().equals("Shuba")) toret += 10;
-        else if (s.getName().equals("Onionize")) toret += 11;
-        else if (s.getName().equals("Angle Supreme Freeze")) toret += 7;
-        else if (s.getName().equals("Shien Freeze")) toret += 2;
-        else return null;
-        if (png) toret += ".png";
-        return toret;
+    public int resolveSkillImage(Skill s, boolean mlevel) {
+        String toret = "";
+        if (s.getName().equals("Shock")) toret = "12";
+        else if (s.getName().equals("Awe")) toret = "4";
+        else if (s.getName().equals("Fireball")) toret = "3";
+        else if (s.getName().equals("Rosenthal")) toret = "5";
+        else if (s.getName().equals("Ground Pound")) toret = "15";
+        else if (s.getName().equals("Yubi")) toret = "6";
+        else if (s.getName().equals("Icicle")) toret = "13";
+        else if (s.getName().equals("Devil's Snare")) toret = "1";
+        else if (s.getName().equals("Splash")) toret = "9";
+        else if (s.getName().equals("Wave")) toret = "14";
+        else if (s.getName().equals("Magnetize")) toret = "8";
+        else if (s.getName().equals("Gravitate")) toret = "16";
+        else if (s.getName().equals("Shuba")) toret = "10";
+        else if (s.getName().equals("Onionize")) toret = "11";
+        else if (s.getName().equals("Angle Supreme Freeze")) toret = "7";
+        else if (s.getName().equals("Shien Freeze")) toret = "2";
+        if (mlevel)
+            toret += ("_" + s.getMasteryLevel());
+        return Texture.getTexture(toret).getId();
     }
 
-    public String resolveSkillMasteryLevel(Skill s) {
-        String toret = resolveSkillImage(s, false);
-        toret += ("_" + s.getMasteryLevel() + ".png");
-        return toret;
-    }
-   /*
-        @TODO UI replace skill/learn skill player engimon
+//    public String resolveSkillMasteryLevel(Skill s) {
+//        String toret = resolveSkillImage(s, false);
+//        toret += ("_" + s.getMasteryLevel() + ".png");
+//        return toret;
+//    }
+    /*
+        @TODO UI replace skill/learn skill player engimon (belom selese)
         @TODO UI load game belom selese (error)
-     */
+        @TODO Skill ga ngasih semua compatible element???
+    */
 }
