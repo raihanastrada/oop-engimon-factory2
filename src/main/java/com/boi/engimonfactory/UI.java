@@ -357,7 +357,7 @@ public class UI {
         ImGui.text("Item in inventory: " + this.player.getInvCount() + "/" + this.player.getMaxCap());
         ImGui.end();
     }
-    
+
     public void menuRelease() {
         ImGui.begin("Menu Release Engimon");
         ImGui.text("Pilih engimon untuk di release");
