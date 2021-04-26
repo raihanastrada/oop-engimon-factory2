@@ -17,7 +17,7 @@ public class Game implements Serializable {
     Engidex engidex;
 
     public Game() {
-        this.peta = new Peta(new Position(5,8),new Position(5,9),"Peta.txt", 15);
+        this.peta = new Peta(new Position(5,8),new Position(5,9),"Peta.txt", 15, 1000);
         getClass().getResource("Peta.txt");
         this.player = new Player(null, 30);
         this.engidex = new Engidex();
@@ -25,8 +25,8 @@ public class Game implements Serializable {
         // ini belom selese
     }
 
-    public Game(String name, Integer maxCap, Integer maxEnemeyCount) {
-        this.peta = new Peta(new Position(5, 8), new Position(5, 9), "Peta.txt", maxEnemeyCount);
+    public Game(String name, Integer maxCap, Integer maxEnemyCount) {
+        this.peta = new Peta(new Position(5, 8), new Position(5, 9), "Peta.txt", maxEnemyCount, 1000);
         this.player = new Player(name, maxCap);
         this.engidex = new Engidex();
         // this.init();
@@ -136,12 +136,12 @@ public class Game implements Serializable {
     public void movePlayer(char d) {
         try {
             this.peta.movePlayer(d);
-            Peta.increaseTurn();
-            if (Peta.getTurn() % 5 == 0) {
-                Engimon wild = Engidex.spawnRandomEngimon();
-                Position wildPosition = peta.spawnRandomPosition(wild);
-                peta.addEnemy(new Pair<>(wild, wildPosition));
-            }
+//            Peta.increaseTurn();
+//            if (Peta.getTurn() % 5 == 0) {
+//                Engimon wild = Engidex.spawnRandomEngimon();
+//                Position wildPosition = peta.spawnRandomPosition(wild);
+//                peta.addEnemy(new Pair<>(wild, wildPosition));
+//            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -249,12 +249,12 @@ public class Game implements Serializable {
             if (command.equals("w") || command.equals("a") || command.equals("s") || command.equals("d")) {
                 try {
                     peta.movePlayer(command.charAt(0));
-                    peta.increaseTurn();
-                    if (Peta.getTurn() % 5 == 0) {
-                        Engimon wild = engidex.spawnRandomEngimon();
-                        Position wildPosition = peta.spawnRandomPosition(wild);
-                        peta.addEnemy(new Pair<>(wild, wildPosition));
-                    }
+//                    peta.increaseTurn();
+//                    if (Peta.getTurn() % 5 == 0) {
+//                        Engimon wild = engidex.spawnRandomEngimon();
+//                        Position wildPosition = peta.spawnRandomPosition(wild);
+//                        peta.addEnemy(new Pair<>(wild, wildPosition));
+//                    }
                 } catch (Exception e) {
                     // SEHARUSNYA KOSONG
                 }
