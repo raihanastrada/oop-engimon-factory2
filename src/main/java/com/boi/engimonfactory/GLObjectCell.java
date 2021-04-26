@@ -111,9 +111,9 @@ public class GLObjectCell extends GLObject {
 
         try {
             mapMeshes.put(CellType.GRASSLAND, new Mesh(positions, textCoords, indices, Texture.getTexture("GRASS")));
-            mapMeshes.put(CellType.TUNDRA, new Mesh(positions, textCoords, indices, Texture.getTexture("GRASS")));
-            mapMeshes.put(CellType.MOUNTAINS, new Mesh(positions, textCoords, indices, Texture.getTexture("GRASS")));
-            mapMeshes.put(CellType.SEA, new Mesh(positions, textCoords, indices, Texture.getTexture("GRASS")));
+            mapMeshes.put(CellType.TUNDRA, new Mesh(positions, textCoords, indices, Texture.getTexture("TUNDRA")));
+            mapMeshes.put(CellType.MOUNTAINS, new Mesh(positions, textCoords, indices, Texture.getTexture("MOUNTAIN")));
+            mapMeshes.put(CellType.SEA, new Mesh(positions, textCoords, indices, Texture.getTexture("WATER")));
         } catch (Exception e)
         {
 

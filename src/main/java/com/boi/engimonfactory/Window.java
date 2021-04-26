@@ -190,7 +190,7 @@ public class Window {
             shaderProgram.setUniform("worldMatrix", player.getWorldMatrix());
             player.getMesh().render();
 
-            System.out.println("PLAYER " + imguiLayer.getMap().getPlayerPosition().getX() + " " + imguiLayer.getMap().getPlayerPosition().getY() + " ENGIMON "+ imguiLayer.getMap().getActiveEngimonPosition().getX() + " " + imguiLayer.getMap().getActiveEngimonPosition().getY());
+//            System.out.println("PLAYER " + imguiLayer.getMap().getPlayerPosition().getX() + " " + imguiLayer.getMap().getPlayerPosition().getY() + " ENGIMON "+ imguiLayer.getMap().getActiveEngimonPosition().getX() + " " + imguiLayer.getMap().getActiveEngimonPosition().getY());
 //            System.out.println();
 
             activeEngimon.setPosition(imguiLayer.getMap().getActiveEngimonPosition().getX(), 0, imguiLayer.getMap().getActiveEngimonPosition().getY());

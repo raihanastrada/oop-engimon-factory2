@@ -16,6 +16,8 @@ public class UI {
     private ImString name = new ImString(8);
     private int[] maxCapInv = new int[1];
     private int[] maxCapEng = new int[1];
+
+    private int time = 0;
     //
     private boolean showText = false;
     private boolean showInv = false;
@@ -93,6 +95,9 @@ public class UI {
                 showText = true;
                 System.out.println("This Works");
             }
+
+            time+=1;
+            System.out.println(time);
 
             if (showText) {
                 ImGui.text("You clicked a button");

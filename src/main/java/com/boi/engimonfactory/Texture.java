@@ -87,6 +87,9 @@ public class Texture {
     public static void initTextureLibrary()
     {
         addToLibrary("GRASS", "textures/grassblock.png");
+        addToLibrary("TUNDRA", "textures/tundrablock.png");
+        addToLibrary("MOUNTAIN", "textures/mountainblock.png");
+        addToLibrary("WATER", "textures/waterblock.png");
         addToLibrary("PLAYER", "textures/Player.png");
         addToLibrary("1202", "textures/1202.png");
 
