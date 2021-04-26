@@ -604,14 +604,7 @@ public class UI {
         return Texture.getTexture(toret).getId();
     }
 
-//    public String resolveSkillMasteryLevel(Skill s) {
-//        String toret = resolveSkillImage(s, false);
-//        toret += ("_" + s.getMasteryLevel() + ".png");
-//        return toret;
-//    }
     /*
         @TODO UI replace skill/learn skill player engimon (belom selese)
-        @TODO UI load game belom selese (error)
-        @TODO Skill ga ngasih semua compatible element???
     */
 }
