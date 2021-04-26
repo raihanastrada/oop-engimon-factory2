@@ -188,20 +188,20 @@ public class Peta implements Serializable {
         int newy;
         switch (key) {
             case 'w':
-                newx = this.getPlayerPosition().getY() - 1;
-                newy = this.getPlayerPosition().getX();
+                newy = this.getPlayerPosition().getY() - 1;
+                newx = this.getPlayerPosition().getX();
                 break;
             case 'a':
-                newx = this.getPlayerPosition().getY();
-                newy = this.getPlayerPosition().getX() - 1;
+                newy = this.getPlayerPosition().getY();
+                newx = this.getPlayerPosition().getX() - 1;
                 break;
             case 's':
-                newx = this.getPlayerPosition().getY() + 1;
-                newy = this.getPlayerPosition().getX();
+                newy = this.getPlayerPosition().getY() + 1;
+                newx = this.getPlayerPosition().getX();
                 break;
             case 'd':
-                newx = this.getPlayerPosition().getY();
-                newy = this.getPlayerPosition().getX() + 1;
+                newy = this.getPlayerPosition().getY();
+                newx = this.getPlayerPosition().getX() + 1;
                 break;
             default:
                 newx = -1;

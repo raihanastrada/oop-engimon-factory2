@@ -32,7 +32,7 @@ public class Window {
 //    private GLObject testO;
 
     private ArrayList<GLObjectCell> mapCells = new ArrayList<>();
-    private ArrayList<Engimon> wildEngimon = new ArrayList<>();
+    private ArrayList<GLObjectEngimon> wildEngimon = new ArrayList<>();
     private GLObjectPlayer player;
     private GLObjectEngimon activeEngimon;
 
@@ -51,7 +51,7 @@ public class Window {
     /*
     * VIEW VARIABLES
     * */
-    private final Vector3f cameraPos  = new Vector3f(5.5f, 5, -4.f);
+    private final Vector3f cameraPos  = new Vector3f(5.5f, 6, -6.f);
     private final Vector3f cameraTarget = new Vector3f(5.5f, 0, 5);
     private final Vector3f cameraUp = new Vector3f(0, 1, 0);
 
@@ -65,7 +65,6 @@ public class Window {
         initImGui();
         Texture.initTextureLibrary();
         initMap();
-
 
         imGuiGlfw.init(windowPtr, true);
         imGuiGl3.init(glslVersion);
@@ -141,6 +140,14 @@ public class Window {
         GLObjectCell.init();
         GLObjectCell temp;
 
+        player = new GLObjectPlayer();
+        player.setPosition(gameMap.getPlayerPosition().getX(), 0, gameMap.getPlayerPosition().getY());
+        player.setRotation(-90, 0, 0);
+
+        activeEngimon = new GLObjectEngimon(1202);
+        activeEngimon.setPosition(gameMap.getActiveEngimonPosition().getX(), 0, gameMap.getActiveEngimonPosition().getY());
+        activeEngimon.setRotation(-90, 0, 0);
+
         for(int x = 0; x < 12; x++)
         {
             for(int y = 0; y < 10; y++)
@@ -149,18 +156,25 @@ public class Window {
                 mapCells.add(temp);
             }
         }
+
+        update();
     }
 
     public void update() {
+        wildEngimon = new ArrayList<>();
 
+        for(Pair<Engimon, Position> p: imguiLayer.getMap().getEnemyEngimon())
+        {
+            addWildEngimon(p.getItem1(), p.getItem2());
+        }
     }
 
     public void run() {
         while (!glfwWindowShouldClose(windowPtr)) {
-//            glClearColor(0.1f, 0.09f, 0.1f, 1.0f);
             glClearColor(0.52f, 0.81f, 0.921f, 1.0f);
-
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            update();
 
             shaderProgram.bind();
             shaderProgram.setUniform("projectionMatrix", projectionMatrix);
@@ -168,26 +182,31 @@ public class Window {
             shaderProgram.setUniform("sampler", 0);
             glBindVertexArray(0);
 
+            player.setPosition(imguiLayer.getMap().getPlayerPosition().getX()+1, 0, imguiLayer.getMap().getPlayerPosition().getY());
+//            player.setPosition(0, 0, 0);
+
+            shaderProgram.setUniform("worldMatrix", player.getWorldMatrix());
+            player.getMesh().render();
+
+//            System.out.println();
+
+            activeEngimon.setPosition(5, 0, 9);
+            shaderProgram.setUniform("worldMatrix", activeEngimon.getWorldMatrix());
+            activeEngimon.getMesh().render();
+
             for(GLObjectCell c: mapCells)
             {
                 shaderProgram.setUniform("worldMatrix", c.getWorldMatrix());
                 c.getMesh().render();
             }
 
+            for(GLObjectEngimon e: wildEngimon)
+            {
+                shaderProgram.setUniform("worldMatrix", e.getWorldMatrix());
+                e.getMesh().render();
+            }
+
             shaderProgram.unbind();
-
-
-            // Draw the mesh
-//            testO.getMesh().render();
-//            glActiveTexture(GL_TEXTURE0);
-//            glBindTexture(GL_TEXTURE_2D, texture.getId());
-//
-//            glBindVertexArray(testO.getMesh().getVaoId());
-//            glEnableVertexAttribArray(0);
-//            glEnableVertexAttribArray(1);
-//            glDrawElements(GL_TRIANGLES, testO.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
-            // Restore state
-
 
             imGuiGlfw.newFrame();
             ImGui.newFrame();
@@ -207,5 +226,12 @@ public class Window {
             GLFW.glfwSwapBuffers(windowPtr);
             GLFW.glfwPollEvents();
         }
+    }
+
+    private void addWildEngimon(Engimon e, Position p)
+    {
+        GLObjectEngimon wildE = new GLObjectEngimon(e.getSpecies().getSpeciesID());
+        wildE.setPosition(p.getX(), 0, p.getY());
+        wildEngimon.add(wildE);
     }
 }
