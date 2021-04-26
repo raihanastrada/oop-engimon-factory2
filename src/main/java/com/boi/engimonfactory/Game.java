@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.lang.*;
 
 public class Game implements Serializable {
     Peta peta;
@@ -18,7 +19,7 @@ public class Game implements Serializable {
     private int engCount;
 
     public Game() {
-        this.peta = new Peta(new Position(5,8),new Position(5,9),"Peta.txt", 15, 1000);
+        this.peta = new Peta(new Position(5,8),new Position(5,9),"Peta.txt", 15);
         getClass().getResource("Peta.txt");
         this.player = new Player(null, 30);
         this.engidex = new Engidex();
@@ -26,8 +27,8 @@ public class Game implements Serializable {
         // ini belom selese
     }
 
-    public Game(String name, Integer maxCap, Integer maxEnemyCount) {
-        this.peta = new Peta(new Position(5, 8), new Position(5, 9), "Peta.txt", maxEnemyCount, 1000);
+    public Game(String name, Integer maxCap, Integer maxEnemeyCount) {
+        this.peta = new Peta(new Position(5, 8), new Position(5, 9), "Peta.txt", maxEnemeyCount);
         this.player = new Player(name, maxCap);
         this.engidex = new Engidex();
         // this.init();
@@ -156,17 +157,23 @@ public class Game implements Serializable {
     public void movePlayer(char d) {
         try {
             this.peta.movePlayer(d);
-//            Peta.increaseTurn();
-//            if (Peta.getTurn() % 5 == 0) {
-//                Engimon wild = Engidex.spawnRandomEngimon();
-//                Position wildPosition = peta.spawnRandomPosition(wild);
-//                peta.addEnemy(new Pair<>(wild, wildPosition));
-//            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
+    public boolean Update() {
+        try {
+            Engimon wild = Engidex.spawnRandomEngimon();
+            Position wildPosition = peta.spawnEngimonPosition(wild);
+            peta.addEnemy(new Pair<>(wild, wildPosition));
+            System.out.println(peta.getEnemyEngimon().size());
+            peta.moveEnemy();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
     // Debugging Methods
 
     public void addRandomEngimonPlayer() {
