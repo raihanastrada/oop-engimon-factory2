@@ -182,15 +182,18 @@ public class Window {
             shaderProgram.setUniform("sampler", 0);
             glBindVertexArray(0);
 
-            player.setPosition(imguiLayer.getMap().getPlayerPosition().getX()+1, 0, imguiLayer.getMap().getPlayerPosition().getY());
+            player.setPosition(imguiLayer.getMap().getPlayerPosition().getX(), 0, imguiLayer.getMap().getPlayerPosition().getY());
 //            player.setPosition(0, 0, 0);
+
+//            System.out.println(imguiLayer.getMap().getPlayerPosition().getX() + " is X, " + imguiLayer.getMap().getPlayerPosition().getY() + " is Y");
 
             shaderProgram.setUniform("worldMatrix", player.getWorldMatrix());
             player.getMesh().render();
 
+            System.out.println("PLAYER " + imguiLayer.getMap().getPlayerPosition().getX() + " " + imguiLayer.getMap().getPlayerPosition().getY() + " ENGIMON "+ imguiLayer.getMap().getActiveEngimonPosition().getX() + " " + imguiLayer.getMap().getActiveEngimonPosition().getY());
 //            System.out.println();
 
-            activeEngimon.setPosition(5, 0, 9);
+            activeEngimon.setPosition(imguiLayer.getMap().getActiveEngimonPosition().getX(), 0, imguiLayer.getMap().getActiveEngimonPosition().getY());
             shaderProgram.setUniform("worldMatrix", activeEngimon.getWorldMatrix());
             activeEngimon.getMesh().render();
 
