@@ -1,8 +1,51 @@
 package com.boi.engimonfactory;
 
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import java.util.Vector;
+
 public class GLObjectEngimon extends GLObject {
+
+    private GLObject danger = GLObject.getMarker(Texture.getTexture("LOVE"));
+    private GLObject love = GLObject.getMarker(Texture.getTexture("LOVE"));
+
+    private static int timer = 0;
+    private boolean isDanger = false;
+
+    public void setDanger(boolean s)
+    {
+        isDanger = s;
+    }
+
+    public boolean isDanger()
+    {
+        return isDanger;
+    }
+
+    public GLObject getLove()
+    {
+        return love;
+    }
+
+    public GLObject getDanger()
+    {
+        return danger;
+    }
+
+    public Matrix4f getMarkerWorldMatrix()
+    {
+        timer+=1;
+        Matrix4f res = new Matrix4f();
+        Vector3f markerPos = new Vector3f(this.position.x, this.position.y + 0.7f, this.position.z);
+        res.identity().translate(markerPos).
+                rotateX((float)Math.toRadians(rotation.x+90)).
+                rotateY((float)Math.toRadians(rotation.y+timer)).
+                rotateZ((float)Math.toRadians(rotation.z)).
+                scale(0.3f);
+
+        return res;
+    }
 
     public GLObjectEngimon(int code)
     {

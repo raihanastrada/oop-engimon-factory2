@@ -93,6 +93,9 @@ public class Texture {
         addToLibrary("PLAYER", "textures/Player.png");
         addToLibrary("1202", "textures/1202.png");
 
+        addToLibrary("LOVE", "textures/love.png");
+        addToLibrary("DANGER", "textures/danger.png");
+
         addToLibrary("1", "textures/1.png");
         addToLibrary("1_1", "textures/1_1.png");
         addToLibrary("1_2", "textures/1_2.png");

@@ -16,16 +16,15 @@ public class Peta implements Serializable {
     private Cell[][] map;                                    // matrix storing map
     private ArrayList<Pair<Engimon, Position>> enemyEngimon; // list of enemy engimon & position in map
     private int maxEnemyCount;                               // max count of engimon in map
-    private long time;
+    private long time = 0;
 
     public Peta(Position playerPosition, Position activeEngimonPosition, String filename,
-                int maxEnemyCount, long time) {
+                int maxEnemyCount) {
         this.playerPosition = playerPosition;
         this.activeEngimonPosition = activeEngimonPosition;
         this.map = new Cell[10][12];
         this.maxEnemyCount = maxEnemyCount;
         this.enemyEngimon = new ArrayList<Pair<Engimon, Position>>();
-        this.time = time;
         // Load map from extern file
         try {
             File myFile = new File(filename);
@@ -131,6 +130,9 @@ public class Peta implements Serializable {
         return enemyEngimon.size();
     }
 
+    public void increaseTime() {
+        this.time += 1;
+    }
     public void setActiveEngimonPosition(Position activeEngimonPosition) {
         this.activeEngimonPosition.setX(activeEngimonPosition.getX());
         this.activeEngimonPosition.setY(activeEngimonPosition.getY());
@@ -140,10 +142,15 @@ public class Peta implements Serializable {
         /*
             Menambahkan enemy engimon pada list enemyEngimon
          */
-        if (this.getEnemyCount() < maxEnemyCount && ((System.currentTimeMillis()-this.time) > 30000)) {
+        System.out.println(enemy.getItem1().getPrint());
+        System.out.println(enemy.getItem2().getX());
+        System.out.println(enemy.getItem2().getY());
+        if (this.getEnemyCount() < maxEnemyCount) {
             enemyEngimon.add(enemy);
             getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(enemy.getItem1());
-            this.time = System.currentTimeMillis();
+            System.out.println(enemy.getItem1().getPrint());
+            System.out.println(enemy.getItem2().getX());
+            System.out.println(enemy.getItem2().getY());
         }
     }
 
@@ -161,23 +168,28 @@ public class Peta implements Serializable {
             yang tidak valid, posisi yang sudah ditempati Player, Active,Engimon dan enemyEngimon lain,
             serta type cell yang bukan habitatnya.
          */
-        if ((System.currentTimeMillis()-this.time) > 45000) {
-            for (Pair<Engimon, Position> enemy: enemyEngimon) {
-                Random gen = new Random();
-                int newx = gen.nextInt(1) - 1;
-                int newy = gen.nextInt(1) - 1;
-                boolean reroll = handleException(enemy.getItem1(),newx,newy);
-                while (euclideanDistance(getPlayerPosition().getX(),getPlayerPosition().getY(),newx,newy) > 1 || reroll) {
-                    newx = gen.nextInt(1) - 1;
-                    newy = gen.nextInt(1) - 1;
-                    reroll = handleException(enemy.getItem1(),newx,newy);
-                }
-                getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(null);
-                enemy.setItem2(new Position(newx,newy));
-                getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(enemy.getItem1());
-            }
-            this.time = System.currentTimeMillis();
+        for (Pair<Engimon, Position> p: enemyEngimon) {
+            System.out.println(p.getItem1().getPrint());
+            System.out.println(p.getItem2().getX());
+            System.out.println(p.getItem2().getY());
         }
+        Random gen = new Random();
+        int enemyIdx = gen.nextInt(this.getEnemyCount());
+        Pair<Engimon, Position> enemy = enemyEngimon.get(enemyIdx);
+        int newx = gen.nextInt(2) - 1;
+        int newy = gen.nextInt(2) - 1;
+        System.out.println("sa1");
+        //System
+        while (euclideanDistance(getPlayerPosition().getX(),getPlayerPosition().getY(),newx,newy) != 1) {
+            System.out.println(euclideanDistance(getPlayerPosition().getX(),getPlayerPosition().getY(),newx,newy));
+            newx = gen.nextInt(2) - 1;
+            newy = gen.nextInt(2) - 1;
+//            reroll = handleException(enemy.getItem1(),newx,newy);
+        }
+        System.out.println("sa");
+        getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(null);
+        enemy.setItem2(new Position(newx,newy));
+        getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(enemy.getItem1());
     }
 
     public void movePlayer(char key) throws Exception {
@@ -223,8 +235,7 @@ public class Peta implements Serializable {
         /*
             Menghitung euclidean distance antara (x1, y1) dan (x2, y2)
          */
-        return Math.sqrt(
-                Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
+        return Math.abs(x2-x1) + Math.abs(y2-y1);
 
     }
 
@@ -303,7 +314,7 @@ public class Peta implements Serializable {
         try {
             isValidIdx(x,y);
             isAvailableCell(x, y);
-            isRightCellType(enemy, x, y);
+//            isRightCellType(enemy, x, y);
             return false;
         } catch (Exception e) {
             e.printStackTrace();
@@ -311,16 +322,58 @@ public class Peta implements Serializable {
         }
     }
 
-    public Position spawnRandomPosition(Engimon enemy) {
+    public Position spawnEngimonPosition(Engimon enemy) {
+        System.out.print("Nyari buat ");
+        System.out.println(enemy.getPrint()); 
         Random gen = new Random();
-        int newx = gen.nextInt(12);
-        int newy = gen.nextInt(10);
-        boolean reroll = handleException(enemy,newx,newy);
-        while (reroll) {
-            newx = gen.nextInt(12);
-            newy = gen.nextInt(10);
-            reroll = handleException(enemy,newx,newy);
+        int newx = -1;
+        int newy = -1;
+        if (enemy.getElements().size() == 2) {
+            if (enemy.getElements().get(0).type() == ElementType.ELECTRIC
+                    || enemy.getElements().get(1).type() == ElementType.ELECTRIC
+                    || enemy.getElements().get(0).type() == ElementType.GROUND
+                    || enemy.getElements().get(0).type() == ElementType.GROUND) {
+                newx = gen.nextInt(12);
+                newy = gen.nextInt(4)+6;
+            }
+            if (enemy.getElements().get(0).type() == ElementType.FIRE
+                    || enemy.getElements().get(1).type() == ElementType.FIRE){
+                newx = gen.nextInt(6);
+                newy = gen.nextInt(3);
+            }
+            if (enemy.getElements().get(0).type() == ElementType.WATER
+                    || enemy.getElements().get(1).type() == ElementType.WATER) {
+                newx = gen.nextInt(6)+6;
+                newy = gen.nextInt(6);
+            }
+            if (enemy.getElements().get(0).type() == ElementType.ICE
+                    || enemy.getElements().get(1).type() == ElementType.ICE) {
+                newx = gen.nextInt(6);
+                newy = gen.nextInt(3)+3;
+            }
         }
+        else {
+            if (enemy.getElements().get(0).type() == ElementType.ELECTRIC
+                    || enemy.getElements().get(0).type() == ElementType.GROUND) {
+                newx = gen.nextInt(12);
+                newy = gen.nextInt(4)+6;
+            }
+            if (enemy.getElements().get(0).type() == ElementType.FIRE){
+                newx = gen.nextInt(6);
+                newy = gen.nextInt(3);
+            }
+            if (enemy.getElements().get(0).type() == ElementType.WATER) {
+                newx = gen.nextInt(6)+6;
+                newy = gen.nextInt(6);
+            }
+            if (enemy.getElements().get(0).type() == ElementType.ICE) {
+                newx = gen.nextInt(6);
+                newy = gen.nextInt(3) + 3;
+            }
+        }
+        System.out.print("Dapet posisis ");
+        System.out.print(newx);
+        System.out.print(newy);
         return new Position(newx,newy);
     }
 }
