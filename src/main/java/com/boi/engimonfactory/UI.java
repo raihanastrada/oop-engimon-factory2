@@ -289,6 +289,7 @@ public class UI {
             menuBattleResults(battleResultMessages);
         }
         if (showSave) {
+            game.setEngCount(Engimon.getCount());
             showNotification = game.save();
             menuSave(showNotification);
         }
@@ -311,6 +312,8 @@ public class UI {
             if (ImGui.button("LOAD GAME")) {
                 System.out.println("ini dari load game");
                 Game g = Game.load();
+                g.init();
+                Engimon.setCount(g.getEngCount() + 1);
                 insertGame(g); // FIXME; engimon yang udah ada levelnya kedobel kalo addRandom
                 showLoadGame = false;
                 showNewGame = false;
@@ -347,7 +350,9 @@ public class UI {
             System.out.println(maxCapInv[0]);
             System.out.print("Max cap eng: ");
             System.out.println(maxCapEng[0]);
-            insertGame(new Game(name.toString(), maxCapInv[0], maxCapEng[0]));
+            Game g = new Game(name.toString(), maxCapInv[0], maxCapEng[0]);
+            g.init();
+            insertGame(g);
             game.addRandomEngimonPlayer();
             game.addRandomEngimonPlayer();
             game.addRandomEngimonPlayer();
