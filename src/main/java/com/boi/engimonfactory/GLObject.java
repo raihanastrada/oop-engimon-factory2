@@ -3,6 +3,8 @@ package com.boi.engimonfactory;
 import org.joml.Vector3f;
 import org.joml.Matrix4f;
 
+import java.util.Vector;
+
 public class GLObject {
     protected Mesh mesh;
     protected Vector3f position;
@@ -22,6 +24,16 @@ public class GLObject {
         this.position.y = y;
         this.position.z = z;
     }
+
+    public void setPosition(Vector3f p)
+    {
+        this.position = p;
+    }
+
+    public Vector3f getPosition()
+    {
+        return this.position;
+    };
 
     public Vector3f getScale() {
         return scale;
@@ -55,4 +67,48 @@ public class GLObject {
 
         return res;
     }
+
+    protected static GLObject getMarker(Texture t)
+    {
+        float[] vertices = new float[] {
+            -0.5f,  0.5f, 0.0f,
+            -0.5f, -0.5f, 0.0f,
+            0.5f, -0.5f, 0.0f,
+            0.5f,  0.5f, 0.0f,
+        };
+
+        int[] indices = new int[] {
+                0, 1, 3,
+                3, 1, 2
+        };
+
+        float[] texCoords = new float[] {
+                0.0f, 0.0f,
+                0.0f, 0.5f,
+                0.5f, 0.5f,
+                0.5f, 0.0f
+        };
+
+        float[] normals = new float[] {
+                0
+                ,-1
+                ,0
+
+                ,0
+                ,-1
+                ,0
+
+                ,0
+                ,-1
+                ,0
+
+                ,0
+                ,1
+                ,0
+        };
+
+        return new GLObject(new Mesh(vertices, texCoords, normals, indices, t));
+    }
+
+
 }
