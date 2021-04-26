@@ -217,7 +217,7 @@ public class Player implements Serializable {
         // return type placeholder mungkin diganti Boolean
         try {
             PlayerEngimon hasil = PlayerEngimon.breed(this.invE.getItemByIdx(idxE1), this.invE.getItemByIdx(idxE2));
-//            if (!input.isBlank()) hasil.setName(input);
+            if (!input.trim().isEmpty()) hasil.setName(input);
             this.insertItem(hasil);
             return "Breeding berhasil";
         } catch (Exception e) {
