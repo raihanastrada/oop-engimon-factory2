@@ -21,12 +21,18 @@ public class UI {
     private boolean showInteract = false;
     private boolean showBreed = false;
     private boolean isInventoryFull = false;
+    private boolean isInventorySkillEmpty = false;
     private boolean breedClicked = false;
     private boolean showMenuBattle = false;
+    private boolean showRelease = false;
+    private boolean showBuang = false;
+    private ImInt selectedRelease = new ImInt();
+    private ImInt selectedBuang = new ImInt();
     private ImInt selectedActive = new ImInt();
     private ImInt selectedMom = new ImInt();
     private ImInt selectedDad = new ImInt();
     private String messageBreed = "";
+    private ImString breedName = new ImString();
 
     /*
         - Checkbox
@@ -56,7 +62,9 @@ public class UI {
         }
         else {
             ImGui.begin("Engimon Factory");
+            ImGui.text("Player Commands:");
             this.isInventoryFull = this.player.isInventoryFull();
+            this.isInventorySkillEmpty = (this.player.getInvS().getSize() == 0);
             if (ImGui.button("I am a button")) {
                 showText = true;
                 System.out.println("This Works");
@@ -81,6 +89,31 @@ public class UI {
                 if (ImGui.button("Close inventory")) showInv = false;
             }
 
+            if (ImGui.button("Release Engimon")) {
+                showRelease = true;
+                System.out.println("Release clicked");
+            }
+
+            if (showRelease) {
+                ImGui.text("Showing release engimon");
+                ImGui.sameLine();
+                if (ImGui.button("Close release menu")) showRelease = false;
+            }
+
+            if (ImGui.button("Buang Item")) {
+                showBuang = true;
+                System.out.println("Buang clicked");
+            }
+            if (showBuang && isInventorySkillEmpty) {
+                ImGui.text("\tInventory Skill Item Empty");
+            }
+
+            if (showBuang && !isInventorySkillEmpty) {
+                ImGui.text("Close buang item");
+                ImGui.sameLine();;
+                if (ImGui.button("Close buang item menu")) showBuang = false;
+            }
+
             if (ImGui.button("Interact")) {
                 showInteract = true;
                 System.out.println("Interact clicked");
@@ -103,8 +136,7 @@ public class UI {
             }
 
             if (showBreed && isInventoryFull) {
-                ImGui.text("Inventory Full");
-                ImGui.sameLine();
+                ImGui.text("\tInventory Full");
             }
 
             if (showBreed && !isInventoryFull) {
@@ -135,7 +167,7 @@ public class UI {
                     showMenuBattle = false;
                 }
             }
-
+            ImGui.text("CHEATS:");
             // @TODO hapus ini
             if (ImGui.button("Add Random Engimon")) {
                 this.game.addRandomEngimonPlayer();
@@ -152,11 +184,14 @@ public class UI {
             menu2();
         if (showInv)
             menuInventory();
+        if (showRelease)
+            menuRelease();
+        if (showBuang && !isInventorySkillEmpty)
+            menuBuang();
         if (showSwitch)
             menuSwitchActive();
-        if (showBreed && !isInventoryFull) {
+        if (showBreed && !isInventoryFull)
             menuBreed();
-        }
         if (showMenuBattle) {
             menuBattlePrep();
         }
@@ -220,6 +255,40 @@ public class UI {
         ImGui.end();
     }
 
+    public void menuRelease() {
+        ImGui.begin("Menu Release Engimon");
+        ImGui.text("Pilih engimon untuk di release");
+        String[] comboRelease = new String[this.player.getInvE().getSize()];
+        for (int i = 0; i < this.player.getInvE().getSize(); i++) {
+            comboRelease[i] = this.player.getInvE().getItemByIdx(i).getPrint();
+        }
+        ImGui.combo("Release", selectedRelease, comboRelease);
+        if (ImGui.button("Release Engimon"))
+            this.player.releaseEngimon(this.selectedRelease.get());
+        ImGui.end();
+    }
+
+    public void menuBuang() {
+        // @TODO CHECK MENU BUANG FORMATNYA GIMANA
+        ImGui.begin("Menu Buang Item");
+        ImGui.text("Pilih item untuk dibuang");
+        String[] comboBuang = new String[this.player.getInvS().getSize()];
+        for (int i = 0; i < this.player.getInvS().getSize(); i++) {
+            String message = "";
+            message += this.player.getInvS().getItemByIdx(i).getPrint();
+            message += "\tCount: " + this.player.getInvS().getCountByIdx(i);
+            comboBuang[i] = message;
+        }
+        ImGui.combo("Buang", selectedBuang, comboBuang);
+        int length = this.player.getInvS().getCountByIdx(selectedBuang.get());
+        int[] slider = new int[length];
+        for (int i = 0; i < length; i++) {
+            slider[i] = i + 1;
+        }
+        ImGui.sliderInt("Banyak", slider, slider.length, slider.length);
+        ImGui.end();
+    }
+
     // @DONE
     public void menuSwitchActive() {
         ImGui.begin("Switch Active Engimon");
@@ -227,7 +296,7 @@ public class UI {
         for (int i = 0; i < this.player.getInvE().getSize(); i++) {
             comboitems[i] = this.player.getInvE().getItemByIdx(i).getPrint();
         }
-        ImGui.combo("Label", selectedActive, comboitems);
+        ImGui.combo("Switch", selectedActive, comboitems);
         ImGui.end();
         this.player.switchActive(this.selectedActive.getData()[0]);
     }
@@ -244,8 +313,10 @@ public class UI {
         ImGui.combo("ChooseMom", selectedMom, comboitemsMom);
         ImGui.text("Dad");
         ImGui.combo("ChooseDad", selectedDad, comboitemsDad);
+        ImGui.text("Name the kid!");
+        ImGui.inputText("", breedName, ImGuiInputTextFlags.CallbackResize);
         if (ImGui.button("Breeeed"))
-            this.messageBreed = this.player.breed(selectedMom.getData()[0], selectedDad.getData()[0]);
+            this.messageBreed = this.player.breed(selectedMom.getData()[0], selectedDad.getData()[0], breedName.toString());
         ImGui.text(this.messageBreed);
         ImGui.end();
         // String message = this.player.breed()
@@ -292,9 +363,9 @@ public class UI {
         @TODO UI Inventory belom selese (image skill)
             @TODO UI Inventory menampilkan list skill item (base power dan elemen yang bisa learn skill tersebut)
         @TODO UI replace skill/learn skill player engimon
-        @TODO UI breed (add nama)
-        @TODO UI buang X item / Release Engimon dari inventory
-        @TODO UI memperlihatkan command?
+
+        @TODO UI buang X item (belom full) / Release Engimon dari inventory (done)
+
         @TODO UI detail engimon (image skill)
         @TODO UI save game
         @TODO UI load game
