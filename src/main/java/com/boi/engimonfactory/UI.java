@@ -211,6 +211,18 @@ public class UI {
                 if (ImGui.button("Close switch")) showSwitch = false;
             }
 
+            if (ImGui.button("Move Left"))
+                this.game.movePlayer('a');
+
+            if (ImGui.button("Move Forward"))
+                this.game.movePlayer('w');
+
+            if (ImGui.button("Move Right"))
+                this.game.movePlayer('d');
+            
+            if (ImGui.button("Move Backwards"))
+                this.game.movePlayer('s');
+
             if (ImGui.button("Battle")) {
                 showMenuBattle = true;
                 if (ImGui.button("Close battle")){
