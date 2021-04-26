@@ -24,7 +24,8 @@ public class UI {
     private boolean showBreed = false;
     private boolean isInventoryFull = false;
     private boolean isInventorySkillEmpty = false;
-    private boolean showMenuBattle = false;
+    private boolean showMenuBattle1 = false;
+    private boolean showMenuBattle2 = false;
     private boolean showRelease = false;
     private boolean showBuang = false;
     private boolean showDetail = false;
@@ -46,6 +47,9 @@ public class UI {
     private boolean showReplace = false;
     private ImInt selectedReplaced = new ImInt();
     private String messageLearn = "";
+
+    // Battle result message container
+    private ArrayList<String> battleResultMessages = new ArrayList<>();
 
     private boolean showSave = false;
     private boolean showNotification = false;
@@ -224,9 +228,10 @@ public class UI {
                 this.game.movePlayer('s');
 
             if (ImGui.button("Battle")) {
-                showMenuBattle = true;
+                showMenuBattle1 = true;
                 if (ImGui.button("Close battle")){
-                    showMenuBattle = false;
+                    showMenuBattle1 = false;
+                    showMenuBattle2 = false;
                 }
             }
 
@@ -265,8 +270,11 @@ public class UI {
             menuBreed();
         if (showDetail)
             menuDetail();
-        if (showMenuBattle) {
+        if (showMenuBattle1) {
             menuBattlePrep();
+        }
+        if (showMenuBattle2) {
+            menuBattleResults(battleResultMessages);
         }
         if (showSave) {
             showNotification = game.save();
@@ -551,23 +559,42 @@ public class UI {
         try{
             // get battle engimons
             Pair<Engimon, Cell> p = game.getBattleEngimon();
+            Engimon active_engimon = p.getItem1();
+            Engimon wild_engimon = p.getItem2().getEnemy();
+
             // show battle status
             // isi battle_status: [detail wild engimon, power active engimon, power wild engimon]
-            ArrayList<String> battle_status = BattleUtil.getBattleStatus(p.getItem1(), p.getItem2().getEnemy());
-            ImGui.text("Enemy engimon: " + battle_status.get(0));
+            ArrayList<String> battle_status = BattleUtil.getBattleStatus(active_engimon, wild_engimon);
+            // ImGui.text("Enemy engimon: " + battle_status.get(0));
+            ImGui.text("Enemy engimon:");
+            ImGui.text("Skills:");
+            for (Skill s: wild_engimon.getSkills()) {
+                try {
+                    Texture tex = new Texture(resolveSkillImage(s, true));
+                    ImGui.imageButton(tex.getId(), 50.0f, 50.0f);
+                    ImGui.sameLine();
+                    ImGui.text(s.getPrint() + " MLevel: " + s.getMasteryLevel());
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
+            String message2 = "";
+            message2 += ("LVL\t: " + wild_engimon.getLevel() + "\n");
+            ImGui.text(message2);
             ImGui.text("Active engimon power: " + battle_status.get(1));
             ImGui.text("Enemy engimon power: " + battle_status.get(2));
+
             // kasih pilihan ke pemain
             ImGui.text("Commence battle?");
             ImGui.sameLine();
             if (ImGui.button("Yes")){
-                ArrayList<String> messages = game.battle(p.getItem1(), p.getItem2());
-                showMenuBattle = false;
-                menuBattleResults(messages);
+                this.battleResultMessages = game.battle(p.getItem1(), p.getItem2());
+                showMenuBattle1 = false;
+                showMenuBattle2 = true;
             }
             ImGui.sameLine();
             if (ImGui.button("No")) {
-                showMenuBattle = false;
+                showMenuBattle1 = false;
             }
         }
         catch (Exception e){
