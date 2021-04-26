@@ -23,7 +23,8 @@ public class UI {
     private boolean isInventoryFull = false;
     private boolean isInventorySkillEmpty = false;
     private boolean breedClicked = false;
-    private boolean showMenuBattle = false;
+    private boolean showMenuBattle1 = false;
+    private boolean showMenuBattle2 = false;
     private boolean showRelease = false;
     private boolean showBuang = false;
     private ImInt selectedRelease = new ImInt();
@@ -162,9 +163,10 @@ public class UI {
             }
 
             if (ImGui.button("Battle")) {
-                showMenuBattle = true;
+                showMenuBattle1 = true;
                 if (ImGui.button("Close battle")){
-                    showMenuBattle = false;
+                    showMenuBattle1 = false;
+                    showMenuBattle2 = false;
                 }
             }
             ImGui.text("CHEATS:");
@@ -192,7 +194,7 @@ public class UI {
             menuSwitchActive();
         if (showBreed && !isInventoryFull)
             menuBreed();
-        if (showMenuBattle) {
+        if (showMenuBattle1) {
             menuBattlePrep();
         }
     }
@@ -338,12 +340,13 @@ public class UI {
             ImGui.sameLine();
             if (ImGui.button("Yes")){
                 ArrayList<String> messages = game.battle(p.getItem1(), p.getItem2());
-                showMenuBattle = false;
+                showMenuBattle1 = false;
+                showMenuBattle2 = true;
                 menuBattleResults(messages);
             }
             ImGui.sameLine();
             if (ImGui.button("No")) {
-                showMenuBattle = false;
+                showMenuBattle1 = false;
             }
         }
         catch (Exception e){
