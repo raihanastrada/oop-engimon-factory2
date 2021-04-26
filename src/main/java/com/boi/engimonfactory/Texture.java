@@ -87,6 +87,8 @@ public class Texture {
     public static void initTextureLibrary()
     {
         addToLibrary("GRASS", "textures/grassblock.png");
+        addToLibrary("PLAYER", "textures/Player.png");
+        addToLibrary("1202", "textures/1202.png");
     }
 
     private static void addToLibrary(String textureName, String texturePath)
