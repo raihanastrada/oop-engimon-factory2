@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class Inventory<T extends Storeable> implements Serializable {
     /* Private class Item (Tuple T dengan Integer) */
-    private class Item implements Storeable {
+    private class Item implements Storeable, Serializable {
         private T item;
         private Integer count;
         

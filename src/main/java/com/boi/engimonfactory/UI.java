@@ -16,6 +16,8 @@ public class UI {
     private ImString name = new ImString(8);
     private int[] maxCapInv = new int[1];
     private int[] maxCapEng = new int[1];
+
+    private int time = 0;
     //
     private boolean showText = false;
     private boolean showInv = false;
@@ -89,59 +91,44 @@ public class UI {
             ImGui.text("Player Commands:");
             this.isInventoryFull = this.player.isInventoryFull();
             this.isInventorySkillEmpty = (this.player.getInvS().getSize() == 0);
-            if (ImGui.button("I am a button")) {
-                showText = true;
-                System.out.println("This Works");
-            }
 
-            if (showText) {
-                ImGui.text("You clicked a button");
-                ImGui.sameLine();
-                if (ImGui.button("Stop showing text")) {
-                    showText = false;
-                }
-            }
+            time+=1;
+//            System.out.println(time);
 
             if (ImGui.button("Show Inventory")) {
                 showInv = true;
-                System.out.println("Inventory clicked");
+//                System.out.println("Inventory clicked");
             }
 
             if (showInv) {
                 ImGui.text("Showing inventory");
-                ImGui.sameLine();
-                if (ImGui.button("Close inventory")) showInv = false;
             }
 
             if (ImGui.button("Release Engimon")) {
                 showRelease = true;
-                System.out.println("Release clicked");
+//                System.out.println("Release clicked");
             }
 
             if (showRelease) {
                 ImGui.text("Showing release engimon");
-                ImGui.sameLine();
-                if (ImGui.button("Close release menu")) showRelease = false;
             }
 
             if (ImGui.button("Buang Item")) {
                 showBuang = true;
-                System.out.println("Buang clicked");
+//                System.out.println("Buang clicked");
             }
             if (showBuang && isInventorySkillEmpty) {
                 ImGui.text("\tInventory Skill Item Empty");
             }
 
             if (showBuang && !isInventorySkillEmpty) {
-                ImGui.text("Close buang item");
-                ImGui.sameLine();;
-                if (ImGui.button("Close buang item menu")) showBuang = false;
+                ImGui.text("Showing buang item");
             }
 
             if (ImGui.button("Use SkillItem")) {
                 showReplace = false;
                 showLearn = true;
-                System.out.println("Use SkillItem clicked");
+//                System.out.println("Use SkillItem clicked");
             }
 
             if (showLearn && isInventorySkillEmpty) {
@@ -149,17 +136,12 @@ public class UI {
             }
 
             if (showLearn && !isInventorySkillEmpty) {
-                ImGui.text("Close Learn Menu");
-                ImGui.sameLine();
-                if (ImGui.button("Close Learn Skill menu")) {
-                    showLearn = false;
-                    showReplace = false;
-                }
+                ImGui.text("Showing Learn Menu");
             }
 
             if (ImGui.button("Interact")) {
                 showInteract = true;
-                System.out.println("Interact clicked");
+//                System.out.println("Interact clicked");
             }
 
             if (showInteract) {
@@ -179,8 +161,6 @@ public class UI {
 
             if (showDetail) {
                 ImGui.text("Showing Engimon detail");
-                ImGui.sameLine();
-                if (ImGui.button("Close Detail")) showDetail = false;
             }
 
             if (ImGui.button("Breed")) {
@@ -199,20 +179,16 @@ public class UI {
                     this.showBreed = false;
                 } else {
                     ImGui.text("Showing breed menu");
-                    ImGui.sameLine();;
-                    if (ImGui.button("Close breed menu")) showBreed = false;
                 }
             }
 
             if (ImGui.button("Show Switch Engimon")) {
                 showSwitch = true;
-                System.out.println("Switch clicked");
+//                System.out.println("Switch clicked");
             }
 
             if (showSwitch) {
                 ImGui.text("Switch Active engimon");
-                ImGui.sameLine();
-                if (ImGui.button("Close switch")) showSwitch = false;
             }
 
             if (ImGui.button("Move Left"))
@@ -235,7 +211,6 @@ public class UI {
 
             if (showMenuBattle1 || showMenuBattle2) {
                 ImGui.text("Showing battle window");
-                ImGui.sameLine();
                 if (ImGui.button("Close battle window")){
                     showMenuBattle1 = false;
                     showMenuBattle2 = false;
@@ -250,11 +225,11 @@ public class UI {
             // @TODO hapus ini
             if (ImGui.button("Add Random Engimon")) {
                 this.game.addRandomEngimonPlayer();
-                System.out.println("Added Engimon");
+//                System.out.println("Added Engimon");
             }
             if (ImGui.button("Add Random Skill Item")) {
                 this.game.addRandomSkillItem();
-                System.out.println("Added SkillItem");
+//                System.out.println("Added SkillItem");
             }
         }
 
@@ -284,6 +259,7 @@ public class UI {
             menuBattleResults(battleResultMessages);
         }
         if (showSave) {
+            game.setEngCount(Engimon.getCount());
             showNotification = game.save();
             menuSave(showNotification);
         }
@@ -306,6 +282,8 @@ public class UI {
             if (ImGui.button("LOAD GAME")) {
                 System.out.println("ini dari load game");
                 Game g = Game.load();
+                g.init();
+                Engimon.setCount(g.getEngCount() + 1);
                 insertGame(g); // FIXME; engimon yang udah ada levelnya kedobel kalo addRandom
                 showLoadGame = false;
                 showNewGame = false;
@@ -342,7 +320,9 @@ public class UI {
             System.out.println(maxCapInv[0]);
             System.out.print("Max cap eng: ");
             System.out.println(maxCapEng[0]);
-            insertGame(new Game(name.toString(), maxCapInv[0], maxCapEng[0]));
+            Game g = new Game(name.toString(), maxCapInv[0], maxCapEng[0]);
+            g.init();
+            insertGame(g);
             game.addRandomEngimonPlayer();
             game.addRandomEngimonPlayer();
             game.addRandomEngimonPlayer();
@@ -376,6 +356,8 @@ public class UI {
             }
         }
         ImGui.text("Item in inventory: " + this.player.getInvCount() + "/" + this.player.getMaxCap());
+        ImGui.newLine();
+        if (ImGui.button("Close inventory")) showInv = false;
         ImGui.end();
     }
 
@@ -389,6 +371,8 @@ public class UI {
         ImGui.combo("Release", selectedRelease, comboRelease);
         if (ImGui.button("Release Engimon"))
             this.player.releaseEngimon(this.selectedRelease.get());
+        ImGui.newLine();
+        if (ImGui.button("Close release menu")) showRelease = false;
         ImGui.end();
     }
 
@@ -418,6 +402,8 @@ public class UI {
         }
         if (ImGui.button("Buang Item"))
             this.player.buangItemSkill(selectedBuang.get(), buangCount[0]);
+        ImGui.newLine();
+        if (ImGui.button("Close buang item menu")) showBuang = false;
         ImGui.end();
     }
 
@@ -466,6 +452,14 @@ public class UI {
             }
         }
 
+
+        ImGui.newLine();
+        ImGui.newLine();
+        if (ImGui.button("Close Learn Skill menu")) {
+            showLearn = false;
+            showReplace = false;
+        }
+
         ImGui.end();
         if (showReplace)
             menuReplace(
@@ -502,6 +496,10 @@ public class UI {
             comboitems[i] = this.player.getInvE().getItemByIdx(i).getPrint();
         }
         ImGui.combo("Switch", selectedActive, comboitems);
+        ImGui.newLine();
+        ImGui.newLine();
+        ImGui.newLine();
+        if (ImGui.button("Close switch")) showSwitch = false;
         ImGui.end();
         this.player.switchActive(this.selectedActive.getData()[0]);
     }
@@ -537,6 +535,10 @@ public class UI {
         message2 += ("Exp\t: " + e.getExp() + "\n");
         ImGui.text(message2);
 
+        ImGui.newLine();
+        ImGui.newLine();
+        if (ImGui.button("Close Detail")) showDetail = false;
+
         ImGui.end();
     }
 
@@ -557,6 +559,9 @@ public class UI {
         if (ImGui.button("Breeeed"))
             this.messageBreed = this.player.breed(selectedMom.getData()[0], selectedDad.getData()[0], breedName.toString());
         ImGui.text(this.messageBreed);
+        ImGui.newLine();
+        ImGui.newLine();
+        if (ImGui.button("Close breed menu")) showBreed = false;
         ImGui.end();
         // String message = this.player.breed()
     }

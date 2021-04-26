@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="engimon-factory2" target="11" />
+      <module name="engimon-factory2" target="1.11" />
     </bytecodeTargetLevel>
   </component>
 </project>

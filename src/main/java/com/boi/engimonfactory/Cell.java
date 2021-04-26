@@ -3,7 +3,7 @@ package com.boi.engimonfactory;
 import javax.lang.model.type.NullType;
 import java.io.Serializable;
 
-enum CellType {
+enum CellType implements Serializable {
     MOUNTAINS,  // Fire Engimon
     SEA,        // Water Engimon
     GRASSLAND,  // Ground or Electric Engimon

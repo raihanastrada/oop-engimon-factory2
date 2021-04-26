@@ -1,8 +1,9 @@
 package com.boi.engimonfactory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Skill implements Storeable {
+public class Skill implements Storeable, Serializable {
     // nama skill
     private String name;
     // base power skill

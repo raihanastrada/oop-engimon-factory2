@@ -15,6 +15,7 @@ public class Game implements Serializable {
     Peta peta;
     Player player;
     Engidex engidex;
+    private int engCount;
 
     public Game() {
         this.peta = new Peta(new Position(5,8),new Position(5,9),"Peta.txt", 15, 1000);
@@ -31,6 +32,14 @@ public class Game implements Serializable {
         this.engidex = new Engidex();
         // this.init();
         // ini belom selese
+    }
+
+    public void setEngCount(int set) {
+        this.engCount = set;
+    }
+
+    public int getEngCount() {
+        return this.engCount;
     }
 
     public void init() {
@@ -122,6 +131,10 @@ public class Game implements Serializable {
         Engidex.addSpecies(5402, "Kageyama Shien", new Skill("Shien Freeze",comp2,gen.nextInt(100)+1));
     }
 
+    public int getActiveID() {
+        if (this.player.getActiveEngimon() == null) return 0;
+        return this.player.getActiveEngimon().getID();
+    }
 
     public Peta getPeta() {
         return this.peta;

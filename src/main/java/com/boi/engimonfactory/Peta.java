@@ -132,7 +132,8 @@ public class Peta implements Serializable {
     }
 
     public void setActiveEngimonPosition(Position activeEngimonPosition) {
-        this.activeEngimonPosition = activeEngimonPosition;
+        this.activeEngimonPosition.setX(activeEngimonPosition.getX());
+        this.activeEngimonPosition.setY(activeEngimonPosition.getY());
     }
 
     public void addEnemy(Pair<Engimon, Position> enemy) {
