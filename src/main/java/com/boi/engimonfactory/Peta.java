@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.Collections;
+import java.lang.*;
 
 public class Peta implements Serializable {
     private Position playerPosition;                         // player location in map
@@ -15,15 +16,16 @@ public class Peta implements Serializable {
     private Cell[][] map;                                    // matrix storing map
     private ArrayList<Pair<Engimon, Position>> enemyEngimon; // list of enemy engimon & position in map
     private int maxEnemyCount;                               // max count of engimon in map
-    private static int turn = 0;                                 // game turn
+    private long time;
 
-    public Peta(Position playerPosition, Position activeEngimonPosition, String filename, int maxEnemyCount) {
+    public Peta(Position playerPosition, Position activeEngimonPosition, String filename,
+                int maxEnemyCount, long time) {
         this.playerPosition = playerPosition;
         this.activeEngimonPosition = activeEngimonPosition;
         this.map = new Cell[10][12];
         this.maxEnemyCount = maxEnemyCount;
         this.enemyEngimon = new ArrayList<Pair<Engimon, Position>>();
-
+        this.time = time;
         // Load map from extern file
         try {
             File myFile = new File(filename);
@@ -34,7 +36,6 @@ public class Peta implements Serializable {
                 char c;
                 for (int j = 0; j < line.length(); j++){
                     c = line.charAt(j);
-                    // Seharusnya not accessable
                     switch (c) {
                         case 'm':
                             this.map[i][j] = new Cell(CellType.MOUNTAINS, new Position(j, i));
@@ -52,6 +53,7 @@ public class Peta implements Serializable {
                             System.out.println("An error occurred while loading file from external file.");
                     }
                 }
+                i += 1;
             }
             myReader.close();
         } catch (FileNotFoundException e) {
@@ -113,8 +115,8 @@ public class Peta implements Serializable {
         return activeEngimonPosition;
     }
 
-    public static int getTurn() {
-        return turn;
+    public long getTime() {
+        return time;
     }
 
     public Cell getCell(int i, int j) {
@@ -133,17 +135,14 @@ public class Peta implements Serializable {
         this.activeEngimonPosition = activeEngimonPosition;
     }
 
-    public static void increaseTurn() {
-        Peta.turn += 1;
-    }
-
     public void addEnemy(Pair<Engimon, Position> enemy) {
         /*
             Menambahkan enemy engimon pada list enemyEngimon
          */
-        if (this.getEnemyCount() < maxEnemyCount) {
+        if (this.getEnemyCount() < maxEnemyCount && ((System.currentTimeMillis()-this.time) > 30000)) {
             enemyEngimon.add(enemy);
             getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(enemy.getItem1());
+            this.time = System.currentTimeMillis();
         }
     }
 
@@ -161,19 +160,22 @@ public class Peta implements Serializable {
             yang tidak valid, posisi yang sudah ditempati Player, Active,Engimon dan enemyEngimon lain,
             serta type cell yang bukan habitatnya.
          */
-        for (Pair<Engimon, Position> enemy: enemyEngimon) {
-            Random gen = new Random();
-            int newx = gen.nextInt(1) - 1;
-            int newy = gen.nextInt(1) - 1;
-            boolean reroll = handleException(enemy.getItem1(),newx,newy);
-            while (euclideanDistance(getPlayerPosition().getX(),getPlayerPosition().getY(),newx,newy) > 1 || reroll) {
-                newx = gen.nextInt(1) - 1;
-                newy = gen.nextInt(1) - 1;
-                reroll = handleException(enemy.getItem1(),newx,newy);
+        if ((System.currentTimeMillis()-this.time) > 45000) {
+            for (Pair<Engimon, Position> enemy: enemyEngimon) {
+                Random gen = new Random();
+                int newx = gen.nextInt(1) - 1;
+                int newy = gen.nextInt(1) - 1;
+                boolean reroll = handleException(enemy.getItem1(),newx,newy);
+                while (euclideanDistance(getPlayerPosition().getX(),getPlayerPosition().getY(),newx,newy) > 1 || reroll) {
+                    newx = gen.nextInt(1) - 1;
+                    newy = gen.nextInt(1) - 1;
+                    reroll = handleException(enemy.getItem1(),newx,newy);
+                }
+                getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(null);
+                enemy.setItem2(new Position(newx,newy));
+                getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(enemy.getItem1());
             }
-            getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(null);
-            enemy.setItem2(new Position(newx,newy));
-            getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(enemy.getItem1());
+            this.time = System.currentTimeMillis();
         }
     }
 

@@ -17,16 +17,16 @@ public class Game implements Serializable {
     Engidex engidex;
 
     public Game() {
-        this.peta = new Peta(new Position(5,8),new Position(5,9),"Peta.txt", 15);
+        this.peta = new Peta(new Position(5,8),new Position(5,9),"Peta.txt", 15, 1000);
         getClass().getResource("Peta.txt");
-        this.player = new Player(null, 100);
+        this.player = new Player(null, 30);
         this.engidex = new Engidex();
         // this.init();
         // ini belom selese
     }
 
-    public Game(String name, Integer maxCap, Integer maxEnemeyCount) {
-        this.peta = new Peta(new Position(5, 8), new Position(5, 9), "Peta.txt", maxEnemeyCount);
+    public Game(String name, Integer maxCap, Integer maxEnemyCount) {
+        this.peta = new Peta(new Position(5, 8), new Position(5, 9), "Peta.txt", maxEnemyCount, 1000);
         this.player = new Player(name, maxCap);
         this.engidex = new Engidex();
         // this.init();
@@ -50,9 +50,10 @@ public class Game implements Serializable {
         ArrayList<Element> comp1 = new ArrayList<Element>(); // Electric & Fire ***
             comp1.add(electric);
             comp1.add(fire);
-        ArrayList<Element> comp2 = new ArrayList<Element>(); // Ice & Water ***
+        ArrayList<Element> comp2 = new ArrayList<Element>(); // Ice & Water & Electric ***
             comp2.add(ice);
             comp2.add(water);
+            comp2.add(electric);
         ArrayList<Element> comp3 = new ArrayList<Element>(); // Ground & Water ***
             comp3.add(ground);
             comp3.add(water);
@@ -60,18 +61,23 @@ public class Game implements Serializable {
             comp4.add(ground);
             comp4.add(fire);
         ArrayList<Element> comp5 = new ArrayList<Element>(); // Electric & Ice ***
-            comp5.add(electric);
+                comp5.add(electric);
             comp5.add(ice);
-        ArrayList<Element> comp6 = new ArrayList<Element>(); // Ice ***
+        ArrayList<Element> comp6 = new ArrayList<Element>(); // Ice & Ground ***
             comp6.add(ice);
-        ArrayList<Element> comp7 = new ArrayList<Element>(); // Electric ***
+            comp6.add(ground);
+        ArrayList<Element> comp7 = new ArrayList<Element>(); // Electric & Water ***
             comp7.add(electric);
-        ArrayList<Element> comp8 = new ArrayList<Element>(); // Ground ***
+            comp7.add(water);
+        ArrayList<Element> comp8 = new ArrayList<Element>(); // Ground & Fire ***
             comp8.add(ground);
-        ArrayList<Element> comp9 = new ArrayList<Element>(); // Fire ***
+            comp8.add(fire);
+        ArrayList<Element> comp9 = new ArrayList<Element>(); // Fire & Ice ***
             comp9.add(fire);
-        ArrayList<Element> comp10 = new ArrayList<Element>(); // Water ***
+            comp9.add(ice);
+        ArrayList<Element> comp10 = new ArrayList<Element>(); // Water & Fire ***
             comp10.add(water);
+            comp10.add(fire);
         ArrayList<Element> comp11 = new ArrayList<Element>(); // Water, Ice, & Ground ***
             comp11.add(water);
             comp11.add(ice);
@@ -116,6 +122,7 @@ public class Game implements Serializable {
         Engidex.addSpecies(5402, "Kageyama Shien", new Skill("Shien Freeze",comp2,gen.nextInt(100)+1));
     }
 
+
     public Peta getPeta() {
         return this.peta;
     }
@@ -136,12 +143,12 @@ public class Game implements Serializable {
     public void movePlayer(char d) {
         try {
             this.peta.movePlayer(d);
-            Peta.increaseTurn();
-            if (Peta.getTurn() % 5 == 0) {
-                Engimon wild = Engidex.spawnRandomEngimon();
-                Position wildPosition = peta.spawnRandomPosition(wild);
-                peta.addEnemy(new Pair<>(wild, wildPosition));
-            }
+//            Peta.increaseTurn();
+//            if (Peta.getTurn() % 5 == 0) {
+//                Engimon wild = Engidex.spawnRandomEngimon();
+//                Position wildPosition = peta.spawnRandomPosition(wild);
+//                peta.addEnemy(new Pair<>(wild, wildPosition));
+//            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -152,6 +159,13 @@ public class Game implements Serializable {
     public void addRandomEngimonPlayer() {
         Engimon e = Engidex.spawnRandomEngimon();
         this.player.insertItem(PlayerEngimon.tame(e)); // Inserts Engimon
+    }
+
+    public void addRandomSkillItem() {
+        Engimon e = Engidex.spawnRandomEngimon();
+        Skill item = e.getFirstSkill();
+        Skill insert = new Skill(item);
+        this.player.insertItem(insert); // Inserts Skill Item
     }
 
     public Inventory<Engimon> getPInvEngimon() { return this.player.getInvE(); }
@@ -242,12 +256,12 @@ public class Game implements Serializable {
             if (command.equals("w") || command.equals("a") || command.equals("s") || command.equals("d")) {
                 try {
                     peta.movePlayer(command.charAt(0));
-                    peta.increaseTurn();
-                    if (Peta.getTurn() % 5 == 0) {
-                        Engimon wild = engidex.spawnRandomEngimon();
-                        Position wildPosition = peta.spawnRandomPosition(wild);
-                        peta.addEnemy(new Pair<>(wild, wildPosition));
-                    }
+//                    peta.increaseTurn();
+//                    if (Peta.getTurn() % 5 == 0) {
+//                        Engimon wild = engidex.spawnRandomEngimon();
+//                        Position wildPosition = peta.spawnRandomPosition(wild);
+//                        peta.addEnemy(new Pair<>(wild, wildPosition));
+//                    }
                 } catch (Exception e) {
                     // SEHARUSNYA KOSONG
                 }

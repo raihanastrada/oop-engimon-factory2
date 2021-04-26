@@ -34,22 +34,20 @@ public class EngimonFactory2 {
         }
         */
 
-        Game g = new Game();
-        g.init();
-        g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
-        g.addRandomEngimonPlayer();
-        g.getPlayer().printInventoryEngimon();
-        g.getPlayer().switchActive(0);
-        System.out.println(g.getPlayer().getInvCount());
-
-        g.save();
-
+//        g.addRandomEngimonPlayer();
+//        g.addRandomEngimonPlayer();
+//        g.addRandomEngimonPlayer();
+//        g.addRandomEngimonPlayer();
+//        g.addRandomEngimonPlayer();
+//        g.addRandomEngimonPlayer();
+//        g.addRandomEngimonPlayer();
+//        g.addRandomEngimonPlayer();
+//        g.getPlayer().printInventoryEngimon();
+//        g.getPlayer().switchActive(0);
+//        System.out.println(g.getPlayer().getInvCount());
+//
+//        g.save();
+//
 //        Window window = new Window(new UI());
 //        try {
 //            window.init();
@@ -69,7 +67,9 @@ public class EngimonFactory2 {
         // Game g;
         // g = Game.load();
 
-        g.getPlayer().printInventoryEngimon();
+//        g.getPlayer().printInventoryEngimon();
+        Game g = new Game();
+        g.init();
         UI a = new UI();
         a.insertGame(g);
         Window window = new Window(a);

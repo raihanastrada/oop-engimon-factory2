@@ -26,6 +26,8 @@ public class Player implements Serializable {
     // Getter active engimon
     public Engimon getActiveEngimon() { return this.activeEngimon; }
 
+    public Integer getMaxCap() { return this.maxCap; }
+
     // Asumsi engimon yang masuk ke inventory selalu memiliki 3 nyawa
     // Jika berhasil memasukkan engimon, return true, jika tidak, false
     public Boolean insertItem(Engimon e) {

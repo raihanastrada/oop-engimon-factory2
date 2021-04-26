@@ -57,8 +57,13 @@ public class Skill implements Storeable {
 
     @Override
     public String getPrint() {
-        return ("Skill " + this.name + "Element: "
-                + this.compatible_elements.get(0).type().asString() + " BP: " + this.base_power);
+        String message = "Skill " + this.name + "/Element: ";
+        for (int i = 0; i < this.compatible_elements.size(); i++) {
+            message += this.compatible_elements.get(i).type().asString();
+            if (i != this.compatible_elements.size() - 1) message += ", ";
+        }
+        message += "/BP: " + this.base_power;
+        return message;
     }
 
     @Override

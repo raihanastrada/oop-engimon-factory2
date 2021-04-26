@@ -116,6 +116,8 @@ public class Mesh {
         glDeleteBuffers(posVboId);
         glDeleteBuffers(idxVboId);
 
+        texture.cleanup();
+
         // Delete the VAO
         glBindVertexArray(0);
         glDeleteVertexArrays(vaoId);
