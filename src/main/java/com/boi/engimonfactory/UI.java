@@ -24,17 +24,18 @@ public class UI {
     private boolean showBreed = false;
     private boolean isInventoryFull = false;
     private boolean isInventorySkillEmpty = false;
-    private boolean breedClicked = false;
     private boolean showMenuBattle = false;
     private boolean showRelease = false;
     private boolean showBuang = false;
     private ImInt selectedRelease = new ImInt();
     private ImInt selectedBuang = new ImInt();
+    private ImInt selectedBuangCount = new ImInt();
     private ImInt selectedActive = new ImInt();
     private ImInt selectedMom = new ImInt();
     private ImInt selectedDad = new ImInt();
     private String messageBreed = "";
     private ImString breedName = new ImString();
+    private int[] buangCount = new int[1];
 
     private boolean showSave = false;
     private boolean showNotification = false;
@@ -182,6 +183,10 @@ public class UI {
                 this.game.addRandomEngimonPlayer();
                 System.out.println("Added Engimon");
             }
+            if (ImGui.button("Add Random Skill Item")) {
+                this.game.addRandomSkillItem();
+                System.out.println("Added SkillItem");
+            }
         }
 
         ImGui.end();
@@ -275,7 +280,8 @@ public class UI {
     public void menuInventory() {
         String message = "This is your inventory, " + this.player.getName() + "\n"
                 + "Engimon:\n" + this.player.getPrintInventoryE()
-                + "SkillItem:\n";
+                + "SkillItem:\n" + this.player.getPrintInventoryS();
+        message += "\n" + "Item in inventory: " + this.player.getInvCount() + "/" + this.player.getMaxCap();
         ImGui.begin("Menu Inventory");
         ImGui.text(message);
         ImGui.end();
@@ -306,12 +312,12 @@ public class UI {
             comboBuang[i] = message;
         }
         ImGui.combo("Buang", selectedBuang, comboBuang);
-        int length = this.player.getInvS().getCountByIdx(selectedBuang.get());
-        int[] slider = new int[length];
-        for (int i = 0; i < length; i++) {
-            slider[i] = i + 1;
-        }
-        ImGui.sliderInt("Banyak", slider, slider.length, slider.length);
+        int count = this.player.getInvS().getCountByIdx(selectedBuang.get());
+        ImGui.sliderInt(" ", buangCount, 1, count);
+        if (buangCount[0] > count)
+            buangCount[0] = 1;
+        if (ImGui.button("Buang Item"))
+            this.player.buangItemSkill(selectedBuang.get(), buangCount[0]);
         ImGui.end();
     }
 

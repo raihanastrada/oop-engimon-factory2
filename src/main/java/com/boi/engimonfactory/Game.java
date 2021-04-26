@@ -19,7 +19,7 @@ public class Game implements Serializable {
     public Game() {
         this.peta = new Peta(new Position(5,8),new Position(5,9),"Peta.txt", 15);
         getClass().getResource("Peta.txt");
-        this.player = new Player(null, 100);
+        this.player = new Player(null, 30);
         this.engidex = new Engidex();
         // this.init();
         // ini belom selese
@@ -152,6 +152,13 @@ public class Game implements Serializable {
     public void addRandomEngimonPlayer() {
         Engimon e = Engidex.spawnRandomEngimon();
         this.player.insertItem(PlayerEngimon.tame(e)); // Inserts Engimon
+    }
+
+    public void addRandomSkillItem() {
+        Engimon e = Engidex.spawnRandomEngimon();
+        Skill item = e.getFirstSkill();
+        Skill insert = new Skill(item);
+        this.player.insertItem(insert); // Inserts Skill Item
     }
 
     public Inventory<Engimon> getPInvEngimon() { return this.player.getInvE(); }
