@@ -227,6 +227,8 @@ public class UI {
             if (ImGui.button("Move Backwards"))
                 this.game.movePlayer('s');
 
+//            System.out.println(getMap().getPlayerPosition().getX() + " is X, " + getMap().getPlayerPosition().getY() + " is Y");
+
             if (ImGui.button("Battle")) {
                 showMenuBattle1 = true;
             }
