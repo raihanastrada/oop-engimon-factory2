@@ -184,15 +184,19 @@ public class Game implements Serializable {
 //        Position wildPosition = peta.spawnEngimonPosition(wild);
 //        peta.addEnemy(new Pair<>(wild, wildPosition));
 
-        try {
-            Engimon wild = Engidex.spawnRandomEngimon();
-            Position wildPosition = peta.spawnEngimonPosition(wild);
-            peta.addEnemy(new Pair<>(wild, wildPosition));
-//            System.out.println(peta.getEnemyEngimon().size());
-            peta.moveEnemy();
-            updateRead = false;
-        } catch (Exception e) {
-        }
+        Random r = new Random();
+        r.nextInt(5);
+        peta.addEnemy(new Pair<>(Engidex.spawnRandomEngimon(), new Position(r.nextInt(5), r.nextInt(6))));
+
+//        try {
+//            Engimon wild = Engidex.spawnRandomEngimon();
+//            Position wildPosition = peta.spawnEngimonPosition(wild);
+//            peta.addEnemy(new Pair<>(wild, wildPosition));
+////            System.out.println(peta.getEnemyEngimon().size());
+//            peta.moveEnemy();
+//            updateRead = false;
+//        } catch (Exception e) {
+//        }
     }
     // Debugging Methods
 

@@ -157,7 +157,6 @@ public class Window {
                 mapCells.add(temp);
             }
         }
-
         update();
 
     }
@@ -166,7 +165,7 @@ public class Window {
         if (imguiLayer.getGame().isUpdated()) // perubahan blom dibaca
         {
             wildEngimon = new ArrayList<>();
-            addWildEngimon(Engidex.spawnRandomEngimon(), new Position(0, 0));
+//            addWildEngimon(Engidex.spawnRandomEngimon(), new Position(0, 0));
 
             for(Pair<Engimon, Position> p: imguiLayer.getMap().getEnemyEngimon())
             {
@@ -253,12 +252,13 @@ public class Window {
 
     private void addWildEngimon(Engimon e, Position p)
     {
-        GLObjectEngimon wildE = new GLObjectEngimon(e.getSpecies().getSpeciesID());
+        GLObjectEngimon wildE = new GLObjectEngimon(1202);
         if (e.getLevel() > imguiLayer.getActiveEngimonLevel())
         {
             wildE.setDanger(true);
         }
-        wildE.setPosition(p.getX(), 0, p.getY());
+        wildE.setRotation(-90, 0, 0);
+        wildE.setPosition(p.getX(), 1, p.getY());
         wildEngimon.add(wildE);
     }
 }

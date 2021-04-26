@@ -7,7 +7,7 @@ import java.util.Vector;
 
 public class GLObjectEngimon extends GLObject {
 
-    private GLObject danger = GLObject.getMarker(Texture.getTexture("LOVE"));
+    private GLObject danger = GLObject.getMarker(Texture.getTexture("DANGER"));
     private GLObject love = GLObject.getMarker(Texture.getTexture("LOVE"));
 
     private static int timer = 0;
@@ -49,7 +49,7 @@ public class GLObjectEngimon extends GLObject {
 
     public GLObjectEngimon(int code)
     {
-        super(new Mesh(positions, textCoords, normals, indices, Texture.getTexture(String.valueOf(1202))));
+        super(new Mesh(positions, textCoords, normals, indices, Texture.getTexture(String.valueOf(4002))));
         scale = new Vector3f(0.5f, 0.5f, 1f);
         rotation = new Vector3f(0, 0, 0);
     }

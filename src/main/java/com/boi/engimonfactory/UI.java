@@ -4,6 +4,7 @@ import imgui.flag.ImGuiInputTextFlags;
 import imgui.type.ImInt;
 import imgui.type.ImString;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class UI {
     private Player player;
@@ -239,6 +240,7 @@ public class UI {
             }
             if (ImGui.button("Update")) {
                 this.game.Update();
+
             }
 //            if (ImGui.button("Battle random engimons")) {
 //                showMenuBattle2 = true;
