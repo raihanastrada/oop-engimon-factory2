@@ -168,11 +168,11 @@ public class Peta implements Serializable {
             yang tidak valid, posisi yang sudah ditempati Player, Active,Engimon dan enemyEngimon lain,
             serta type cell yang bukan habitatnya.
          */
-        for (Pair<Engimon, Position> p: enemyEngimon) {
-            System.out.println(p.getItem1().getPrint());
-            System.out.println(p.getItem2().getX());
-            System.out.println(p.getItem2().getY());
-        }
+//        for (Pair<Engimon, Position> p: enemyEngimon) {
+//            System.out.println(p.getItem1().getPrint());
+//            System.out.println(p.getItem2().getX());
+//            System.out.println(p.getItem2().getY());
+//        }
         Random gen = new Random();
         int enemyIdx = gen.nextInt(this.getEnemyCount());
         Pair<Engimon, Position> enemy = enemyEngimon.get(enemyIdx);

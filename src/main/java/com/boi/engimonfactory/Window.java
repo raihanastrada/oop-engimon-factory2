@@ -202,13 +202,18 @@ public class Window {
 //            System.out.println("PLAYER " + imguiLayer.getMap().getPlayerPosition().getX() + " " + imguiLayer.getMap().getPlayerPosition().getY() + " ENGIMON "+ imguiLayer.getMap().getActiveEngimonPosition().getX() + " " + imguiLayer.getMap().getActiveEngimonPosition().getY());
 //            System.out.println();
 
-            System.out.println("WILD ENGIMON " + wildEngimon.size() + " ARRAY RETURNED " + imguiLayer.getMap().getEnemyEngimon().size());
+//            System.out.println("WILD ENGIMON " + wildEngimon.size() + " ARRAY RETURNED " + imguiLayer.getMap().getEnemyEngimon().size());
 
-            activeEngimon.setPosition(imguiLayer.getMap().getActiveEngimonPosition().getX(), 1, imguiLayer.getMap().getActiveEngimonPosition().getY());
-            shaderProgram.setUniform("worldMatrix", activeEngimon.getWorldMatrix());
-            activeEngimon.getMesh().render();
-            shaderProgram.setUniform("worldMatrix", activeEngimon.getMarkerWorldMatrix());
-            activeEngimon.getLove().getMesh().render();
+            if(imguiLayer.getGame().getPlayer().getActiveEngimon() != null)
+            {
+                activeEngimon = new GLObjectEngimon(imguiLayer.getGame().getPlayer().getActiveEngimon().getSpecies().getSpeciesID());
+                activeEngimon.setPosition(imguiLayer.getMap().getActiveEngimonPosition().getX(), 1, imguiLayer.getMap().getActiveEngimonPosition().getY());
+                activeEngimon.setRotation(-90, 0, 0);
+                shaderProgram.setUniform("worldMatrix", activeEngimon.getWorldMatrix());
+                activeEngimon.getMesh().render();
+                shaderProgram.setUniform("worldMatrix", activeEngimon.getMarkerWorldMatrix());
+                activeEngimon.getLove().getMesh().render();
+            }
 
             for(GLObjectCell c: mapCells)
             {
@@ -252,7 +257,7 @@ public class Window {
 
     private void addWildEngimon(Engimon e, Position p)
     {
-        GLObjectEngimon wildE = new GLObjectEngimon(1202);
+        GLObjectEngimon wildE = new GLObjectEngimon(e.getSpecies().getSpeciesID());
         if (e.getLevel() > imguiLayer.getActiveEngimonLevel())
         {
             wildE.setDanger(true);

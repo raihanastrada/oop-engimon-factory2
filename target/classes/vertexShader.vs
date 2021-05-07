@@ -14,7 +14,7 @@ uniform mat4 projectionMatrix;
 
 void main()
 {
-    vec3 lightPosition = vec3(0.0, 0.0, 0.0);
+    vec3 lightPosition = vec3(0.0, 16.0, 0.0);
 
     vec4 worldPos = worldMatrix * vec4(position, 1.0);
 

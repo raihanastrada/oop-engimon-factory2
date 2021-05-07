@@ -92,8 +92,23 @@ public class Texture {
         addToLibrary("WATER", "textures/waterblock.png");
         addToLibrary("PLAYER", "textures/Player.png");
 
+        addToLibrary("1001", "textures/1001.png");
+        addToLibrary("1002", "textures/1002.png");
+        addToLibrary("2001", "textures/2001.png");
+        addToLibrary("2002", "textures/2002.png");
+        addToLibrary("3001", "textures/3001.png");
+        addToLibrary("3002", "textures/3002.png");
+        addToLibrary("4001", "textures/4001.png");
         addToLibrary("4002", "textures/4002.png");
-
+        addToLibrary("5001", "textures/5001.png");
+        addToLibrary("5002", "textures/5002.png");
+        addToLibrary("1201", "textures/1201.png");
+        addToLibrary("1202", "textures/1202.png");
+        addToLibrary("5301", "textures/5301.png");
+        addToLibrary("5302", "textures/5302.png");
+        addToLibrary("5401", "textures/5401.png");
+        addToLibrary("5402", "textures/5402.png");
+        
         addToLibrary("LOVE", "textures/love.png");
         addToLibrary("DANGER", "textures/danger.png");
 

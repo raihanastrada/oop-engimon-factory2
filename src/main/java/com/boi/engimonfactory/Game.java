@@ -186,7 +186,17 @@ public class Game implements Serializable {
 
         Random r = new Random();
         r.nextInt(5);
-        peta.addEnemy(new Pair<>(Engidex.spawnRandomEngimon(), new Position(r.nextInt(5), r.nextInt(6))));
+        peta.addEnemy(new Pair<>(Engidex.spawnRandomEngimon(), new Position(r.nextInt(10), r.nextInt(12))));
+
+
+//        if (r.nextInt(3) > 1)
+//        {
+//            peta.moveEnemy();
+//        } else {
+//            r.nextInt(5);
+//            peta.addEnemy(new Pair<>(Engidex.spawnRandomEngimon(), new Position(r.nextInt(5), r.nextInt(6))));
+//        }
+
 
 //        try {
 //            Engimon wild = Engidex.spawnRandomEngimon();

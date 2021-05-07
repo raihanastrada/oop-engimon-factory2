@@ -104,8 +104,11 @@ public class UI {
             this.isInventorySkillEmpty = (this.player.getInvS().getSize() == 0);
 
             time+=1;
-            if (time % 45000 == 0) {
+            System.out.println(time);
+            if (time % 250 == 0) {
                 this.game.Update();
+                System.out.println("updated");
+                time = 0;
             }
 
             if (ImGui.button("Show Inventory")) {

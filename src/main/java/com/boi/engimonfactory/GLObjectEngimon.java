@@ -49,7 +49,7 @@ public class GLObjectEngimon extends GLObject {
 
     public GLObjectEngimon(int code)
     {
-        super(new Mesh(positions, textCoords, normals, indices, Texture.getTexture(String.valueOf(4002))));
+        super(new Mesh(positions, textCoords, normals, indices, Texture.getTexture(String.valueOf(code))));
         scale = new Vector3f(0.5f, 0.5f, 1f);
         rotation = new Vector3f(0, 0, 0);
     }
