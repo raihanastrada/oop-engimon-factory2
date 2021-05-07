@@ -3,6 +3,8 @@ import imgui.ImGui;
 import imgui.flag.ImGuiInputTextFlags;
 import imgui.type.ImInt;
 import imgui.type.ImString;
+
+import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -601,9 +603,10 @@ public class UI {
         ImGui.begin("Battle");
         try{
             // get battle engimons
-            Pair<Engimon, Cell> p = game.getBattleEngimon();
+            Pair<Engimon, Pair<Engimon, Position>> p = game.getBattleEngimon();
             Engimon active_engimon = p.getItem1();
-            Engimon wild_engimon = p.getItem2().getEnemy();
+            Engimon wild_engimon = p.getItem2().getItem1();
+            Position wild_engimon_position = p.getItem2().getItem2();
 
             // show battle status
             // isi battle_status: [detail wild engimon, power active engimon, power wild engimon]
@@ -631,7 +634,7 @@ public class UI {
             ImGui.text("Commence battle?");
             ImGui.sameLine();
             if (ImGui.button("Yes")){
-                this.battleResultMessages = game.battle(p.getItem1(), p.getItem2());
+                this.battleResultMessages = game.battle(active_engimon, wild_engimon, wild_engimon_position);
                 showMenuBattle1 = false;
                 showMenuBattle2 = true;
             }

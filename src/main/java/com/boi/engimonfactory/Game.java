@@ -265,23 +265,21 @@ public class Game implements Serializable {
         return game;
     }
 
-    // mengembalikan <active_engimon, wild_engimon_cell>
+    // mengembalikan <active_engimon, <wild_engimon, wild_engimon_position>>
     // wild engimon pake cell karena ngehapus engimon dari map butuh cell position
-    public Pair<Engimon, Cell> getBattleEngimon() throws Exception {
+    public Pair<Engimon, Pair<Engimon, Position>> getBattleEngimon() throws Exception {
         Engimon active_engimon = player.getActiveEngimon();
         if (active_engimon == null) throw new Exception("No active engimon");
-        Position wild_engimon_position = peta.getAdjacentEnemyPosition();
-        Cell wild_engimon_cell = peta.getCell(wild_engimon_position.getX(), wild_engimon_position.getY());
-        if (wild_engimon_cell == null) throw new Exception("No adjacent wild engimon");
-        return new Pair<>(active_engimon, wild_engimon_cell);
+        Pair<Engimon, Position> wild_engimon = peta.getAdjacentEnemyPosition();
+        if (wild_engimon == null) throw new Exception("No adjacent wild engimon");
+        return new Pair<>(active_engimon, wild_engimon);
     }
 
     // melakukan battle engimon
     // mengembalikan ArrayList berisi message-message battle
     // isi ArrayList message-message, print di text box aja gapapa
-    public ArrayList<String> battle(Engimon active_engimon, Cell wild_engimon_cell){
+    public ArrayList<String> battle(Engimon active_engimon, Engimon wild_engimon, Position wild_engimon_position){
         ArrayList<String> ret = new ArrayList<>();
-        Engimon wild_engimon = wild_engimon_cell.getEnemy();
         boolean result = BattleUtil.comparePower(active_engimon, wild_engimon);
         if (result){
             ret.add(active_engimon.getName() + " won!");
@@ -292,7 +290,7 @@ public class Game implements Serializable {
             // tambah skill item ke inventory player
             player.insertItem(new Skill(wild_engimon.getFirstSkill()));
             // hapus wild engimon dari map
-            peta.removeEnemy(new Pair<>(wild_engimon, wild_engimon_cell.getPosition()));
+            peta.removeEnemy(new Pair<>(wild_engimon, wild_engimon_position));
         }
         else{
             ret.add(active_engimon.getName() + " lost");
