@@ -107,7 +107,7 @@ public class UI {
 
             time+=1;
             System.out.println(time);
-            if (time % 250 == 0) {
+            if (time % 50 == 0) {
                 this.game.Update();
                 System.out.println("updated");
                 time = 0;

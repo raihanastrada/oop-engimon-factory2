@@ -147,7 +147,30 @@ public class Peta implements Serializable {
 //        System.out.println(enemy.getItem2().getX());
 //        System.out.println(enemy.getItem2().getY());
 
+        CellType type = map[enemy.getItem2().getY()][enemy.getItem2().getX()].getType();
 
+        switch (type) {
+            case SEA:
+                if (enemy.getItem1().getSpecies().getSpeciesID() / 1000 != 5)
+                {
+                    return;
+                } break;
+            case MOUNTAINS:
+                if (enemy.getItem1().getSpecies().getSpeciesID() / 1000 != 2)
+                {
+                    return;
+                } break;
+            case TUNDRA:
+                if (enemy.getItem1().getSpecies().getSpeciesID() / 1000 != 4)
+                {
+                    return;
+                } break;
+            case GRASSLAND:
+                if (enemy.getItem1().getSpecies().getSpeciesID() / 1000 != 1 || enemy.getItem1().getSpecies().getSpeciesID() / 1000 != 3)
+                {
+                    return;
+                } break;
+        }
 
         if (this.getEnemyCount() < maxEnemyCount) {
             enemyEngimon.add(enemy);
