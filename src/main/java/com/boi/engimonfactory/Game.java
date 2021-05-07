@@ -186,7 +186,7 @@ public class Game implements Serializable {
 
         Random r = new Random();
         r.nextInt(5);
-        peta.addEnemy(new Pair<>(Engidex.spawnRandomEngimon(), new Position(r.nextInt(10), r.nextInt(12))));
+        peta.addEnemy(new Pair<>(Engidex.spawnRandomEngimon(), new Position(r.nextInt(10), r.nextInt(10))));
 
 
 //        if (r.nextInt(3) > 1)
