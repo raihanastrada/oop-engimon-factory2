@@ -194,7 +194,7 @@ public class Window {
             player.setPosition(imguiLayer.getMap().getPlayerPosition().getX(), 1, imguiLayer.getMap().getPlayerPosition().getY());
 //            player.setPosition(0, 0, 0);
 
-            System.out.println(imguiLayer.getMap().getPlayerPosition().getX() + " is X, " + imguiLayer.getMap().getPlayerPosition().getY() + " is Y");
+//            System.out.println(imguiLayer.getMap().getPlayerPosition().getX() + " is X, " + imguiLayer.getMap().getPlayerPosition().getY() + " is Y");
 
             shaderProgram.setUniform("worldMatrix", player.getWorldMatrix());
             player.getMesh().render();

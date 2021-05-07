@@ -186,8 +186,21 @@ public class Peta implements Serializable {
         /*
             Menghapus enemy engimon pada list enemyEngimon
          */
+
+        for(int i = 0; i < enemyEngimon.size(); i++)
+        {
+            if(enemyEngimon.get(i).getItem2().getX() == enemy.getItem2().getX() && enemyEngimon.get(i).getItem2().getY() == enemy.getItem2().getY())
+            {
+                System.out.println(i);
+                enemyEngimon.remove(i);
+                map[enemy.getItem2().getY()][enemy.getItem2().getX()].setEnemy(null);
+            }
+        }
+
+        System.out.println(enemyEngimon.remove(enemy));
         enemyEngimon.remove(enemy);
-        getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(null);
+        map[enemy.getItem2().getY()][enemy.getItem2().getX()].setEnemy(null);
+//        getCell(enemy.getItem2().getX(),enemy.getItem2().getX()).setEnemy(null);
     }
 
     public void moveEnemy() {
