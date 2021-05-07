@@ -270,7 +270,8 @@ public class Game implements Serializable {
     public Pair<Engimon, Cell> getBattleEngimon() throws Exception {
         Engimon active_engimon = player.getActiveEngimon();
         if (active_engimon == null) throw new Exception("No active engimon");
-        Cell wild_engimon_cell = peta.getAdjacentEnemyCell();
+        Position wild_engimon_position = peta.getAdjacentEnemyPosition();
+        Cell wild_engimon_cell = peta.getCell(wild_engimon_position.getX(), wild_engimon_position.getY());
         if (wild_engimon_cell == null) throw new Exception("No adjacent wild engimon");
         return new Pair<>(active_engimon, wild_engimon_cell);
     }
