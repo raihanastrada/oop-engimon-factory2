@@ -92,20 +92,20 @@ public class Peta implements Serializable {
     // apabila terdapat banyak wild engimon, dipilih satu secara random
     // apabila tidak ada wild engimon, mengembalikan null
     public Engimon getAdjacentEnemy() {
-        Position p = getAdjacentEnemyPosition();
+        Pair<Engimon, Position> p = getAdjacentEnemyPosition();
         if (p == null) return null;
-        else return map[p.getY()][p.getX()].getEnemy();
+        else return p.getItem1();
     }
 
-    public Position getAdjacentEnemyPosition() {
-        Position ret = null;
+    public Pair<Engimon, Position> getAdjacentEnemyPosition() {
+        Pair<Engimon, Position> ret = null;
         int px = playerPosition.getX();
         int py = playerPosition.getY();
         for (Pair<Engimon, Position> p : enemyEngimon){
             int ex = p.getItem2().getX();
             int ey = p.getItem2().getY();
             if (euclideanDistance(px, py, ex, ey) <= 1){
-                ret = p.getItem2();
+                ret = p;
             }
         }
         return ret;
