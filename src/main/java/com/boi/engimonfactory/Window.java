@@ -162,7 +162,7 @@ public class Window {
     }
 
     public void update() {
-        if (imguiLayer.getGame().isUpdated()) // perubahan blom dibaca
+        if (1==1) // perubahan blom dibaca
         {
             wildEngimon = new ArrayList<>();
 //            addWildEngimon(Engidex.spawnRandomEngimon(), new Position(0, 0));
