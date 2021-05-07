@@ -150,7 +150,8 @@ public class Peta implements Serializable {
 
         if (this.getEnemyCount() < maxEnemyCount) {
             enemyEngimon.add(enemy);
-            getCell(enemy.getItem2().getX(),enemy.getItem2().getY()).setEnemy(enemy.getItem1());
+//            getCell(enemy.getItem2().getX(),enemy.getItem2().getY()).setEnemy(enemy.getItem1());
+            map[enemy.getItem2().getY()][enemy.getItem2().getX()].setEnemy(enemy.getItem1());
 //            System.out.println(enemy.getItem1().getPrint());
 //            System.out.println(enemy.getItem2().getX());
 //            System.out.println(enemy.getItem2().getY());
